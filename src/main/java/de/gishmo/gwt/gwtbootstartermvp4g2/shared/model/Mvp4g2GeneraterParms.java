@@ -5,6 +5,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class Mvp4g2GeneraterParms
   implements IsSerializable {
 
+  public static final String GWT_VERSION = "getVersion";
+  public static final String GROUP_ID    = "groupId";
+  public static final String ARTIFACT_ID = "artifactId";
+
   private String groupId;
   private String artefactId;
 
