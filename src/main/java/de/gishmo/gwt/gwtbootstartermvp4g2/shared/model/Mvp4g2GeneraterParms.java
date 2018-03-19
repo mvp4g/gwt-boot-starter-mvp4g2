@@ -1,9 +1,6 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.shared.model;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class Mvp4g2GeneraterParms
-  implements IsSerializable {
+public class Mvp4g2GeneraterParms {
 
   private String groupId;
   private String artefactId;
@@ -13,7 +10,7 @@ public class Mvp4g2GeneraterParms
   private boolean applicationLoader;
 
   private boolean historyOnStart;
-  private String history;
+  private String  history;
   private boolean usingHistorynames;
 
   private String widgets;

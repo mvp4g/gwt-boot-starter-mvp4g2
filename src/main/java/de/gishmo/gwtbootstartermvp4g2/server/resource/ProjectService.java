@@ -1,5 +1,19 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource;
 
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,21 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
 
 @RestController
 @RequestMapping("/service/project")

@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
 
-@SpringBootApplication( scanBasePackages = "de.gishmo.gwtbootstartermvp4g2.server.resource")
+@SpringBootApplication(scanBasePackages = "de.gishmo.gwtbootstartermvp4g2.server.resource")
 public class ServerApplication {
 
   final static Logger logger = LoggerFactory.getLogger(ServerApplication.class);
