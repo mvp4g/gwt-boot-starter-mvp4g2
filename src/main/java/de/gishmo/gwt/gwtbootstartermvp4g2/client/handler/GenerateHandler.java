@@ -1,5 +1,8 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.handler;
 
+import org.fusesource.restygwt.client.Resource;
+import org.fusesource.restygwt.client.RestServiceProxy;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,11 +23,20 @@ public class GenerateHandler
   public GenerateHandler() {
     super();
 
+    this.personService = GWT.create(PersonService.class);
+    String pageBaseUrl = GWT.getHostPageBaseURL();
+    ((RestServiceProxy) this.personService).setResource(new Resource(pageBaseUrl + "/services/person"));
+
+
+
     this.projectService = GWT.create(ProjectService.class);
   }
 
   @EventHandler
   public void onGenerate(Mvp4g2GeneraterParms model) {
+
+
+
     this.projectService.generate(model,
                                  new AsyncCallback<String>() {
                                    @Override

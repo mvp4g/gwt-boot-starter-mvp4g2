@@ -207,15 +207,15 @@
         </executions>
         <configuration>
           <classpathScope>compile</classpathScope>
-          <moduleName>de.gishmo.gwt.example.mvp4g2.springboot.Mvp4g2SpringBoot</moduleName>
-          <moduleShortName>Mvp4g2SpringBoot</moduleShortName>
-          <modules>de.gishmo.gwt.example.mvp4g2.springboot.Mvp4g2SpringBoot</modules>
+          <moduleName>de.gishmo.gwt.gwtbootstartermvp4g2.GwtBootStarterMvp4g2</moduleName>
+          <moduleShortName>GwtBootStarterMvp4g2</moduleShortName>
+          <modules>de.gishmo.gwt.gwtbootstartermvp4g2.GwtBootStarterMvp4g2</modules>
           <failOnError>true</failOnError>
           <!-- GWT 2.8 requires 1.8, hence define sourceLevel here if you use
            a different source language for java compilation -->
           <sourceLevel>1.8</sourceLevel>
           <startupUrls>
-            <startupUrl>Mvp4g2SpringBoot.html</startupUrl>
+            <startupUrl>GwtBootStarterMvp4g2.html</startupUrl>
           </startupUrls>
           <!--&lt;!&ndash; Compiler configuration &ndash;&gt;-->
           <compilerArgs>

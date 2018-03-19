@@ -1,11 +1,28 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
 
 @RestController
 @RequestMapping("/service/zip")
 public class DownloadZipServlet {
+
+  @Autowired
+  ProjectZip projectZip;
+
+//  @RequestMapping(method = RequestMethod.POST, path = "/load")
+//  @ResponseBody
+//  public ResponseEntity<String> load(@RequestBody Mvp4g2GeneraterParms model) {
+//
+//  }
 
 //  @Override
 //  protected void doGet(HttpServletRequest req,

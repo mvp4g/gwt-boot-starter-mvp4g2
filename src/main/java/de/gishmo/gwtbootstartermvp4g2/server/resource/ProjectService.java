@@ -1,17 +1,5 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource;
 
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,9 +11,27 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
+
 @RestController
 @RequestMapping("/service/project")
 public class ProjectService {
+
+  @Autowired
+  ProjectZip projectZip;
 
   @RequestMapping(method = RequestMethod.POST, path = "/generate")
   @ResponseBody
@@ -58,13 +64,8 @@ public class ProjectService {
     // zip the content
     this.zipIt(projectFolder);
     // save path to session
-
-    getThreadLocalRequest().getSession()
-                           .setAttribute("pathToGenerateProjectZip",
-                                         projectFolder + ".zip");
-    getThreadLocalRequest().getSession()
-                           .setAttribute("nameOfProjectZip",
-                                         model.getArtefactId() + ".zip");
+    projectZip.setNameOfProjectZip(model.getArtefactId() + ".zip");
+    projectZip.setPathToGenerateProjectZip(projectFolder + ".zip");
     // delete tmp folder
     deleteFolder(new File(projectFolder));
     return new ResponseEntity<>(model.getArtefactId() + ".zip",
@@ -79,12 +80,12 @@ public class ProjectService {
     byte[] buffer = new byte[1024];
     try {
       FileOutputStream fos = new FileOutputStream(projectFolder + ".zip");
-      ZipOutputStream zos = new ZipOutputStream(fos);
+      ZipOutputStream  zos = new ZipOutputStream(fos);
       for (String file : fileList) {
         ZipEntry zipEntry = new ZipEntry(file);
         zos.putNextEntry(zipEntry);
         FileInputStream in = new FileInputStream(projectFolder + File.separator + file);
-        int len;
+        int             len;
         while ((len = in.read(buffer)) > 0) {
           zos.write(buffer,
                     0,
