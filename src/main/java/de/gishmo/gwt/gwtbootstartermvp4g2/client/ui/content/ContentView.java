@@ -120,10 +120,10 @@ public class ContentView
       add(DataConstants.GWT_VERSION_2_8_2);
     }});
     this.gwtVersion.setValue(DataConstants.DEFAULT_GWT_VERSION);
-    FieldLabel flHistory = new FieldLabel(gwtVersion,
-                                          "Select the GWT version");
-    flHistory.setLabelAlign(FormPanel.LabelAlign.TOP);
-    vlc.add(flHistory,
+//    FieldLabel flHistory = new FieldLabel(gwtVersion,
+//                                          "Select the GWT version");
+//    flHistory.setLabelAlign(FormPanel.LabelAlign.TOP);
+    vlc.add(this.gwtVersion,
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            -1,
                                                            new Margins(0,

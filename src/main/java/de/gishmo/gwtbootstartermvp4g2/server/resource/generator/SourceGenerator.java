@@ -1,4 +1,4 @@
-package de.gishmo.gwt.gwtbootstartermvp4g2.server.generator;
+package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.squareup.javapoet.AnnotationSpec;

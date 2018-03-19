@@ -1,11 +1,16 @@
-package de.gishmo.gwt.gwtbootstartermvp4g2.server;
+package de.gishmo.gwtbootstartermvp4g2.server.resource;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import de.gishmo.gwt.gwtbootstartermvp4g2.client.service.ProjectService;
-import de.gishmo.gwt.gwtbootstartermvp4g2.server.generator.PomGenerator;
-import de.gishmo.gwt.gwtbootstartermvp4g2.server.generator.SourceGenerator;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,13 +23,13 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class ProjectServiceImpl
-  extends RemoteServiceServlet
-  implements ProjectService {
+@RestController
+@RequestMapping("/service/project")
+public class ProjectService {
 
-  @Override
-  public synchronized String generate(Mvp4g2GeneraterParms model)
-    throws GeneratorException {
+  @RequestMapping(method = RequestMethod.POST, path = "/generate")
+  @ResponseBody
+  public synchronized ResponseEntity<String> generate(@RequestBody Mvp4g2GeneraterParms model) {
     // create folder in tempDirectory
     String tmpDirPath = System.getProperty("java.io.tmpdir");
     // create projectFolder
@@ -35,20 +40,35 @@ public class ProjectServiceImpl
     }
     // create ...
     if (!(new File(projectFolder).mkdirs())) {
-      return "ERROR: creation of project folder failed!";
+      return new ResponseEntity<>("ERROR: creation of project folder failed!",
+                                  HttpStatus.INTERNAL_SERVER_ERROR);
     }
     // create Java sources (must run first, because this creates the project strucutre)
     SourceGenerator sourceGenerator = new SourceGenerator(model,
                                                           projectFolder);
-    sourceGenerator.generate();
+    try {
+      sourceGenerator.generate();
+    } catch (GeneratorException e) {
+      return new ResponseEntity<>(e.getMessage(),
+                                  HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // create XML sources
     PomGenerator pomGenerator = new PomGenerator(model,
                                                  projectFolder);
     // zip the content
     this.zipIt(projectFolder);
+    // save path to session
+
+    getThreadLocalRequest().getSession()
+                           .setAttribute("pathToGenerateProjectZip",
+                                         projectFolder + ".zip");
+    getThreadLocalRequest().getSession()
+                           .setAttribute("nameOfProjectZip",
+                                         model.getArtefactId() + ".zip");
     // delete tmp folder
     deleteFolder(new File(projectFolder));
-    return "etst";
+    return new ResponseEntity<>(model.getArtefactId() + ".zip",
+                                HttpStatus.OK);
   }
 
   private void zipIt(String projectFolder) {

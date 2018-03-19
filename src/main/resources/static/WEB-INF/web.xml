@@ -25,11 +25,20 @@
   <!-- Servlets -->
   <servlet>
     <servlet-name>projectService</servlet-name>
-    <servlet-class>de.gishmo.gwt.gwtbootstartermvp4g2.server.ProjectServiceImpl</servlet-class>
+    <servlet-class>de.gishmo.gwtbootstartermvp4g2.server.resource.ProjectService</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>projectService</servlet-name>
     <url-pattern>/GwtStarterBootMvp4g2/projectService</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>downloadService</servlet-name>
+    <servlet-class>de.gishmo.gwtbootstartermvp4g2.server.resource.DownloadZipServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>downloadService</servlet-name>
+    <url-pattern>/GwtStarterBootMvp4g2/loadZip</url-pattern>
   </servlet-mapping>
 
   <!-- Default page to serve -->

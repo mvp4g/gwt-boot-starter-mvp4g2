@@ -1,31 +1,51 @@
-package de.gishmo.gwt.gwtbootstartermvp4g2.server;
+package de.gishmo.gwtbootstartermvp4g2.server.resource;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-public class GenerateProjectServlet
-  extends HttpServlet {
+@RestController
+@RequestMapping("/service/zip")
+public class DownloadZipServlet {
 
-  @Override
-  protected void doGet(HttpServletRequest req,
-                       HttpServletResponse resp)
-    throws ServletException, IOException {
-    this.doPost(req,
-                resp);
-  }
+//  @Override
+//  protected void doGet(HttpServletRequest req,
+//                       HttpServletResponse resp)
+//    throws ServletException, IOException {
+//    this.doPost(req,
+//                resp);
+//  }
+//
+//  @Override
+//  protected void doPost(HttpServletRequest req,
+//                        HttpServletResponse resp)
+//    throws ServletException, IOException {
+//    super.doPost(req,
+//                 resp);
+//    String pathToGenerateProjectZip = (String) req.getSession()
+//                                    .getAttribute("pathToGenerateProjectZip");
+//    String nameOfProjectZip = (String) req.getSession()
+//                                          .getAttribute("nameOfProjectZip");
+//    if (pathToGenerateProjectZip != null && nameOfProjectZip != null) {
+//      Path pathToZipFile = Paths.get(pathToGenerateProjectZip);
+//      byte[] bytes = Files.readAllBytes(pathToZipFile);
+//
+//      ServletOutputStream servletOutputStream = resp.getOutputStream();
+//      resp.setContentType("application/zip, application/octet-stream");
+//      resp.addHeader("Content-Type",
+//                     "application/zip, application/octet-stream");
+//      resp.addHeader("Content-Disposition", "inline; filename=" + nameOfProjectZip);
+//      resp.setContentLength(bytes.length);
+//      servletOutputStream.write(bytes);
+//      servletOutputStream.close();
+//    }
+//  }
 
-  @Override
-  protected void doPost(HttpServletRequest req,
-                        HttpServletResponse resp)
-    throws ServletException, IOException {
-    super.doPost(req,
-                 resp);
 
 
-  }
+
+
+
+
 //
 //  public synchronized String generate(Mvp4g2GeneraterParms model)
 //    throws GeneratorException {
