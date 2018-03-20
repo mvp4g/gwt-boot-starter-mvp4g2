@@ -1,6 +1,11 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.handler;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.service.ProjectService;
@@ -43,10 +48,35 @@ public class GenerateHandler
                                    public void onSuccess(Method method,
                                                          String value) {
                                      GWT.debugger();
-                                     String url = GWT.getModuleBaseURL() + "loadZip/download/" + model.getArtefactId() + ".zip";
-                                     Window.open(url,
-                                                 "download window",
-                                                 "");
+                                     String url = GWT.getHostPageBaseURL() +
+                                                  "loadZip/download?archive=" +
+                                                  model.getArtefactId() + ".zip";
+//                                                                          Window.open(url,
+//                                                 "download window",
+//                                                 "");
+                                     RequestBuilder rb = new RequestBuilder(RequestBuilder.GET,
+                                                                            url);
+                                     rb.setHeader("Content-Type",
+                                                  "application/zip");
+
+                                     rb.setCallback(new RequestCallback() {
+                                       @Override
+                                       public void onResponseReceived(Request request,
+                                                                      Response response) {
+
+                                       }
+
+                                       @Override
+                                       public void onError(Request request,
+                                                           Throwable exception) {
+
+                                       }
+                                     });
+                                     try {
+                                       rb.send();
+                                     } catch (RequestException e) {
+                                       e.printStackTrace();
+                                     }
                                      eventBus.hideProgressBar();
                                    }
                                  });
