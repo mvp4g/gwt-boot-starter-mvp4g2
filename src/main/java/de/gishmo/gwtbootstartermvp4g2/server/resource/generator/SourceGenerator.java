@@ -6,10 +6,12 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.mvp4g2.core.application.IsApplication;
+import de.gishmo.gwt.mvp4g2.core.application.IsApplicationLoader;
 import de.gishmo.gwt.mvp4g2.core.application.annotation.Application;
 
 import javax.lang.model.element.Modifier;
@@ -66,6 +68,9 @@ public class SourceGenerator
 
     generateEntryPoint();
     generateApplication();
+    if (model.isApplicationLoader()) {
+      generateApplicationLoader();
+    }
   }
 
   private void createBasicStructure() {
@@ -181,5 +186,33 @@ public class SourceGenerator
     return value.substring(0,
                            1)
                 .toUpperCase() + value.substring(1);
+  }
+
+  private void generateApplicationLoader()
+    throws GeneratorException {
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(this.setFirstCharacterToUperCase(model.getArtefactId() + SourceGenerator.LOADER))
+                                        .addJavadoc(CodeBlock.builder()
+                                                             .add(AbstractGenerator.COPYRIGHT)
+                                                             .build())
+                                        .addModifiers(Modifier.PUBLIC)
+                                        .addSuperinterface(ClassName.get(IsApplicationLoader.class))
+                                        .addAnnotation(Override.class)
+                                        .addMethod(MethodSpec.methodBuilder("load")
+                                                             .addParameter(ParameterSpec.builder(ClassName.get(IsApplicationLoader.FinishLoadCommand.class),
+                                                                                                 "finishLoadCommand")
+                                                                                        .build())
+                                                             .addModifiers(Modifier.PUBLIC)
+                                                             .addComment("enter your code here ...")
+                                                             .addStatement("finishLoadCommand.finishLoading")
+                                                             .build());
+    JavaFile javaFile = JavaFile.builder(this.clientPackageJavaConform,
+                                         typeSpec.build())
+                                .build();
+    try {
+      javaFile.writeTo(new File(directoryJava,
+                                ""));
+    } catch (IOException e) {
+      throw new GeneratorException("Unable to write generated file: >>" + this.setFirstCharacterToUperCase(model.getArtefactId() + SourceGenerator.LOADER) + "<< -> exception: " + e.getMessage());
+    }
   }
 }

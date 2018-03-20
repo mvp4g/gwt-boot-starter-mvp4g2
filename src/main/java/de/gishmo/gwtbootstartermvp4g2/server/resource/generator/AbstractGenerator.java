@@ -4,7 +4,7 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 
 public abstract class AbstractGenerator {
 
-  protected final static String COPYRIGHT = String.format("Copyright (C) 2016 Frank Hossfeld <frank.hossfeld@googlemail.com>%n" +
+  protected final static String COPYRIGHT = String.format("Copyright (C) 2018 Frank Hossfeld <frank.hossfeld@googlemail.com>%n" +
                                                           "%n" +
                                                           "Licensed under the Apache License, Version 2.0 (the \"License\");%n" +
                                                           "you may not use this file except in compliance with the License.%n" +
