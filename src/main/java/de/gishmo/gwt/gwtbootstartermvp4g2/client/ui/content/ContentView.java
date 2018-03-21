@@ -18,6 +18,7 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
@@ -26,7 +27,6 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
-import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.StringComboBox;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
@@ -77,6 +77,8 @@ public class ContentView
 
     this.innerContainer = new VerticalLayoutContainer();
     this.innerContainer.setWidth(Constants.CONTENT_WIDTH);
+    this.innerContainer.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
+    this.innerContainer.setAdjustForScroll(true);
     this.container.add(this.innerContainer);
 
     this.setUpContainerGwtVersion();
@@ -149,7 +151,6 @@ public class ContentView
     this.groupId = new TextField();
     FieldLabel flGroupId = new FieldLabel(groupId,
                                           "GroupId");
-    flGroupId.setLabelAlign(FormPanel.LabelAlign.TOP);
     vlc.add(flGroupId,
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            -1,
@@ -161,7 +162,6 @@ public class ContentView
     this.artifactId = new TextField();
     FieldLabel flArtifactId = new FieldLabel(artifactId,
                                              "ArtifactId");
-    flArtifactId.setLabelAlign(FormPanel.LabelAlign.TOP);
     vlc.add(flArtifactId,
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            -1,

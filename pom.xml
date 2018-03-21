@@ -23,7 +23,7 @@
     <!-- GXT GPL version without support -->
     <gxt.version>4.0.0</gxt.version>
     <!-- mvp4g2 version -->
-    <mvp4g2.version>1.0-beta-2</mvp4g2.version>
+    <mvp4g2.version>1.0-beta-3</mvp4g2.version>
 
     <!-- GWT needs at least java 1.6 -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -31,6 +31,8 @@
 
     <!-- JavaPoet version -->
     <javaPoet.version>1.10.0</javaPoet.version>
+    <!-- j2html -->
+    <j2html.version>1.2.2</j2html.version>
 
     <junit.version>4.12</junit.version>
     <org.mockito.version>1.10.19</org.mockito.version>
@@ -46,15 +48,15 @@
   </properties>
 
   <!--<dependencyManagement>-->
-    <!--<dependencies>-->
-      <!--<dependency>-->
-        <!--<groupId>com.google.gwt</groupId>-->
-        <!--<artifactId>gwt</artifactId>-->
-        <!--<version>${gwtVersion}</version>-->
-        <!--<type>pom</type>-->
-        <!--<scope>import</scope>-->
-      <!--</dependency>-->
-    <!--</dependencies>-->
+  <!--<dependencies>-->
+  <!--<dependency>-->
+  <!--<groupId>com.google.gwt</groupId>-->
+  <!--<artifactId>gwt</artifactId>-->
+  <!--<version>${gwtVersion}</version>-->
+  <!--<type>pom</type>-->
+  <!--<scope>import</scope>-->
+  <!--</dependency>-->
+  <!--</dependencies>-->
   <!--</dependencyManagement>-->
 
   <dependencies>
@@ -127,6 +129,11 @@
       <groupId>com.squareup</groupId>
       <artifactId>javapoet</artifactId>
       <version>${javaPoet.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.j2html</groupId>
+      <artifactId>j2html</artifactId>
+      <version>${j2html.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sonatype.sisu</groupId>
@@ -258,144 +265,142 @@
       </plugin>
 
 
-
-
       <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-compiler-plugin</artifactId>-->
-        <!--<version>3.6.1</version>-->
-        <!--<configuration>-->
-          <!--<source>1.8</source>-->
-          <!--<target>1.8</target>-->
-          <!--<showWarnings>true</showWarnings>-->
-          <!--<showDeprecation>true</showDeprecation>-->
-          <!--<meminitial>128m</meminitial>-->
-          <!--<maxmem>1024m</maxmem>-->
-          <!--<encoding>${project.build.sourceEncoding}</encoding>-->
-          <!--<compilerArgs>-->
-            <!--<compilerArgument>-Xlint:all</compilerArgument>-->
-          <!--</compilerArgs>-->
-        <!--</configuration>-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<id>process-annotations</id>-->
-            <!--<phase>generate-sources</phase>-->
-            <!--<goals>-->
-              <!--<goal>compile</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-              <!--<proc>only</proc>-->
-              <!--<annotationProcessors>-->
-                <!--<annotationProcessor>de.gishmo.gwt.mvp4g2.processor.Mvp4g2Processor</annotationProcessor>-->
-              <!--</annotationProcessors>-->
-            <!--</configuration>-->
-          <!--</execution>-->
-          <!--<execution>-->
-            <!--<id>default-compile</id> &lt;!&ndash; using an id of default-compile will override the default execution &ndash;&gt;-->
-            <!--<phase>compile</phase>-->
-            <!--<goals>-->
-              <!--<goal>compile</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-              <!--<compilerArgs>-->
-                <!--<arg>-proc:none</arg>-->
-              <!--</compilerArgs>-->
-            <!--</configuration>-->
-          <!--</execution>-->
-        <!--</executions>-->
+      <!--<groupId>org.apache.maven.plugins</groupId>-->
+      <!--<artifactId>maven-compiler-plugin</artifactId>-->
+      <!--<version>3.6.1</version>-->
+      <!--<configuration>-->
+      <!--<source>1.8</source>-->
+      <!--<target>1.8</target>-->
+      <!--<showWarnings>true</showWarnings>-->
+      <!--<showDeprecation>true</showDeprecation>-->
+      <!--<meminitial>128m</meminitial>-->
+      <!--<maxmem>1024m</maxmem>-->
+      <!--<encoding>${project.build.sourceEncoding}</encoding>-->
+      <!--<compilerArgs>-->
+      <!--<compilerArgument>-Xlint:all</compilerArgument>-->
+      <!--</compilerArgs>-->
+      <!--</configuration>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<id>process-annotations</id>-->
+      <!--<phase>generate-sources</phase>-->
+      <!--<goals>-->
+      <!--<goal>compile</goal>-->
+      <!--</goals>-->
+      <!--<configuration>-->
+      <!--<proc>only</proc>-->
+      <!--<annotationProcessors>-->
+      <!--<annotationProcessor>de.gishmo.gwt.mvp4g2.processor.Mvp4g2Processor</annotationProcessor>-->
+      <!--</annotationProcessors>-->
+      <!--</configuration>-->
+      <!--</execution>-->
+      <!--<execution>-->
+      <!--<id>default-compile</id> &lt;!&ndash; using an id of default-compile will override the default execution &ndash;&gt;-->
+      <!--<phase>compile</phase>-->
+      <!--<goals>-->
+      <!--<goal>compile</goal>-->
+      <!--</goals>-->
+      <!--<configuration>-->
+      <!--<compilerArgs>-->
+      <!--<arg>-proc:none</arg>-->
+      <!--</compilerArgs>-->
+      <!--</configuration>-->
+      <!--</execution>-->
+      <!--</executions>-->
       <!--</plugin>-->
       <!--<plugin>-->
-        <!--<groupId>org.codehaus.mojo</groupId>-->
-        <!--<artifactId>build-helper-maven-plugin</artifactId>-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<id>add-source</id>-->
-            <!--<phase>generate-sources</phase>-->
-            <!--<goals>-->
-              <!--<goal>add-source</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-              <!--<sources>-->
-                <!--<source>${generated.source.directory}</source>-->
-              <!--</sources>-->
-            <!--</configuration>-->
-          <!--</execution>-->
-        <!--</executions>-->
+      <!--<groupId>org.codehaus.mojo</groupId>-->
+      <!--<artifactId>build-helper-maven-plugin</artifactId>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<id>add-source</id>-->
+      <!--<phase>generate-sources</phase>-->
+      <!--<goals>-->
+      <!--<goal>add-source</goal>-->
+      <!--</goals>-->
+      <!--<configuration>-->
+      <!--<sources>-->
+      <!--<source>${generated.source.directory}</source>-->
+      <!--</sources>-->
+      <!--</configuration>-->
+      <!--</execution>-->
+      <!--</executions>-->
       <!--</plugin>-->
       <!--<plugin>-->
-        <!--<groupId>net.ltgt.gwt.maven</groupId>-->
-        <!--<artifactId>gwt-maven-plugin</artifactId>-->
-        <!--<version>1.0-rc-9</version>-->
-        <!--<extensions>true</extensions>-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<goals>-->
-              <!--<goal>compile</goal>-->
-              <!--<goal>package-app</goal>-->
-            <!--</goals>-->
-          <!--</execution>-->
-        <!--</executions>-->
-        <!--<configuration>-->
-          <!--<classpathScope>compile</classpathScope>-->
-          <!--<moduleName>de.gishmo.gwt.gwtbootstartermvp4g2.GwtBootStarterMvp4g2</moduleName>-->
-          <!--<moduleShortName>GwtBootStarterMvp4g2</moduleShortName>-->
-          <!--<modules>de.gishmo.gwt.gwtbootstartermvp4g2.GwtBootStarterMvp4g2</modules>-->
-          <!--<failOnError>true</failOnError>-->
-          <!--&lt;!&ndash; GWT 2.8 requires 1.8, hence define sourceLevel here if you use-->
-           <!--a different source language for java compilation &ndash;&gt;-->
-          <!--<sourceLevel>1.8</sourceLevel>-->
-          <!--&lt;!&ndash; Compiler configuration &ndash;&gt;-->
-          <!--<compilerArgs>-->
-            <!--&lt;!&ndash;Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile)&ndash;&gt;-->
-            <!--<arg>-compileReport</arg>-->
-            <!--<arg>-XcompilerMetrics</arg>-->
-            <!--<arg>-setProperty</arg>-->
-            <!--<arg>mvp4g2.logging=true</arg>-->
-          <!--</compilerArgs>-->
-          <!--<logLevel>TRACE</logLevel>-->
-          <!--<skipModule>true</skipModule>-->
-          <!--<codeServerPort>9876</codeServerPort>-->
-          <!--<devmodeArgs>-->
-            <!--<arg>-port</arg>-->
-            <!--<arg>8888</arg>-->
-            <!--<arg>-codeServerPort</arg>-->
-            <!--<arg>9876</arg>-->
-          <!--</devmodeArgs>-->
-          <!--<startupUrls>-->
-            <!--<startupUrl>GwtBootStarterMvp4g2.html</startupUrl>-->
-          <!--</startupUrls>-->
-          <!--<devmodeWorkDir>${project.build.directory}/devModeWorkDir</devmodeWorkDir>-->
-          <!--<launcherDir>${project.build.directory}/classes/static</launcherDir>-->
-          <!--<warDir>${project.build.directory}/${project.build.finalName}</warDir>-->
-          <!--<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>-->
-          <!--<systemProperties>-->
-            <!--<gwt.persistentunitcachedir>${project.build.directory}/gwt/unitCache/</gwt.persistentunitcachedir>-->
-            <!--<gwt.war.directory>${project.basedir}/${project.build.finalName}</gwt.war.directory>-->
-          <!--</systemProperties>-->
-        <!--</configuration>-->
+      <!--<groupId>net.ltgt.gwt.maven</groupId>-->
+      <!--<artifactId>gwt-maven-plugin</artifactId>-->
+      <!--<version>1.0-rc-9</version>-->
+      <!--<extensions>true</extensions>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<goals>-->
+      <!--<goal>compile</goal>-->
+      <!--<goal>package-app</goal>-->
+      <!--</goals>-->
+      <!--</execution>-->
+      <!--</executions>-->
+      <!--<configuration>-->
+      <!--<classpathScope>compile</classpathScope>-->
+      <!--<moduleName>de.gishmo.gwt.gwtbootstartermvp4g2.GwtBootStarterMvp4g2</moduleName>-->
+      <!--<moduleShortName>GwtBootStarterMvp4g2</moduleShortName>-->
+      <!--<modules>de.gishmo.gwt.gwtbootstartermvp4g2.GwtBootStarterMvp4g2</modules>-->
+      <!--<failOnError>true</failOnError>-->
+      <!--&lt;!&ndash; GWT 2.8 requires 1.8, hence define sourceLevel here if you use-->
+      <!--a different source language for java compilation &ndash;&gt;-->
+      <!--<sourceLevel>1.8</sourceLevel>-->
+      <!--&lt;!&ndash; Compiler configuration &ndash;&gt;-->
+      <!--<compilerArgs>-->
+      <!--&lt;!&ndash;Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile)&ndash;&gt;-->
+      <!--<arg>-compileReport</arg>-->
+      <!--<arg>-XcompilerMetrics</arg>-->
+      <!--<arg>-setProperty</arg>-->
+      <!--<arg>mvp4g2.logging=true</arg>-->
+      <!--</compilerArgs>-->
+      <!--<logLevel>TRACE</logLevel>-->
+      <!--<skipModule>true</skipModule>-->
+      <!--<codeServerPort>9876</codeServerPort>-->
+      <!--<devmodeArgs>-->
+      <!--<arg>-port</arg>-->
+      <!--<arg>8888</arg>-->
+      <!--<arg>-codeServerPort</arg>-->
+      <!--<arg>9876</arg>-->
+      <!--</devmodeArgs>-->
+      <!--<startupUrls>-->
+      <!--<startupUrl>GwtBootStarterMvp4g2.html</startupUrl>-->
+      <!--</startupUrls>-->
+      <!--<devmodeWorkDir>${project.build.directory}/devModeWorkDir</devmodeWorkDir>-->
+      <!--<launcherDir>${project.build.directory}/impl/static</launcherDir>-->
+      <!--<warDir>${project.build.directory}/${project.build.finalName}</warDir>-->
+      <!--<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>-->
+      <!--<systemProperties>-->
+      <!--<gwt.persistentunitcachedir>${project.build.directory}/gwt/unitCache/</gwt.persistentunitcachedir>-->
+      <!--<gwt.war.directory>${project.basedir}/${project.build.finalName}</gwt.war.directory>-->
+      <!--</systemProperties>-->
+      <!--</configuration>-->
       <!--</plugin>-->
       <!--&lt;!&ndash; only used to copy static resources &ndash;&gt;-->
       <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-war-plugin</artifactId>-->
-        <!--<version>3.0.0</version>-->
-        <!--<configuration>-->
-          <!--<webResources>-->
-            <!--<resource>-->
-              <!--<directory>${project.build.directory}/classes/static</directory>-->
-            <!--</resource>-->
-          <!--</webResources>-->
-          <!--<failOnMissingWebXml>false</failOnMissingWebXml>-->
-        <!--</configuration>-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<id>war</id>-->
-            <!--<phase>compile</phase>-->
-            <!--<goals>-->
-              <!--<goal>war</goal>-->
-            <!--</goals>-->
-          <!--</execution>-->
-        <!--</executions>-->
+      <!--<groupId>org.apache.maven.plugins</groupId>-->
+      <!--<artifactId>maven-war-plugin</artifactId>-->
+      <!--<version>3.0.0</version>-->
+      <!--<configuration>-->
+      <!--<webResources>-->
+      <!--<resource>-->
+      <!--<directory>${project.build.directory}/impl/static</directory>-->
+      <!--</resource>-->
+      <!--</webResources>-->
+      <!--<failOnMissingWebXml>false</failOnMissingWebXml>-->
+      <!--</configuration>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<id>war</id>-->
+      <!--<phase>compile</phase>-->
+      <!--<goals>-->
+      <!--<goal>war</goal>-->
+      <!--</goals>-->
+      <!--</execution>-->
+      <!--</executions>-->
       <!--</plugin>-->
     </plugins>
   </build>

@@ -1,30 +1,30 @@
-package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.classes;
+package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.lang.model.element.Modifier;
 
-import com.google.gwt.core.client.EntryPoint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwt.mvp4g2.core.application.IsApplicationLoader;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
-public class EntryPointSourceGenerator {
-
+public class ApplicationLoaderSourceGenerator {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-  private File               directoryJava;
+  private File                 directoryJava;
   private String               clientPackageJavaConform;
 
-  private EntryPointSourceGenerator(Builder builder) {
+  private ApplicationLoaderSourceGenerator(Builder builder) {
     super();
 
     this.mvp4g2GeneraterParms = builder.mvp4g2GeneraterParms;
@@ -39,22 +39,21 @@ public class EntryPointSourceGenerator {
   public void generate()
     throws GeneratorException {
 
-    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()))
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.LOADER))
                                         .addJavadoc(CodeBlock.builder()
-                                                             .add(GeneratorConstants.COPYRIGHT)
+                                                             .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
                                         .addModifiers(Modifier.PUBLIC)
-                                        .addSuperinterface(ClassName.get(EntryPoint.class))
-                                        .addMethod(MethodSpec.methodBuilder("onModuleLoad")
+                                        .addSuperinterface(ClassName.get(IsApplicationLoader.class))
+                                        .addAnnotation(Override.class)
+                                        .addMethod(MethodSpec.methodBuilder("load")
+                                                             .addParameter(ParameterSpec.builder(ClassName.get(IsApplicationLoader.FinishLoadCommand.class),
+                                                                                                 "finishLoadCommand")
+                                                                                        .build())
                                                              .addModifiers(Modifier.PUBLIC)
-                                                             .addStatement("$T application = new $LImpl()",
-                                                                           ClassName.get(this.clientPackageJavaConform,
-                                                                                         this
-                                                                                           .mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.APPLICAITON),
-                                                                           this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.APPLICAITON)
-                                                             .addStatement("application.run()")
+                                                             .addComment("enter your code here ...")
+                                                             .addStatement("finishLoadCommand.finishLoading")
                                                              .build());
-
     JavaFile javaFile = JavaFile.builder(this.clientPackageJavaConform,
                                          typeSpec.build())
                                 .build();
@@ -62,14 +61,14 @@ public class EntryPointSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + this.mvp4g2GeneraterParms.getArtefactId() + "<< -> exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.LOADER) + "<< -> " + "exception: " + e.getMessage());
     }
   }
 
   public static class Builder {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-    File               directoryJava;
+    File                 directoryJava;
     String               clientPackageJavaConform;
 
     public Builder mvp4g2GeneraterParms(Mvp4g2GeneraterParms mvp4g2GeneraterParms) {
@@ -87,8 +86,8 @@ public class EntryPointSourceGenerator {
       return this;
     }
 
-    public EntryPointSourceGenerator build() {
-      return new EntryPointSourceGenerator(this);
+    public ApplicationLoaderSourceGenerator build() {
+      return new ApplicationLoaderSourceGenerator(this);
     }
   }
 }
