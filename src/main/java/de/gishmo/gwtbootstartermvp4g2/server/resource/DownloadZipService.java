@@ -18,7 +18,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/loadZip")
-public class DownloadZipSevice {
+public class DownloadZipService {
 
   @Autowired
   ProjectZip projectZip;
