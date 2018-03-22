@@ -36,4 +36,6 @@ public class GeneratorConstants {
                                                             "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.%n" +
                                                             "See the License for the specific language governing permissions and%n" +
                                                             "limitations under the License.%n");
+
+  public static final String LINE_BREAK     = "\n";
 }
