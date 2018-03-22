@@ -66,9 +66,17 @@ public class ProjectService {
       return new ResponseEntity<>(e.getMessage(),
                                   HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    // create XML sources
-    PomGenerator pomGenerator = new PomGenerator(model,
-                                                 projectFolder);
+    // create POM
+    try {
+      PomGenerator.builder()
+                  .mvp4g2GeneraterParms(model)
+                  .projectFolder(projectFolder)
+                  .build()
+                  .generate();
+    } catch (GeneratorException e) {
+      return new ResponseEntity<>(e.getMessage(),
+                                  HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // zip the content
     this.zipIt(projectRootFolder);
     // save path to session

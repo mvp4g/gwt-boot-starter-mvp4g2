@@ -17,9 +17,12 @@
 
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.themebuilder.base.client.config.ThemeDetails;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
@@ -40,6 +43,7 @@ public class ContentView
   extends LazyReverseView<IContentView.Presenter>
   implements IContentView {
 
+  private static ThemeDetails themeDetails = GWT.create(ThemeDetails.class);
 
   private HBoxLayoutContainer     container;
   private VerticalLayoutContainer innerContainer;
@@ -52,7 +56,7 @@ public class ContentView
   private TextField groupId;
   private TextField artifactId;
 
-  private CheckBox       applicationLoader;
+  private CheckBox applicationLoader;
 
   private CheckBox       historyOnStart;
   private StringComboBox history;
@@ -267,5 +271,23 @@ public class ContentView
   public boolean isValid() {
     // TODO implement!
     return true;
+  }
+
+  private void setThemeFontDetails(Element el) {
+    el.getStyle()
+      .setProperty("fontSize",
+                   themeDetails.panel()
+                               .font()
+                               .size());
+    el.getStyle()
+      .setProperty("fontFamily",
+                   themeDetails.panel()
+                               .font()
+                               .family());
+    el.getStyle()
+      .setProperty("color",
+                   themeDetails.panel()
+                               .font()
+                               .color());
   }
 }

@@ -143,7 +143,6 @@ public class SourceGenerator {
     directoryRootPackage.mkdirs();
   }
 
-
   public static class Builder {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms;

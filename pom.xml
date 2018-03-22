@@ -31,8 +31,6 @@
 
     <!-- JavaPoet version -->
     <javaPoet.version>1.10.0</javaPoet.version>
-    <!-- j2html -->
-    <j2html.version>1.2.2</j2html.version>
 
     <junit.version>4.12</junit.version>
     <org.mockito.version>1.10.19</org.mockito.version>
@@ -129,11 +127,6 @@
       <groupId>com.squareup</groupId>
       <artifactId>javapoet</artifactId>
       <version>${javaPoet.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.j2html</groupId>
-      <artifactId>j2html</artifactId>
-      <version>${j2html.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sonatype.sisu</groupId>
