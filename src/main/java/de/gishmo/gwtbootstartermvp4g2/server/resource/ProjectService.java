@@ -2,6 +2,7 @@ package de.gishmo.gwtbootstartermvp4g2.server.resource;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.ModuleDescriptorGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
@@ -73,6 +74,17 @@ public class ProjectService {
                   .projectFolder(projectFolder)
                   .build()
                   .generate();
+    } catch (GeneratorException e) {
+      return new ResponseEntity<>(e.getMessage(),
+                                  HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    // create Module Descriptor
+    try {
+      ModuleDescriptorGenerator.builder()
+                               .mvp4g2GeneraterParms(model)
+                               .projectFolder(projectFolder)
+                               .build()
+                               .generate();
     } catch (GeneratorException e) {
       return new ResponseEntity<>(e.getMessage(),
                                   HttpStatus.INTERNAL_SERVER_ERROR);

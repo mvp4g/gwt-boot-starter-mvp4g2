@@ -92,6 +92,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <!--<dependency>-->
     <!--<groupId>org.springframework.boot</groupId>-->
     <!--<artifactId>spring-boot-starter-test</artifactId>-->
@@ -157,10 +162,18 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
+          <mainClass>de.gishmo.gwtbootstartermvp4g2.server.ServerApplication</mainClass>
           <jvmArguments>
             -Dserver.port=${serverPort}
           </jvmArguments>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -238,6 +251,8 @@
             <arg>-XcompilerMetrics</arg>
             <arg>-setProperty</arg>
             <arg>mvp4g2.logging=true</arg>
+            <arg>-localWorkers</arg>
+            <arg>12</arg>
           </compilerArgs>
           <logLevel>TRACE</logLevel>
           <!--<skipModule>true</skipModule>-->
@@ -249,11 +264,11 @@
           <devmodeWorkDir>${project.build.directory}/classes/static</devmodeWorkDir>
           <launcherDir>${project.build.directory}/classes/static</launcherDir>
           <warDir>${project.build.directory}/classes/static</warDir>
-          <!--<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>-->
-          <!--<systemProperties>-->
-          <!--<gwt.persistentunitcachedir>${project.build.directory}/gwt/unitCache/</gwt.persistentunitcachedir>-->
-          <!--<gwt.war.directory>${project.basedir}/src/main/webapp</gwt.war.directory>-->
-          <!--</systemProperties>-->
+          <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+          <systemProperties>
+            <gwt.persistentunitcachedir>${project.build.directory}/gwt/unitCache/</gwt.persistentunitcachedir>
+            <gwt.war.directory>${project.build.directory}/classes/static</gwt.war.directory>
+          </systemProperties>
         </configuration>
       </plugin>
 
