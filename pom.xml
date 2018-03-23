@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>de.gishmo.gwt</groupId>
+  <groupId>com.github.mvp4g</groupId>
   <artifactId>gwt-boot-starter-mvp4g2</artifactId>
   <version>1.0-SNAPSHOT</version>
 
@@ -23,7 +23,7 @@
     <!-- GXT GPL version without support -->
     <gxt.version>4.0.0</gxt.version>
     <!-- mvp4g2 version -->
-    <mvp4g2.version>1.0-beta-3</mvp4g2.version>
+    <mvp4g2.version>1.0-beta-4</mvp4g2.version>
 
     <!-- GWT needs at least java 1.6 -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -77,13 +77,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>de.gishmo.gwt</groupId>
+      <groupId>com.github.mvp4g</groupId>
       <artifactId>mvp4g2</artifactId>
       <version>${mvp4g2.version}</version>
-      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
-      <groupId>de.gishmo.gwt</groupId>
+      <groupId>com.github.mvp4g</groupId>
       <artifactId>mvp4g2-processor</artifactId>
       <version>${mvp4g2.version}</version>
       <scope>provided</scope>
@@ -97,11 +96,6 @@
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!--<dependency>-->
-    <!--<groupId>org.springframework.boot</groupId>-->
-    <!--<artifactId>spring-boot-starter-test</artifactId>-->
-    <!--<scope>test</scope>-->
-    <!--</dependency>-->
     <!-- RestyGWT -->
     <dependency>
       <groupId>org.fusesource.restygwt</groupId>
@@ -201,7 +195,7 @@
             <configuration>
               <proc>only</proc>
               <annotationProcessors>
-                <annotationProcessor>de.gishmo.gwt.mvp4g2.processor.Mvp4g2Processor</annotationProcessor>
+                <annotationProcessor>com.github.mvp4g.mvp4g2.processor.Mvp4g2Processor</annotationProcessor>
               </annotationProcessors>
             </configuration>
           </execution>
@@ -299,7 +293,7 @@
       <!--<configuration>-->
       <!--<proc>only</proc>-->
       <!--<annotationProcessors>-->
-      <!--<annotationProcessor>de.gishmo.gwt.mvp4g2.processor.Mvp4g2Processor</annotationProcessor>-->
+      <!--<annotationProcessor>com.github.mvp4g.mvp4g2.processor.Mvp4g2Processor</annotationProcessor>-->
       <!--</annotationProcessors>-->
       <!--</configuration>-->
       <!--</execution>-->

@@ -29,7 +29,7 @@
   <!-- Other module inherits                                      -->
   <inherits name="com.sencha.gxt.ui.GXT"/>
   <inherits name="com.sencha.gxt.theme.neptune.Theme"/>
-  <inherits name="de.gishmo.gwt.mvp4g2.Mvp4g2"/>
+  <inherits name="com.github.mvp4g.mvp4g2.Mvp4g2"/>
   <inherits name="org.fusesource.restygwt.RestyGWT"/>
 
   <!-- GXT Stylesheet -->

@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.cell.core.client.ButtonCell;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
-import de.gishmo.gwt.mvp4g2.core.ui.LazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 
 public class ButtonBarView
   extends LazyReverseView<IButonBarView.Presenter>

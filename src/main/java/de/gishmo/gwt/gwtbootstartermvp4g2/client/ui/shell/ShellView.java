@@ -24,7 +24,7 @@ import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.Viewport;
-import de.gishmo.gwt.mvp4g2.core.ui.LazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 
 public class ShellView
   extends LazyReverseView<IShellView.Presenter>

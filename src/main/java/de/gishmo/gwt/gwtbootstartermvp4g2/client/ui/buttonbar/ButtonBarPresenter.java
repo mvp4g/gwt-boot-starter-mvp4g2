@@ -18,8 +18,8 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.buttonbar;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
-import de.gishmo.gwt.mvp4g2.core.ui.AbstractPresenter;
-import de.gishmo.gwt.mvp4g2.core.ui.annotation.Presenter;
+import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
 
 @Presenter(viewClass = ButtonBarView.class, viewInterface = IButonBarView.class)
 public class ButtonBarPresenter

@@ -26,7 +26,7 @@ import com.sencha.gxt.themebuilder.base.client.config.ThemeDetails;
 import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
-import de.gishmo.gwt.mvp4g2.core.ui.LazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 
 public class HeaderView
   extends LazyReverseView<IHeaderView.Presenter>

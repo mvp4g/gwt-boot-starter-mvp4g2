@@ -14,7 +14,7 @@ import com.squareup.javapoet.TypeSpec;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwt.mvp4g2.core.application.IsApplicationLoader;
+import com.github.mvp4g.mvp4g2.core.application.IsApplicationLoader;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 

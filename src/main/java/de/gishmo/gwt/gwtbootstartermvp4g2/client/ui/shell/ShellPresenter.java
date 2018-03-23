@@ -20,10 +20,10 @@ package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.shell;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
-import de.gishmo.gwt.mvp4g2.core.ui.AbstractPresenter;
-import de.gishmo.gwt.mvp4g2.core.ui.IsShell;
-import de.gishmo.gwt.mvp4g2.core.ui.annotation.EventHandler;
-import de.gishmo.gwt.mvp4g2.core.ui.annotation.Presenter;
+import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
+import com.github.mvp4g.mvp4g2.core.ui.IsShell;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
 
 @Presenter(viewClass = ShellView.class, viewInterface = IShellView.class)
 public class ShellPresenter

@@ -18,9 +18,9 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.header;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
-import de.gishmo.gwt.mvp4g2.core.ui.AbstractPresenter;
-import de.gishmo.gwt.mvp4g2.core.ui.annotation.EventHandler;
-import de.gishmo.gwt.mvp4g2.core.ui.annotation.Presenter;
+import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
 
 @Presenter(viewClass = HeaderView.class, viewInterface = IHeaderView.class)
 public class HeaderPresenter

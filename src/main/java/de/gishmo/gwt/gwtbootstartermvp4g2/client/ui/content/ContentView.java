@@ -35,7 +35,7 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwt.mvp4g2.core.ui.LazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 
 import java.util.ArrayList;
 

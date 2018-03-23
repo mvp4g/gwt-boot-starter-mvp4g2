@@ -18,7 +18,7 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.buttonbar;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import de.gishmo.gwt.mvp4g2.core.ui.IsLazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
 
 public interface IButonBarView
   extends IsLazyReverseView<IButonBarView.Presenter>,

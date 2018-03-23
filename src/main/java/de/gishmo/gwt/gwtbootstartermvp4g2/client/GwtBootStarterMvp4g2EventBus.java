@@ -6,11 +6,11 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.ContentPresenter;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.header.HeaderPresenter;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.shell.ShellPresenter;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwt.mvp4g2.core.eventbus.IsEventBus;
-import de.gishmo.gwt.mvp4g2.core.eventbus.annotation.Debug;
-import de.gishmo.gwt.mvp4g2.core.eventbus.annotation.Event;
-import de.gishmo.gwt.mvp4g2.core.eventbus.annotation.EventBus;
-import de.gishmo.gwt.mvp4g2.core.eventbus.annotation.Start;
+import com.github.mvp4g.mvp4g2.core.eventbus.IsEventBus;
+import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Debug;
+import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Event;
+import com.github.mvp4g.mvp4g2.core.eventbus.annotation.EventBus;
+import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Start;
 
 @EventBus(shell = ShellPresenter.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)

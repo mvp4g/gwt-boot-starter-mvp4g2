@@ -19,7 +19,7 @@ package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwt.mvp4g2.core.ui.IsLazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
 
 public interface IContentView
   extends IsLazyReverseView<IContentView.Presenter>,

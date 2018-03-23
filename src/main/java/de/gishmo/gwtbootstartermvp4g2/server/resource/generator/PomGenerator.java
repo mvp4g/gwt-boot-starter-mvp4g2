@@ -381,7 +381,7 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(16,
                                "annotationProcessor",
-                               "de.gishmo.gwt.mvp4g2.processor.Mvp4g2Processor"))
+                               "com.github.mvp4g.mvp4g2.processor.Mvp4g2Processor"))
       .append("              </annotationProcessors>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("            </configuration>")

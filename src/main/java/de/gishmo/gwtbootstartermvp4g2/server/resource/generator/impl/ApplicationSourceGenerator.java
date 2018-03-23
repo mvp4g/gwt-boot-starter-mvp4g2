@@ -7,8 +7,8 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwt.mvp4g2.core.application.IsApplication;
-import de.gishmo.gwt.mvp4g2.core.application.annotation.Application;
+import com.github.mvp4g.mvp4g2.core.application.IsApplication;
+import com.github.mvp4g.mvp4g2.core.application.annotation.Application;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 

@@ -71,7 +71,7 @@ public class ModuleDescriptorGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append("  <!-- Other module inherits                                      -->")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("  <inherits name='de.gishmo.gwt.mvp4g2.Mvp4g2'/>")
+      .append("  <inherits name='com.github.mvp4g.mvp4g2.Mvp4g2'/>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
       .append("  <!-- Specify the app entry point class.                         -->")
