@@ -1,5 +1,7 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.shared.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class PresenterData {
@@ -15,7 +17,15 @@ public class PresenterData {
   private boolean deletable;
   private boolean editable;
 
+  private List<Parameter> parameters;
+
   public PresenterData() {
+    this("",
+         "",
+         false,
+         false,
+         true,
+         true);
   }
 
   public PresenterData(String name,
@@ -31,6 +41,45 @@ public class PresenterData {
     this.confirmation = confirmation;
     this.deletable = deletable;
     this.editable = editable;
+
+    this.parameters = new ArrayList<>();
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(getId(),
+                        getName(),
+                        getHistoryName(),
+                        isShell(),
+                        isConfirmation(),
+                        isDeletable(),
+                        isEditable());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof PresenterData)) {
+      return false;
+    }
+    PresenterData that = (PresenterData) o;
+    return isShell() == that.isShell() &&
+           isConfirmation() == that.isConfirmation() &&
+           isDeletable() == that.isDeletable() &&
+           isEditable() == that.isEditable() &&
+           Objects.equals(getId(),
+                          that.getId()) &&
+           Objects.equals(getName(),
+                          that.getName()) &&
+           Objects.equals(getHistoryName(),
+                          that.getHistoryName());
+  }
+
+  public String getId() {
+    return id;
   }
 
   public String getName() {
@@ -43,10 +92,6 @@ public class PresenterData {
 
   public String getHistoryName() {
     return historyName;
-  }
-
-  public void setHistoryName(String historyName) {
-    this.historyName = historyName;
   }
 
   public boolean isShell() {
@@ -81,44 +126,19 @@ public class PresenterData {
     this.editable = editable;
   }
 
-  public String getId() {
-    return id;
+  public void setHistoryName(String historyName) {
+    this.historyName = historyName;
   }
 
   public void setId(String id) {
     this.id = id;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof PresenterData)) {
-      return false;
-    }
-    PresenterData that = (PresenterData) o;
-    return isShell() == that.isShell() &&
-           isConfirmation() == that.isConfirmation() &&
-           isDeletable() == that.isDeletable() &&
-           isEditable() == that.isEditable() &&
-           Objects.equals(getId(),
-                          that.getId()) &&
-           Objects.equals(getName(),
-                          that.getName()) &&
-           Objects.equals(getHistoryName(),
-                          that.getHistoryName());
+  public List<Parameter> getParameters() {
+    return parameters;
   }
 
-  @Override
-  public int hashCode() {
-
-    return Objects.hash(getId(),
-                        getName(),
-                        getHistoryName(),
-                        isShell(),
-                        isConfirmation(),
-                        isDeletable(),
-                        isEditable());
+  public void setParameters(List<Parameter> parameters) {
+    this.parameters = parameters;
   }
 }
