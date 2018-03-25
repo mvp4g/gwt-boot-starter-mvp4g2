@@ -110,6 +110,9 @@ public class SourceGenerator {
                               .build()
                               .generate();
     }
+
+    // TODO generate model
+    // TODO generate History
   }
 
   private void createBasicStructure() {
