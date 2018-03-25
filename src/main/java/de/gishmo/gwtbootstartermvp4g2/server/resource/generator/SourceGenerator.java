@@ -1,13 +1,16 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
 
+import java.io.File;
+
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ApplicationLoaderSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ApplicationSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EntryPointSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EventBusSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HostPageSourceGenerator;
-
-import java.io.File;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.PresenterSourceGenerator;
 
 public class SourceGenerator {
 
@@ -88,6 +91,24 @@ public class SourceGenerator {
                                       .directoryJava(this.directoryJava)
                                       .build()
                                       .generate();
+    }
+
+    // EventBus
+    EventBusSourceGenerator.builder()
+                           .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                           .clientPackageJavaConform(this.clientPackageJavaConform)
+                           .directoryJava(this.directoryJava)
+                           .build()
+                           .generate();
+
+    for (PresenterData presenterData : this.mvp4g2GeneraterParms.getPresenters()) {
+      PresenterSourceGenerator.builder()
+                              .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                              .clientPackageJavaConform(this.clientPackageJavaConform)
+                              .directoryJava(this.directoryJava)
+                              .presenterData(presenterData)
+                              .build()
+                              .generate();
     }
   }
 

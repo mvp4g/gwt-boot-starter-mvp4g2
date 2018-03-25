@@ -51,7 +51,7 @@ public class HeaderView
     this.container = new CenterLayoutContainer();
     this.container.getElement()
                        .getStyle()
-                       .setBackgroundColor("#34302D");
+                       .setBackgroundColor("#283949");
 
     this.innerContainer = new HorizontalLayoutContainer();
     this.innerContainer.setWidth(Constants.CONTENT_WIDTH);

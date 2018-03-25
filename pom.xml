@@ -121,6 +121,12 @@
       <artifactId>gxt-theme-neptune</artifactId>
       <version>${gxt.version}</version>
     </dependency>
+    <!-- GXT 3.1+ - Triton Theme -->
+    <dependency>
+      <groupId>com.sencha.gxt</groupId>
+      <artifactId>gxt-theme-triton</artifactId>
+      <version>${gxt.version}</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.squareup/javapoet -->
     <dependency>
       <groupId>com.squareup</groupId>

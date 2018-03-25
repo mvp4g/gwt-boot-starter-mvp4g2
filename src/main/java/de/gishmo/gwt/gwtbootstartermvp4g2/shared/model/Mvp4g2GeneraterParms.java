@@ -1,5 +1,8 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.shared.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Mvp4g2GeneraterParms {
 
   private String groupId;
@@ -10,12 +13,13 @@ public class Mvp4g2GeneraterParms {
   private boolean applicationLoader;
 
   private boolean historyOnStart;
-  private String  history;
-  private boolean usingHistorynames;
+  private boolean history;
+  private boolean debug;
 
-  private String widgets;
+  private List<PresenterData> presenters;
 
   public Mvp4g2GeneraterParms() {
+    this.presenters = new ArrayList<>();
   }
 
   public String getGroupId() {
@@ -58,27 +62,27 @@ public class Mvp4g2GeneraterParms {
     this.historyOnStart = historyOnStart;
   }
 
-  public String getHistory() {
+  public boolean isHistory() {
     return history;
   }
 
-  public void setHistory(String history) {
+  public void setHistory(boolean history) {
     this.history = history;
   }
 
-  public boolean isUsingHistorynames() {
-    return usingHistorynames;
+  public boolean isDebug() {
+    return debug;
   }
 
-  public void setUsingHistorynames(boolean usingHistorynames) {
-    this.usingHistorynames = usingHistorynames;
+  public void setDebug(boolean debug) {
+    this.debug = debug;
   }
 
-  public String getWidgets() {
-    return widgets;
+  public List<PresenterData> getPresenters() {
+    return presenters;
   }
 
-  public void setWidgets(String widgets) {
-    this.widgets = widgets;
+  public void setPresenters(List<PresenterData> presenters) {
+    this.presenters = presenters;
   }
 }

@@ -25,13 +25,13 @@ public interface IContentView
   extends IsLazyReverseView<IContentView.Presenter>,
           IsWidget {
 
+  void edit(Mvp4g2GeneraterParms model);
+
   void flush(Mvp4g2GeneraterParms model);
 
   boolean isValid();
 
   interface Presenter {
-
-//    void doRemoveMail(String key);
 
   }
 }

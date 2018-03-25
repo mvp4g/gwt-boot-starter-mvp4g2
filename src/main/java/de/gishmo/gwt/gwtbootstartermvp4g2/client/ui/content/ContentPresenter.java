@@ -17,11 +17,12 @@
 
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
-import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
+import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 
 @Presenter(viewClass = ContentView.class, viewInterface = IContentView.class)
 public class ContentPresenter
@@ -29,10 +30,52 @@ public class ContentPresenter
                              IContentView>
   implements IContentView.Presenter {
 
+  private Mvp4g2GeneraterParms model;
+
+
   public ContentPresenter() {
   }
 
+
   public void bind() {
+    this.model = new Mvp4g2GeneraterParms();
+
+    this.model.setGroupId("com.example");
+    this.model.setArtefactId("MyTextProject");
+    this.model.setApplicationLoader(true);
+    this.model.setDebug(true);
+    this.model.setHistory(true);
+    this.model.setHistoryOnStart(true);
+
+    this.model.getPresenters()
+              .add(new PresenterData("shell",
+                                     null,
+                                     true,
+                                     false,
+                                     false,
+                                     false));
+    this.model.getPresenters()
+              .add(new PresenterData("search",
+                                     "R2D2",
+                                     false,
+                                     false,
+                                     true,
+                                     true));
+    this.model.getPresenters()
+              .add(new PresenterData("list",
+                                     "C3P0",
+                                     false,
+                                     false,
+                                     true,
+                                     true));
+    this.model.getPresenters()
+              .add(new PresenterData("detail",
+                                     "BB8",
+                                     false,
+                                     true,
+                                     true,
+                                     true));
+    view.edit(this.model);
     eventBus.setCenter(view.asWidget());
   }
 
@@ -40,9 +83,8 @@ public class ContentPresenter
   public void onGenerateProject() {
     eventBus.showProgressBar();
     if (view.isValid()) {
-      Mvp4g2GeneraterParms model = new Mvp4g2GeneraterParms();
-      view.flush(model);
-      eventBus.generate(model);
+      view.flush(this.model);
+      eventBus.generate(this.model);
     } else {
       // TODO error message
     }
