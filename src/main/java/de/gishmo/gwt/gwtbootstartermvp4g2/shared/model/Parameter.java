@@ -3,7 +3,7 @@ package de.gishmo.gwt.gwtbootstartermvp4g2.shared.model;
 public class Parameter {
 
   private String name;
-  private ClassNameModel type;
+  private String type;
 
   public Parameter() {
     this("",
@@ -11,7 +11,7 @@ public class Parameter {
   }
 
   public Parameter(String name,
-                   ClassNameModel type) {
+                   String type) {
     this.name = name;
     this.type = type;
   }
@@ -24,11 +24,11 @@ public class Parameter {
     this.name = name;
   }
 
-  public ClassNameModel getType() {
+  public String getType() {
     return type;
   }
 
-  public void setType(ClassNameModel type) {
+  public void setType(String type) {
     this.type = type;
   }
 }
