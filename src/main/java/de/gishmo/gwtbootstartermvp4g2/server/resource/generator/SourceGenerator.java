@@ -10,7 +10,7 @@ import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.Application
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EntryPointSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EventBusSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HostPageSourceGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.PresenterSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.PresenterViewSourceGenerator;
 
 public class SourceGenerator {
 
@@ -102,13 +102,13 @@ public class SourceGenerator {
                            .generate();
 
     for (PresenterData presenterData : this.mvp4g2GeneraterParms.getPresenters()) {
-      PresenterSourceGenerator.builder()
-                              .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                              .clientPackageJavaConform(this.clientPackageJavaConform)
-                              .directoryJava(this.directoryJava)
-                              .presenterData(presenterData)
-                              .build()
-                              .generate();
+      PresenterViewSourceGenerator.builder()
+                                  .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                  .clientPackageJavaConform(this.clientPackageJavaConform)
+                                  .directoryJava(this.directoryJava)
+                                  .presenterData(presenterData)
+                                  .build()
+                                  .generate();
     }
 
     // TODO generate model
