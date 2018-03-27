@@ -48,13 +48,6 @@ public class ContentPresenter
     this.model.setHistoryOnStart(true);
 
     this.model.getPresenters()
-              .add(new PresenterData("shell",
-                                     null,
-                                     true,
-                                     false,
-                                     false,
-                                     false));
-    this.model.getPresenters()
               .add(new PresenterData("search",
                                      "R2D2",
                                      false,

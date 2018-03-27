@@ -1,5 +1,12 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.lang.model.element.Modifier;
+
+import com.github.mvp4g.mvp4g2.core.application.IsApplication;
+import com.github.mvp4g.mvp4g2.core.application.annotation.Application;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -7,13 +14,8 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import com.github.mvp4g.mvp4g2.core.application.IsApplication;
-import com.github.mvp4g.mvp4g2.core.application.annotation.Application;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 public class ApplicationSourceGenerator {
 
@@ -52,6 +54,7 @@ public class ApplicationSourceGenerator {
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
+                                        .addModifiers(Modifier.PUBLIC)
                                         .addSuperinterface(ClassName.get(IsApplication.class))
                                         .addAnnotation(annotation.build());
 

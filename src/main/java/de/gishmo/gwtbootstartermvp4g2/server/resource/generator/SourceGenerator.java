@@ -10,7 +10,9 @@ import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.Application
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EntryPointSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EventBusSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HostPageSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.NavigationSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.PresenterViewSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ShellSourceGenerator;
 
 public class SourceGenerator {
 
@@ -100,7 +102,21 @@ public class SourceGenerator {
                            .directoryJava(this.directoryJava)
                            .build()
                            .generate();
-
+    // generate shell
+    ShellSourceGenerator.builder()
+                        .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                        .clientPackageJavaConform(this.clientPackageJavaConform)
+                        .directoryJava(this.directoryJava)
+                        .build()
+                        .generate();
+    // generate navigation
+    NavigationSourceGenerator.builder()
+                             .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                             .clientPackageJavaConform(this.clientPackageJavaConform)
+                             .directoryJava(this.directoryJava)
+                             .build()
+                             .generate();
+    //
     for (PresenterData presenterData : this.mvp4g2GeneraterParms.getPresenters()) {
       PresenterViewSourceGenerator.builder()
                                   .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)

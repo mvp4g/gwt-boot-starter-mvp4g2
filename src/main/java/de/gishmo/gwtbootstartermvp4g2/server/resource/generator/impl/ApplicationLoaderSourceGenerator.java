@@ -5,16 +5,15 @@ import java.io.IOException;
 
 import javax.lang.model.element.Modifier;
 
+import com.github.mvp4g.mvp4g2.core.application.IsApplicationLoader;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
-
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import com.github.mvp4g.mvp4g2.core.application.IsApplicationLoader;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
@@ -45,11 +44,11 @@ public class ApplicationLoaderSourceGenerator {
                                                              .build())
                                         .addModifiers(Modifier.PUBLIC)
                                         .addSuperinterface(ClassName.get(IsApplicationLoader.class))
-                                        .addAnnotation(Override.class)
                                         .addMethod(MethodSpec.methodBuilder("load")
                                                              .addParameter(ParameterSpec.builder(ClassName.get(IsApplicationLoader.FinishLoadCommand.class),
                                                                                                  "finishLoadCommand")
                                                                                         .build())
+                                                             .addAnnotation(Override.class)
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addComment("enter your code here ...")
                                                              .addStatement("finishLoadCommand.finishLoading")

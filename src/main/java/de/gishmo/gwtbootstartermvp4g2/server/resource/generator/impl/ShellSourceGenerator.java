@@ -24,11 +24,9 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
-public class PresenterViewSourceGenerator {
+public class ShellSourceGenerator {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
@@ -40,15 +38,12 @@ public class PresenterViewSourceGenerator {
 
   private File presenterPackageFile;
 
-  private PresenterData presenterData;
-
-  private PresenterViewSourceGenerator(Builder builder) {
+  private ShellSourceGenerator(Builder builder) {
     super();
 
     this.mvp4g2GeneraterParms = builder.mvp4g2GeneraterParms;
     this.directoryJava = builder.directoryJava;
     this.clientPackageJavaConform = builder.clientPackageJavaConform;
-    this.presenterData = builder.presenterData;
   }
 
   public static Builder builder() {
@@ -58,10 +53,8 @@ public class PresenterViewSourceGenerator {
   public void generate()
     throws GeneratorException {
 
-    this.presenterPackage = this.clientPackageJavaConform + ".ui." + presenterData.getName()
-                                                                                  .toLowerCase();
-    this.presenterPackageFile = new File(this.directoryJava + File.separator + "ui" + File.separator + presenterData.getName()
-                                                                                                                    .toLowerCase() + File.separator);
+    this.presenterPackage = this.clientPackageJavaConform + ".ui.shell";
+    this.presenterPackageFile = new File(this.directoryJava + File.separator + "ui" + File.separator + "shell");
     if (!this.presenterPackageFile.exists()) {
       this.presenterPackageFile.mkdirs();
     }
@@ -73,37 +66,34 @@ public class PresenterViewSourceGenerator {
 
   private void generateIViewClass()
     throws GeneratorException {
-    TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder("I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")
+    TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder("IShellView")
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
                                         .addModifiers(Modifier.PUBLIC)
                                         .addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsLazyReverseView.class),
-                                                                                     ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
-                                                                                                                                                         .toLowerCase(),
-                                                                                                   "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter")))
+                                                                                     ClassName.get(this.clientPackageJavaConform + ".ui.shell",
+                                                                                                   "IShellView.Presenter")))
                                         .addMethod(MethodSpec.methodBuilder("asWidget")
                                                              .addModifiers(Modifier.PUBLIC,
                                                                            Modifier.ABSTRACT)
                                                              .returns(ClassName.get(Widget.class))
                                                              .addJavadoc("mvp4g2 does not know Widget-, Element- or any other GWT specific class. So, the\n" + "presenter have to manage the widget by themselves. The method will\n" + "enable the presenter to get the view. (In our case it is a\n" + "GWT widget)\n" + "\n" + "@return The shell widget\n")
                                                              .build());
-    if (this.presenterData.isShell()) {
-      typeSpec.addMethod(MethodSpec.methodBuilder("setCenter")
-                                   .addModifiers(Modifier.PUBLIC,
-                                                 Modifier.ABSTRACT)
-                                   .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
-                                                                       "widget")
-                                                              .build())
-                                   .build());
-      typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
-                                   .addModifiers(Modifier.PUBLIC,
-                                                 Modifier.ABSTRACT)
-                                   .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
-                                                                       "widget")
-                                                              .build())
-                                   .build());
-    }
+    typeSpec.addMethod(MethodSpec.methodBuilder("setCenter")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
+                                                                     "widget")
+                                                            .build())
+                                 .build());
+    typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
+                                                                     "widget")
+                                                            .build())
+                                 .build());
     typeSpec.addType(TypeSpec.interfaceBuilder("Presenter")
                              .addModifiers(Modifier.PUBLIC,
                                            Modifier.STATIC)
@@ -116,41 +106,35 @@ public class PresenterViewSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View" + "<< -> " + "exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>IShellView" + "<< -> " + "exception: " + e.getMessage());
     }
   }
 
   private void generateViewClass()
     throws GeneratorException {
-    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder("ShellView")
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
                                         .addModifiers(Modifier.PUBLIC)
                                         .superclass(ParameterizedTypeName.get(ClassName.get(LazyReverseView.class),
-                                                                              ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
-                                                                                                                                                  .toLowerCase(),
-                                                                                            "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter")))
+                                                                              ClassName.get(this.clientPackageJavaConform + ".ui.shell",
+                                                                                            "IShellView.Presenter")))
 
-                                        .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
-                                                                                                                               .toLowerCase(),
-                                                                         "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"));
-    if (this.presenterData.isShell()) {
-      typeSpec.addField(FieldSpec.builder(ClassName.get(ResizeLayoutPanel.class),
-                                          "shell",
-                                          Modifier.PRIVATE)
-                                 .build());
-      typeSpec.addField(FieldSpec.builder(ClassName.get(DockLayoutPanel.class),
-                                          "container",
-                                          Modifier.PRIVATE)
-                                 .build());
-      typeSpec.addField(FieldSpec.builder(ClassName.get(Widget.class),
-                                          "widget",
-                                          Modifier.PRIVATE)
-                                 .build());
-    } else {
-
-    }
+                                        .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.shell",
+                                                                         "IShellView"));
+    typeSpec.addField(FieldSpec.builder(ClassName.get(ResizeLayoutPanel.class),
+                                        "shell",
+                                        Modifier.PRIVATE)
+                               .build());
+    typeSpec.addField(FieldSpec.builder(ClassName.get(DockLayoutPanel.class),
+                                        "container",
+                                        Modifier.PRIVATE)
+                               .build());
+    typeSpec.addField(FieldSpec.builder(ClassName.get(Widget.class),
+                                        "widget",
+                                        Modifier.PRIVATE)
+                               .build());
     // constrcutor
     typeSpec.addMethod(MethodSpec.constructorBuilder()
                                  .addStatement("super()")
@@ -164,54 +148,27 @@ public class PresenterViewSourceGenerator {
                                  .addStatement("return shell")
                                  .build());
     // createView method
-    if (this.presenterData.isShell()) {
-      this.createViewMethodForShell(typeSpec);
-      // setNavigation method
-      typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
-                                   .addAnnotation(Override.class)
-                                   .addModifiers(Modifier.PUBLIC)
-                                   .addParameter(Widget.class,
-                                                 "widget")
-                                   .addStatement("container.addWest(widget, 212)")
-                                   .build());
-      // setCenter method
-      typeSpec.addMethod(MethodSpec.methodBuilder("setCenter")
-                                   .addAnnotation(Override.class)
-                                   .addModifiers(Modifier.PUBLIC)
-                                   .addParameter(Widget.class,
-                                                 "widget")
-                                   .beginControlFlow("widget != null")
-                                   .addStatement("if (widget.removeFromParent())")
-                                   .endControlFlow()
-                                   .addStatement("container.add(widget)")
-                                   .addStatement("this.widget = widget")
-                                   .build());
-    } else {
-
-    }
-
-    //    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")
-    //                                        .addJavadoc(CodeBlock.builder()
-    //                                                             .add(GeneratorConstants.COPYRIGHT_JAVA)
-    //                                                             .build())
-    //                                        .addModifiers(Modifier.PUBLIC)
-    //                                        .superclass(ParameterizedTypeName.get(ClassName.get(LazyReverseView.class),
-    //                                                                              ClassName.get(this.clientPackageJavaConform + ".ui.shell",
-    //                                                                                            "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter")))
-    //
-    //                                        .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.shell",
-    //                                                                         "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter"))
-    //                                        .addField(container)
-    //                                        .addMethod(MethodSpec.constructorBuilder()
-    //                                                             .addStatement("super()")
-    //                                                             .build());
-    //                                        .addMethod(MethodSpec.methodBuilder("asWidget")
-    //                                                             .addModifiers(Modifier.PUBLIC,
-    //                                                                           Modifier.ABSTRACT)
-    //                                                             .returns(ClassName.get(Widget.class))
-    //                                                             .addJavadoc("mvp4g2 does not know Widget-, Element- or any other class. So, the\n" + "presenter have to manage the widget by themselves. The method will\n" + "enable the presenter to get the view. (In our case it is a\n" + "GWT widget)\n" + "\n" + "@return The shell widget\n")
-    //                                                             .build());
-    // TODO
+    this.createViewMethodForShell(typeSpec);
+    // setNavigation method
+    typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
+                                 .addAnnotation(Override.class)
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addParameter(Widget.class,
+                                               "widget")
+                                 .addStatement("container.addWest(widget, 212)")
+                                 .build());
+    // setCenter method
+    typeSpec.addMethod(MethodSpec.methodBuilder("setCenter")
+                                 .addAnnotation(Override.class)
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addParameter(Widget.class,
+                                               "widget")
+                                 .beginControlFlow("widget != null")
+                                 .addStatement("if (widget.removeFromParent())")
+                                 .endControlFlow()
+                                 .addStatement("container.add(widget)")
+                                 .addStatement("this.widget = widget")
+                                 .build());
 
     JavaFile javaFile = JavaFile.builder(this.presenterPackage,
                                          typeSpec.build())
@@ -220,7 +177,7 @@ public class PresenterViewSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View" + "<< -> " + "exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>ShellView" + "<< -> " + "exception: " + e.getMessage());
     }
   }
 
@@ -283,12 +240,8 @@ public class PresenterViewSourceGenerator {
   public static class Builder {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-
-    File directoryJava;
-
-    String clientPackageJavaConform;
-
-    PresenterData presenterData;
+    File                 directoryJava;
+    String               clientPackageJavaConform;
 
     public Builder mvp4g2GeneraterParms(Mvp4g2GeneraterParms mvp4g2GeneraterParms) {
       this.mvp4g2GeneraterParms = mvp4g2GeneraterParms;
@@ -305,13 +258,8 @@ public class PresenterViewSourceGenerator {
       return this;
     }
 
-    public Builder presenterData(PresenterData presenterData) {
-      this.presenterData = presenterData;
-      return this;
-    }
-
-    public PresenterViewSourceGenerator build() {
-      return new PresenterViewSourceGenerator(this);
+    public ShellSourceGenerator build() {
+      return new ShellSourceGenerator(this);
     }
   }
 }
