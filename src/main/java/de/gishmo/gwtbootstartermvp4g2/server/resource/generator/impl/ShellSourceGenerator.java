@@ -5,15 +5,21 @@ import java.io.IOException;
 
 import javax.lang.model.element.Modifier;
 
+import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.IsShell;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -25,6 +31,7 @@ import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
 public class ShellSourceGenerator {
 
@@ -181,9 +188,74 @@ public class ShellSourceGenerator {
     }
   }
 
-  private void generatePresenterClass() {
-    // TODO
+  private void generatePresenterClass()
+    throws GeneratorException {
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder("ShellPresenter")
+                                        .addJavadoc(CodeBlock.builder()
+                                                             .add(GeneratorConstants.COPYRIGHT_JAVA)
+                                                             .build())
+                                        .addModifiers(Modifier.PUBLIC)
+                                        .addAnnotation(AnnotationSpec.builder(Presenter.class)
+                                                                     .addMember("viewClass",
+                                                                                "$T.class",
+                                                                                ClassName.get(this.clientPackageJavaConform + ".ui.shell",
+                                                                                              "ShellView"))
+                                                                     .addMember("viewInterface",
+                                                                                "$T.class",
+                                                                                ClassName.get(this.clientPackageJavaConform + ".ui.shell",
+                                                                                              "IShellView"))
+                                                                     .build())
+                                        .superclass(ParameterizedTypeName.get(ClassName.get(AbstractPresenter.class),
+                                                                              ClassName.get(this.clientPackageJavaConform,
+                                                                                            GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
+                                                                              ClassName.get(this.clientPackageJavaConform + ".ui.shell",
+                                                                                            "IShellView")))
+                                        .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.shell",
+                                                                         "IShellView.Presenter"))
+                                        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsShell.class),
+                                                                                     ClassName.get(this.clientPackageJavaConform,
+                                                                                                   GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
+                                                                                     ClassName.get(this.clientPackageJavaConform + ".ui.shell",
+                                                                                                   "IShellView")))
+                                        .addMethod(MethodSpec.constructorBuilder()
+                                                             .addModifiers(Modifier.PUBLIC)
+                                                             .build())
+                                        .addMethod(MethodSpec.methodBuilder("onBeforeEvent")
+                                                             .addModifiers(Modifier.PUBLIC)
+                                                             .addParameter(String.class,
+                                                                           "eventName")
+                                                             .build())
+                                        .addMethod(MethodSpec.methodBuilder("onSetContent")
+                                                             .addModifiers(Modifier.PUBLIC)
+                                                             .addAnnotation(EventHandler.class)
+                                                             .addParameter(Widget.class,
+                                                                           "widget")
+                                                             .addStatement("view.setContent(widget)")
+                                                             .build())
+                                        .addMethod(MethodSpec.methodBuilder("onSetNavigation")
+                                                             .addModifiers(Modifier.PUBLIC)
+                                                             .addAnnotation(EventHandler.class)
+                                                             .addParameter(Widget.class,
+                                                                           "widget")
+                                                             .addStatement("view.setNavigation(widget)")
+                                                             .build())
+                                        .addMethod(MethodSpec.methodBuilder("setShell")
+                                                             .addModifiers(Modifier.PUBLIC)
+                                                             .addAnnotation(Override.class)
+                                                             .addStatement("$T.get().add(view.asWidget)",
+                                                                           RootLayoutPanel.class)
+                                                             .build());
 
+
+    JavaFile javaFile = JavaFile.builder(this.presenterPackage,
+                                         typeSpec.build())
+                                .build();
+    try {
+      javaFile.writeTo(new File(directoryJava,
+                                ""));
+    } catch (IOException e) {
+      throw new GeneratorException("Unable to write generated file: >>ShellPresenter" + "<< -> " + "exception: " + e.getMessage());
+    }
   }
 
   private void createViewMethodForShell(TypeSpec.Builder typeSpec) {
