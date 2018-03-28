@@ -41,7 +41,7 @@ public class ContentPresenter
     this.model = new Mvp4g2GeneraterParms();
 
     this.model.setGroupId("com.example");
-    this.model.setArtefactId("MyTextProject");
+    this.model.setArtefactId("MyTestProject");
     this.model.setApplicationLoader(true);
     this.model.setDebug(true);
     this.model.setHistory(true);
