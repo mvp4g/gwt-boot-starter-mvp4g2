@@ -44,8 +44,6 @@ public class ShellSourceGenerator {
 
   private String presenterPackage;
 
-  private File presenterPackageFile;
-
   private ShellSourceGenerator(Builder builder) {
     super();
 
@@ -62,10 +60,6 @@ public class ShellSourceGenerator {
     throws GeneratorException {
 
     this.presenterPackage = this.clientPackageJavaConform + ".ui.shell";
-    this.presenterPackageFile = new File(this.directoryJava + File.separator + "ui" + File.separator + "shell");
-    if (!this.presenterPackageFile.exists()) {
-      this.presenterPackageFile.mkdirs();
-    }
 
     this.generateIViewClass();
     this.generateViewClass();

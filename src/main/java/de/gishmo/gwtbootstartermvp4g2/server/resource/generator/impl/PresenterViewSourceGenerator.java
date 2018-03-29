@@ -43,8 +43,6 @@ public class PresenterViewSourceGenerator {
 
   private String presenterPackage;
 
-  private File presenterPackageFile;
-
   private PresenterData presenterData;
 
   private PresenterViewSourceGenerator(Builder builder) {
@@ -65,11 +63,6 @@ public class PresenterViewSourceGenerator {
 
     this.presenterPackage = this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                   .toLowerCase();
-    this.presenterPackageFile = new File(this.directoryJava + File.separator + "ui" + File.separator + presenterData.getName()
-                                                                                                                    .toLowerCase() + File.separator);
-    if (!this.presenterPackageFile.exists()) {
-      this.presenterPackageFile.mkdirs();
-    }
 
     this.generateIViewClass();
     this.generateViewClass();
@@ -213,21 +206,32 @@ public class PresenterViewSourceGenerator {
                                  .build());
 
     MethodSpec.Builder onGotoMethod = MethodSpec.methodBuilder("onGoto" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()))
-              .addModifiers(Modifier.PUBLIC)
-              .addAnnotation(EventHandler.class)
-              .addStatement("eventBus.setContent(view.asWidget())");
+                                                .addModifiers(Modifier.PUBLIC)
+                                                .addAnnotation(EventHandler.class)
+                                                .addStatement("eventBus.setContent(view.asWidget())");
     if (presenterData.isConfirmation()) {
       onGotoMethod.addStatement("eventBus.setNavigationConfirmation(this)");
 
     }
     typeSpec.addMethod(onGotoMethod.build());
-    if (presenterData.isShowPresenterAtStart()) {
-      typeSpec.addMethod(MethodSpec.methodBuilder("onStart")
-                                   .addModifiers(Modifier.PUBLIC)
-                                   .addAnnotation(EventHandler.class)
-                                   .addStatement("eventBus.goto$L()",
-                                                 GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
-                                   .build());
+    if (!this.mvp4g2GeneraterParms.isHistory()) {
+      if (presenterData.isShowPresenterAtStart()) {
+        typeSpec.addMethod(MethodSpec.methodBuilder("onStart")
+                                     .addModifiers(Modifier.PUBLIC)
+                                     .addAnnotation(EventHandler.class)
+                                     .addStatement("eventBus.goto$L()",
+                                                   GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                     .build());
+      }
+    } else {
+      if (presenterData.isShowPresenterAtStart()) {
+        typeSpec.addMethod(MethodSpec.methodBuilder("onInitHistory")
+                                     .addModifiers(Modifier.PUBLIC)
+                                     .addAnnotation(EventHandler.class)
+                                     .addStatement("eventBus.goto$L()",
+                                                   GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                     .build());
+      }
     }
     if (presenterData.isConfirmation()) {
       typeSpec.addMethod(MethodSpec.methodBuilder("confirm")

@@ -10,6 +10,8 @@ import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Debug;
 import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Event;
 import com.github.mvp4g.mvp4g2.core.eventbus.annotation.EventBus;
 import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Start;
+import com.github.mvp4g.mvp4g2.core.history.annotation.InitHistory;
+import com.github.mvp4g.mvp4g2.core.history.annotation.NotFoundHistory;
 import com.google.gwt.user.client.ui.Widget;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
@@ -111,13 +113,39 @@ public class EventBusSourceGenerator {
                                                                      "widget")
                                                             .build())
                                  .build());
+    // event initHistory
+    if (this.mvp4g2GeneraterParms.isHistory()) {
+      typeSpec.addMethod(MethodSpec.methodBuilder("initHistory")
+                                   .addModifiers(Modifier.PUBLIC,
+                                                 Modifier.ABSTRACT)
+                                   .addJavadoc("This event will be used in case:\n" +
+                                               "\n" +
+                                               "* there is not history-token\n" +
+                                               "* the token is not valid")
+                                   .addAnnotation(InitHistory.class)
+                                   .addAnnotation(NotFoundHistory.class)
+                                   .addAnnotation(Event.class)
+                                   .build());
+    }
     // Event: goto-Event
     this.mvp4g2GeneraterParms.getPresenters()
                              .stream()
                              .forEach(presenterData -> {
                                AnnotationSpec.Builder eventAnnotation = AnnotationSpec.builder(Event.class);
-                               if (this.mvp4g2GeneraterParms.hasNavigationConfirmation()) {
-                                 eventAnnotation.addMember("navigationEvent", "true");
+                               if (this.mvp4g2GeneraterParms.isHistory()) {
+                                 if (!Event.DEFAULT_HISTORY_NAME.equals(presenterData.getHistoryName())) {
+                                   eventAnnotation.addMember("historyName",
+                                                             "$S",
+                                                             presenterData.getHistoryName());
+                                 }
+                                 eventAnnotation.addMember("historyConverter",
+                                                           "$T.class",
+                                                           ClassName.get(this.clientPackageJavaConform + ".history",
+                                                                         "DefaultHistoryConverter"));
+                                 if (this.mvp4g2GeneraterParms.hasNavigationConfirmation()) {
+                                   eventAnnotation.addMember("navigationEvent",
+                                                             "true");
+                                 }
                                }
                                typeSpec.addMethod(MethodSpec.methodBuilder("goto" + GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
                                                             .addModifiers(Modifier.PUBLIC,

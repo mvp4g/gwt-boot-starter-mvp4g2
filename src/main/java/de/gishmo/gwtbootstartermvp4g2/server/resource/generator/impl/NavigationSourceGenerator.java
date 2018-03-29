@@ -40,8 +40,6 @@ public class NavigationSourceGenerator {
 
   private String presenterPackage;
 
-  private File presenterPackageFile;
-
   private NavigationSourceGenerator(Builder builder) {
     super();
 
@@ -58,10 +56,6 @@ public class NavigationSourceGenerator {
     throws GeneratorException {
 
     this.presenterPackage = this.clientPackageJavaConform + ".ui.navigation";
-    this.presenterPackageFile = new File(this.directoryJava + File.separator + "ui" + File.separator + "navigation");
-    if (!this.presenterPackageFile.exists()) {
-      this.presenterPackageFile.mkdirs();
-    }
 
     this.generateIViewClass();
     this.generateViewClass();

@@ -9,6 +9,7 @@ import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.Application
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ApplicationSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EntryPointSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EventBusSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HistoryConverterGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HostPageSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.NavigationSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.PresenterViewSourceGenerator;
@@ -94,7 +95,6 @@ public class SourceGenerator {
                                       .build()
                                       .generate();
     }
-
     // EventBus
     EventBusSourceGenerator.builder()
                            .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
@@ -102,6 +102,13 @@ public class SourceGenerator {
                            .directoryJava(this.directoryJava)
                            .build()
                            .generate();
+    // History
+    HistoryConverterGenerator.builder()
+                             .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                             .clientPackageJavaConform(this.clientPackageJavaConform)
+                             .directoryJava(this.directoryJava)
+                             .build()
+                             .generate();
     // generate shell
     ShellSourceGenerator.builder()
                         .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
@@ -126,10 +133,7 @@ public class SourceGenerator {
                                   .build()
                                   .generate();
     }
-
     // TODO generate model
-    // TODO generate History
-    // TODO Navigation Confirmation
   }
 
   private void createBasicStructure() {
