@@ -1,13 +1,13 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 
 // TODO CSS generieren !
 public class HostPageSourceGenerator {
@@ -87,7 +87,9 @@ public class HostPageSourceGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append("    <!-- Consider inlining CSS to reduce the number of requested files -->")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"Mvp4g2SpringBoot.css\">")
+      .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"")
+      .append(this.mvp4g2GeneraterParms.getArtefactId())
+      .append(".css\">")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
       .append("    <!-- This script loads your compiled module.   -->")

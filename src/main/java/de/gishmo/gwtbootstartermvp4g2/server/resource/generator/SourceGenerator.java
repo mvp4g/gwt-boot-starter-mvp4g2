@@ -116,7 +116,7 @@ public class SourceGenerator {
                              .directoryJava(this.directoryJava)
                              .build()
                              .generate();
-    //
+    // generate presenter & views for every screen
     for (PresenterData presenterData : this.mvp4g2GeneraterParms.getPresenters()) {
       PresenterViewSourceGenerator.builder()
                                   .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
@@ -129,6 +129,7 @@ public class SourceGenerator {
 
     // TODO generate model
     // TODO generate History
+    // TODO Navigation Confirmation
   }
 
   private void createBasicStructure() {

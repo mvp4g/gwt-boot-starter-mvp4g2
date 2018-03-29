@@ -1,12 +1,12 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
 
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 
 public class PomGenerator {
 
@@ -98,7 +98,7 @@ public class PomGenerator {
       .append(this.addAddrLine(14,
                                "goal",
                                "package-app"))
-      .append("            <goals>")
+      .append("            </goals>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("          </execution>")
       .append(GeneratorConstants.LINE_BREAK)
@@ -111,13 +111,13 @@ public class PomGenerator {
                                "compile"))
       .append(this.addAddrLine(10,
                                "moduleName",
-                               this.mvp4g2GeneraterParms.getGroupId() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId().toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "moduleShortName",
                                GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "modules",
-                               this.mvp4g2GeneraterParms.getGroupId() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId().toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "failOnError",
                                "true"))
@@ -211,7 +211,7 @@ public class PomGenerator {
                                "org.apache.maven.plugins"))
       .append(this.addAddrLine(8,
                                "artifactId",
-                               "maven-war-plugi"))
+                               "maven-war-plugin"))
       .append(this.addAddrLine(8,
                                "version",
                                "3.0.0"))
@@ -248,7 +248,7 @@ public class PomGenerator {
       .append(this.addAddrLine(14,
                                "goal",
                                "war"))
-      .append("            <goals>")
+      .append("            </goals>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("          </execution>")
       .append(GeneratorConstants.LINE_BREAK)
@@ -476,11 +476,11 @@ public class PomGenerator {
                                  "com.google.gwt",
                                  "gwt-servlet"))
       .append(this.addDependency(4,
-                                 "de.gishmo.gwt",
+                                 "com.github.mvp4g",
                                  "mvp4g2",
                                  "${mvp4g2.version}"))
       .append(this.addDependency(4,
-                                 "de.gishmo.gwt",
+                                 "com.github.mvp4g",
                                  "mvp4g2-processor",
                                  "${mvp4g2.version}"))
       .append("  </dependencies>")
@@ -494,7 +494,7 @@ public class PomGenerator {
     StringBuilder sb = new StringBuilder();
 
     sb.append(this.addAddrLine(2,
-                               "version",
+                               "modelVersion",
                                "4.0.0"))
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(2,
@@ -535,7 +535,7 @@ public class PomGenerator {
                                   "mvp4g2 version"))
       .append(this.addAddrLine(4,
                                "mvp4g2.version",
-                               "1.0.0-beta-3"))
+                               "1.0-beta-5"))
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addCommentLine(4,
                                   "GWT needs at least java 1.6"))
@@ -547,6 +547,9 @@ public class PomGenerator {
                                "1.8"))
       .append(GeneratorConstants.LINE_BREAK)
 
+      .append(this.addAddrLine(4,
+                               "project.build.sourceEncoding",
+                               "UTF-8"))
       .append(this.addAddrLine(4,
                                "generated.source.directory",
                                "${project.build.directory}/generated-sources/annotations"))

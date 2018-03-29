@@ -7,11 +7,16 @@ import javax.lang.model.element.Modifier;
 
 import com.github.mvp4g.mvp4g2.core.eventbus.IsEventBus;
 import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Debug;
+import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Event;
 import com.github.mvp4g.mvp4g2.core.eventbus.annotation.EventBus;
+import com.github.mvp4g.mvp4g2.core.eventbus.annotation.Start;
+import com.google.gwt.user.client.ui.Widget;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
@@ -54,14 +59,70 @@ public class EventBusSourceGenerator {
     if (mvp4g2GeneraterParms.isDebug()) {
       typeSpec.addAnnotation(AnnotationSpec.builder(Debug.class)
                                            .addMember("logLevel",
-                                                      "$T.class", ClassName.get(Debug.LogLevel.class)).build());
+                                                      "$T.LogLevel.DETAILED",
+                                                      ClassName.get(Debug.class))
+                                           .build());
     }
-
-
-
-
-    // TODO ...
-
+    // event: start
+    typeSpec.addMethod(MethodSpec.methodBuilder("start")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addJavadoc("This event will be fire by the framework as first event\n" +
+                                             "of the application.\n" +
+                                             "\n" +
+                                             "We will use this event to initiate the setting of the\n" +
+                                             "navigation in the west area of the shell by using the bind-attribute.\n" +
+                                             "By using the start event to bind the navigation, we make sure\n" +
+                                             "that the navigation will be updated before the content area is updated.")
+                                 .addAnnotation(Start.class)
+                                 .addAnnotation(AnnotationSpec.builder(Event.class)
+                                                              .addMember("bind",
+                                                                         "$T.class",
+                                                                         ClassName.get(this.clientPackageJavaConform + ".ui.navigation",
+                                                                                       "NavigationPresenter"))
+                                                              .build())
+                                 .build());
+    // event: setNavigation
+    typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addJavadoc("This event will set the element (parameter) in the west\n" +
+                                             "area of the shell.\n" +
+                                             "\n" +
+                                             "@param widget the element of the widget, that will be\n" +
+                                             "              displayed inside the west area of the shell.")
+                                 .addAnnotation(Event.class)
+                                 .addParameter(ParameterSpec.builder(Widget.class,
+                                                                     "widget")
+                                                            .build())
+                                 .build());
+    // event: setContent
+    typeSpec.addMethod(MethodSpec.methodBuilder("setContent")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addJavadoc("This event will set the element (parameter) in the content\n" +
+                                             "area of the shell. We will use this event to update the shell\n" +
+                                             "with the current content area.\n" +
+                                             "\n" +
+                                             "@param widget the element of the widget, that will be\n" +
+                                             "              displayed inside the content area of the shell.")
+                                 .addAnnotation(Event.class)
+                                 .addParameter(ParameterSpec.builder(Widget.class,
+                                                                     "widget")
+                                                            .build())
+                                 .build());
+    // Event: goto-Event
+    this.mvp4g2GeneraterParms.getPresenters()
+                             .stream()
+                             .forEach(presenterData -> {
+                               AnnotationSpec.Builder eventAnnotation = AnnotationSpec.builder(Event.class);
+                               typeSpec.addMethod(MethodSpec.methodBuilder("goto" + GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                                            .addModifiers(Modifier.PUBLIC,
+                                                                          Modifier.ABSTRACT)
+                                                            .addJavadoc(createJavaDocComment())
+                                                            .addAnnotation(eventAnnotation.build())
+                                                            .build());
+                             });
 
     JavaFile javaFile = JavaFile.builder(this.clientPackageJavaConform,
                                          typeSpec.build())
@@ -72,6 +133,26 @@ public class EventBusSourceGenerator {
     } catch (IOException e) {
       throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.EVENT_BUS) + "<< -> " + "exception: " + e.getMessage());
     }
+  }
+
+  private String createJavaDocComment() {
+    String javaDocComment = "This event will display the detail screen inside the content of\n" +
+                            "the shell. The given id will be used to get the person from server\n" +
+                            "and display the view with the data, read rom the server.\n" +
+                            "\n";
+    if (this.mvp4g2GeneraterParms.isHistory()) {
+      javaDocComment += "We use the DetailHistoryConverter to convert the event to\n " +
+                        "the token which the framework will display after the url.\n" +
+                        "\n" +
+                        "We will use the String representated by HistoryName.DETAIL\n" +
+                        "instead the event name inside the token.\n" +
+                        "\n";
+    }
+    javaDocComment += "This event will change the screen displayed inside the\n" +
+                      "content area. From the mvp4g2 point of view, it is a\n" +
+                      "navigation event. If there is a confirm-presenter defined,\n" +
+                      "this presenter will be asked before the view changed.";
+    return javaDocComment;
   }
 
   public static class Builder {

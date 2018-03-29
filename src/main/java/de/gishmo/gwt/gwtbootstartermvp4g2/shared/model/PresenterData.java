@@ -13,6 +13,7 @@ public class PresenterData {
 
   private boolean shell;
   private boolean confirmation;
+  private boolean showPresenterAtStart;
 
   private boolean deletable;
   private boolean editable;
@@ -24,6 +25,7 @@ public class PresenterData {
          "",
          false,
          false,
+         false,
          true,
          true);
   }
@@ -31,6 +33,7 @@ public class PresenterData {
   public PresenterData(String name,
                        String historyName,
                        boolean shell,
+                       boolean showPresenterAtStart,
                        boolean confirmation,
                        boolean deletable,
                        boolean editable) {
@@ -38,6 +41,7 @@ public class PresenterData {
     this.name = name;
     this.historyName = historyName;
     this.shell = shell;
+    this.showPresenterAtStart = showPresenterAtStart;
     this.confirmation = confirmation;
     this.deletable = deletable;
     this.editable = editable;
@@ -45,41 +49,12 @@ public class PresenterData {
     this.parameters = new ArrayList<>();
   }
 
-  @Override
-  public int hashCode() {
-
-    return Objects.hash(getId(),
-                        getName(),
-                        getHistoryName(),
-                        isShell(),
-                        isConfirmation(),
-                        isDeletable(),
-                        isEditable());
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof PresenterData)) {
-      return false;
-    }
-    PresenterData that = (PresenterData) o;
-    return isShell() == that.isShell() &&
-           isConfirmation() == that.isConfirmation() &&
-           isDeletable() == that.isDeletable() &&
-           isEditable() == that.isEditable() &&
-           Objects.equals(getId(),
-                          that.getId()) &&
-           Objects.equals(getName(),
-                          that.getName()) &&
-           Objects.equals(getHistoryName(),
-                          that.getHistoryName());
-  }
-
   public String getId() {
     return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -92,6 +67,10 @@ public class PresenterData {
 
   public String getHistoryName() {
     return historyName;
+  }
+
+  public void setHistoryName(String historyName) {
+    this.historyName = historyName;
   }
 
   public boolean isShell() {
@@ -110,6 +89,14 @@ public class PresenterData {
     this.confirmation = confirmation;
   }
 
+  public boolean isShowPresenterAtStart() {
+    return showPresenterAtStart;
+  }
+
+  public void setShowPresenterAtStart(boolean showPresenterAtStart) {
+    this.showPresenterAtStart = showPresenterAtStart;
+  }
+
   public boolean isDeletable() {
     return deletable;
   }
@@ -126,19 +113,49 @@ public class PresenterData {
     this.editable = editable;
   }
 
-  public void setHistoryName(String historyName) {
-    this.historyName = historyName;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
   public List<Parameter> getParameters() {
     return parameters;
   }
 
   public void setParameters(List<Parameter> parameters) {
     this.parameters = parameters;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof PresenterData)) {
+      return false;
+    }
+    PresenterData that = (PresenterData) o;
+    return isShell() == that.isShell() &&
+           isConfirmation() == that.isConfirmation() &&
+           isShowPresenterAtStart() == that.isShowPresenterAtStart() &&
+           isDeletable() == that.isDeletable() &&
+           isEditable() == that.isEditable() &&
+           Objects.equals(getId(),
+                          that.getId()) &&
+           Objects.equals(getName(),
+                          that.getName()) &&
+           Objects.equals(getHistoryName(),
+                          that.getHistoryName()) &&
+           Objects.equals(getParameters(),
+                          that.getParameters());
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(getId(),
+                        getName(),
+                        getHistoryName(),
+                        isShell(),
+                        isConfirmation(),
+                        isShowPresenterAtStart(),
+                        isDeletable(),
+                        isEditable(),
+                        getParameters());
   }
 }

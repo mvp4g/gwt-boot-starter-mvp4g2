@@ -51,7 +51,7 @@ public class ApplicationLoaderSourceGenerator {
                                                              .addAnnotation(Override.class)
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addComment("enter your code here ...")
-                                                             .addStatement("finishLoadCommand.finishLoading")
+                                                             .addStatement("finishLoadCommand.finishLoading()")
                                                              .build());
     JavaFile javaFile = JavaFile.builder(this.clientPackageJavaConform,
                                          typeSpec.build())

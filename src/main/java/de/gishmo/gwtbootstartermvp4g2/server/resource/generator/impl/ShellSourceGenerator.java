@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
@@ -87,7 +88,7 @@ public class ShellSourceGenerator {
                                                              .returns(ClassName.get(Widget.class))
                                                              .addJavadoc("mvp4g2 does not know Widget-, Element- or any other GWT specific class. So, the\n" + "presenter have to manage the widget by themselves. The method will\n" + "enable the presenter to get the view. (In our case it is a\n" + "GWT widget)\n" + "\n" + "@return The shell widget\n")
                                                              .build());
-    typeSpec.addMethod(MethodSpec.methodBuilder("setCenter")
+    typeSpec.addMethod(MethodSpec.methodBuilder("setContent")
                                  .addModifiers(Modifier.PUBLIC,
                                                Modifier.ABSTRACT)
                                  .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
@@ -164,17 +165,20 @@ public class ShellSourceGenerator {
                                                "widget")
                                  .addStatement("container.addWest(widget, 212)")
                                  .build());
-    // setCenter method
-    typeSpec.addMethod(MethodSpec.methodBuilder("setCenter")
+    // setContent method
+    typeSpec.addMethod(MethodSpec.methodBuilder("setContent")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
                                  .addParameter(Widget.class,
                                                "widget")
-                                 .beginControlFlow("widget != null")
-                                 .addStatement("if (widget.removeFromParent())")
+                                 .beginControlFlow("if (this.widget != null) ")
+                                 .addStatement("this.widget.removeFromParent()")
                                  .endControlFlow()
                                  .addStatement("container.add(widget)")
                                  .addStatement("this.widget = widget")
+                                 .build());
+    typeSpec.addMethod(MethodSpec.methodBuilder("forceLayout")
+                                 .addModifiers(Modifier.PUBLIC)
                                  .build());
 
     JavaFile javaFile = JavaFile.builder(this.presenterPackage,
@@ -242,7 +246,7 @@ public class ShellSourceGenerator {
                                         .addMethod(MethodSpec.methodBuilder("setShell")
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addAnnotation(Override.class)
-                                                             .addStatement("$T.get().add(view.asWidget)",
+                                                             .addStatement("$T.get().add(view.asWidget())",
                                                                            RootLayoutPanel.class)
                                                              .build());
 
@@ -263,6 +267,7 @@ public class ShellSourceGenerator {
                                      .addSuperinterface(ResizeHandler.class)
                                      .addMethod(MethodSpec.methodBuilder("onResize")
                                                           .addAnnotation(Override.class)
+                                                          .addModifiers(Modifier.PUBLIC)
                                                           .addParameter(ResizeEvent.class,
                                                                         "event")
                                                           .addStatement("forceLayout()")
@@ -272,7 +277,7 @@ public class ShellSourceGenerator {
     typeSpec.addMethod(MethodSpec.methodBuilder("createView")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .addStatement("shell = new $T",
+                                 .addStatement("shell = new $T()",
                                                ClassName.get(ResizeLayoutPanel.class))
                                  .addStatement("shell.setSize(\"100%\", \"100%\")")
                                  .addStatement("shell.addResizeHandler($L)",
@@ -297,15 +302,33 @@ public class ShellSourceGenerator {
     typeSpec.addMethod(MethodSpec.methodBuilder("createNorth")
                                  .returns(Widget.class)
                                  .addModifiers(Modifier.PRIVATE)
-                                 .addStatement("return new $T(\"That's the header area. Create your header here\")",
+                                 .addStatement("$T container = new $T()",
+                                               SimplePanel.class,
+                                               SimplePanel.class)
+                                 .addStatement("container.getElement().getStyle().setBackgroundColor(\"whitesmoke\")")
+                                 .addStatement("$T label = new $T(\"That's the header area. Create your header here\")",
+                                               Label.class,
                                                Label.class)
+                                 .addStatement("label.getElement().getStyle().setMargin(12, $T.Unit.PX)",
+                                               Style.class)
+                                 .addStatement("container.setWidget(label)")
+                                 .addStatement("return container")
                                  .build());
     // addSouth method
     typeSpec.addMethod(MethodSpec.methodBuilder("createSouth")
                                  .returns(Widget.class)
                                  .addModifiers(Modifier.PRIVATE)
-                                 .addStatement("return new $T(\"That's the footer area. Create your footer here\")",
+                                 .addStatement("$T container = new $T()",
+                                               SimplePanel.class,
+                                               SimplePanel.class)
+                                 .addStatement("container.getElement().getStyle().setBackgroundColor(\"whitesmoke\")")
+                                 .addStatement("$T label = new $T(\"That's the footer area. Create your footer here\")",
+                                               Label.class,
                                                Label.class)
+                                 .addStatement("label.getElement().getStyle().setMargin(12, $T.Unit.PX)",
+                                               Style.class)
+                                 .addStatement("container.setWidget(label)")
+                                 .addStatement("return container")
                                  .build());
   }
 

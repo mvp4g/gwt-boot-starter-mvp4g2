@@ -51,6 +51,7 @@ public class ContentPresenter
               .add(new PresenterData("search",
                                      "R2D2",
                                      false,
+                                     true,
                                      false,
                                      true,
                                      true));
@@ -59,11 +60,13 @@ public class ContentPresenter
                                      "C3P0",
                                      false,
                                      false,
+                                     false,
                                      true,
                                      true));
     this.model.getPresenters()
               .add(new PresenterData("detail",
                                      "BB8",
+                                     false,
                                      false,
                                      true,
                                      true,
