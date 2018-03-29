@@ -121,7 +121,7 @@ public class NavigationSourceGenerator {
 
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.navigation",
                                                                          "INavigationView"));
-    typeSpec.addField(FieldSpec.builder(ClassName.get(VerticalPanel.class),
+    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
                                         "container",
                                         Modifier.PRIVATE)
                                .build());
@@ -222,12 +222,12 @@ public class NavigationSourceGenerator {
                                           .addAnnotation(Override.class)
                                           .addModifiers(Modifier.PUBLIC)
                                           .addStatement("container = new $T()",
-                                                        VerticalPanel.class)
+                                                        SimplePanel.class)
                                           .addStatement("container.setSize(\"100%\",\"100%\")")
                                           .addStatement("container.getElement().getStyle().setBackgroundColor(\"snow\")")
                                           .addStatement("$T innerContainer = new $T()",
-                                                        SimplePanel.class,
-                                                        SimplePanel.class)
+                                                        VerticalPanel.class,
+                                                        VerticalPanel.class)
                                           .addStatement("container.setWidget(innerContainer)");
 
     this.mvp4g2GeneraterParms.getPresenters()

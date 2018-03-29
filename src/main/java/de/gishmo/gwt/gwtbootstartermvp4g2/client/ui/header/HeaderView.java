@@ -83,7 +83,7 @@ public class HeaderView
                                                                                            0,
                                                                                            12)));
 
-    Label rightLabel = new Label("bootstrap your mvp4g2 application now ... ");
+    Label rightLabel = new Label("generate your mvp4g2 application ... ");
     rightLabel.getElement()
               .getStyle()
               .setFontWeight(Style.FontWeight.BOLD);
