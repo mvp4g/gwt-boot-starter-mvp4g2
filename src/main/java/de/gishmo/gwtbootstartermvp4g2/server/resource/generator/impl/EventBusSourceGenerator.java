@@ -116,6 +116,9 @@ public class EventBusSourceGenerator {
                              .stream()
                              .forEach(presenterData -> {
                                AnnotationSpec.Builder eventAnnotation = AnnotationSpec.builder(Event.class);
+                               if (this.mvp4g2GeneraterParms.hasNavigationConfirmation()) {
+                                 eventAnnotation.addMember("navigationEvent", "true");
+                               }
                                typeSpec.addMethod(MethodSpec.methodBuilder("goto" + GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
                                                             .addModifiers(Modifier.PUBLIC,
                                                                           Modifier.ABSTRACT)

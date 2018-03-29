@@ -85,4 +85,9 @@ public class Mvp4g2GeneraterParms {
   public void setPresenters(List<PresenterData> presenters) {
     this.presenters = presenters;
   }
+
+  public boolean hasNavigationConfirmation() {
+    return this.presenters.stream()
+                          .anyMatch(PresenterData::isConfirmation);
+  }
 }

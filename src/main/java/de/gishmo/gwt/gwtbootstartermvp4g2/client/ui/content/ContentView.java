@@ -149,7 +149,7 @@ public class ContentView
                                                                     450,
                                                                     "Name");
     ColumnConfig<PresenterData, String> ccHistoryName = new ColumnConfig<>(presenterDataProps.historyName(),
-                                                                           150,
+                                                                           125,
                                                                            "History Name");
     ccHistoryName.setCell(new AbstractCell<String>() {
       @Override
@@ -160,6 +160,20 @@ public class ContentView
       }
     });
     ccHistoryName.setFixed(true);
+
+    ColumnConfig<PresenterData, Boolean> ccConfirmation = new ColumnConfig<>(presenterDataProps.confirmation(),
+                                                                      125,
+                                                                      "Confirmation");
+    ccConfirmation.setCell(new AbstractCell<Boolean>() {
+      @Override
+      public void render(Context context,
+                         Boolean s,
+                         SafeHtmlBuilder safeHtmlBuilder) {
+        safeHtmlBuilder.append(SafeHtmlUtils.fromTrustedString(s ? "Yes" : "No"));
+      }
+    });
+    ccConfirmation.setFixed(true);
+    ccConfirmation.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
     ColumnConfig<PresenterData, Boolean> ccShell = new ColumnConfig<>(presenterDataProps.shell(),
                                                                       75,
@@ -179,6 +193,7 @@ public class ContentView
     list.add(ccName);
     list.add(ccHistoryName);
     list.add(ccShell);
+    list.add(ccConfirmation);
     ColumnModel<PresenterData> cm = new ColumnModel<>(list);
     grid = new Grid<>(store,
                       cm);

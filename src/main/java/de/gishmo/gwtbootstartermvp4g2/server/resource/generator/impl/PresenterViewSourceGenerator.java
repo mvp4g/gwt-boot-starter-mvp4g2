@@ -5,12 +5,15 @@ import java.io.IOException;
 
 import javax.lang.model.element.Modifier;
 
+import com.github.mvp4g.mvp4g2.core.history.IsNavigationConfirmation;
+import com.github.mvp4g.mvp4g2.core.history.NavigationEventCommand;
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -20,7 +23,9 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
@@ -88,6 +93,13 @@ public class PresenterViewSourceGenerator {
                                                              .returns(ClassName.get(Widget.class))
                                                              .addJavadoc("mvp4g2 does not know Widget-, Element- or any other GWT specific class. So, the\n" + "presenter have to manage the widget by themselves. The method will\n" + "enable the presenter to get the view. (In our case it is a\n" + "GWT widget)\n" + "\n" + "@return The shell widget\n")
                                                              .build());
+    if (presenterData.isConfirmation()) {
+      typeSpec.addMethod(MethodSpec.methodBuilder("isDirty")
+                                   .addModifiers(Modifier.PUBLIC,
+                                                 Modifier.ABSTRACT)
+                                   .returns(TypeName.BOOLEAN)
+                                   .build());
+    }
     typeSpec.addType(TypeSpec.interfaceBuilder("Presenter")
                              .addModifiers(Modifier.PUBLIC,
                                            Modifier.STATIC)
@@ -138,6 +150,15 @@ public class PresenterViewSourceGenerator {
     // createView method
     this.createViewMethod(typeSpec);
 
+    if (presenterData.isConfirmation()) {
+      typeSpec.addMethod(MethodSpec.methodBuilder("isDirty")
+                                   .addModifiers(Modifier.PUBLIC)
+                                   .addAnnotation(Override.class)
+                                   .returns(TypeName.BOOLEAN)
+                                   .addStatement("return true")
+                                   .build());
+    }
+
     JavaFile javaFile = JavaFile.builder(this.presenterPackage,
                                          typeSpec.build())
                                 .build();
@@ -176,28 +197,53 @@ public class PresenterViewSourceGenerator {
                                                                                             "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")))
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                .toLowerCase(),
-                                                                         "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter"))
-                                        .addMethod(MethodSpec.constructorBuilder()
-                                                             .addModifiers(Modifier.PUBLIC)
-                                                             .build())
-                                        .addMethod(MethodSpec.methodBuilder("onBeforeEvent")
-                                                             .addModifiers(Modifier.PUBLIC)
-                                                             .addAnnotation(Override.class)
-                                                             .addParameter(String.class,
-                                                                           "eventName")
-                                                             .addComment("This method will be call in case the presenter will handle a event and before the event handling")
-                                                             .build())
-                                        .addMethod(MethodSpec.methodBuilder("onGoto" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()))
-                                                             .addModifiers(Modifier.PUBLIC)
-                                                             .addAnnotation(EventHandler.class)
-                                                             .addStatement("eventBus.setContent(view.asWidget())")
-                                                             .build());
+                                                                         "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter"));
+    if (presenterData.isConfirmation()) {
+      typeSpec.addSuperinterface(IsNavigationConfirmation.class);
+    }
+    typeSpec.addMethod(MethodSpec.constructorBuilder()
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .build())
+            .addMethod(MethodSpec.methodBuilder("onBeforeEvent")
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addAnnotation(Override.class)
+                                 .addParameter(String.class,
+                                               "eventName")
+                                 .addComment("This method will be call in case the presenter will handle a event and before the event handling")
+                                 .build());
+
+    MethodSpec.Builder onGotoMethod = MethodSpec.methodBuilder("onGoto" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()))
+              .addModifiers(Modifier.PUBLIC)
+              .addAnnotation(EventHandler.class)
+              .addStatement("eventBus.setContent(view.asWidget())");
+    if (presenterData.isConfirmation()) {
+      onGotoMethod.addStatement("eventBus.setNavigationConfirmation(this)");
+
+    }
+    typeSpec.addMethod(onGotoMethod.build());
     if (presenterData.isShowPresenterAtStart()) {
       typeSpec.addMethod(MethodSpec.methodBuilder("onStart")
                                    .addModifiers(Modifier.PUBLIC)
                                    .addAnnotation(EventHandler.class)
                                    .addStatement("eventBus.goto$L()",
                                                  GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                   .build());
+    }
+    if (presenterData.isConfirmation()) {
+      typeSpec.addMethod(MethodSpec.methodBuilder("confirm")
+                                   .addModifiers(Modifier.PUBLIC)
+                                   .addAnnotation(Override.class)
+                                   .addParameter(ParameterSpec.builder(NavigationEventCommand.class,
+                                                                       "event")
+                                                              .build())
+                                   .beginControlFlow("if (view.isDirty())")
+                                   .beginControlFlow("if ($T.confirm(\"Do you really want to cancel?\"))",
+                                                     Window.class)
+                                   .addStatement("event.fireEvent()")
+                                   .endControlFlow()
+                                   .nextControlFlow("else")
+                                   .addStatement("event.fireEvent()")
+                                   .endControlFlow()
                                    .build());
     }
 
