@@ -1,6 +1,14 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import javax.servlet.ServletContext;
+
 import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -11,14 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 @Controller
 @RequestMapping("/loadZip")
 public class DownloadZipService {
+
+  private static final Logger logger = LoggerFactory.getLogger(DownloadZipService.class);
 
   @Autowired
   ProjectZip projectZip;
@@ -29,9 +34,13 @@ public class DownloadZipService {
   @RequestMapping(method = RequestMethod.GET, path = "/download")
   public ResponseEntity<InputStreamResource> zip(@RequestParam("archive") String zipName)
     throws IOException {
+
+    logger.debug("preparing download for zip-file >>" + zipName + "<<");
+
     // get data from session
+    logger.debug("trying to get the zip path out of the session context for zip-file >>" + zipName + "<<");
     String pathToGenerateProjectZip = projectZip.getPathToGenerateProjectZip();
-    String nameOfProjectZip = projectZip.getNameOfProjectZip();
+    logger.debug("found the zip path out of the session context for zip-file >>" + zipName + "<< --> >>" + pathToGenerateProjectZip + "<<");
     // media type
     MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(servletContext,
                                                                  pathToGenerateProjectZip);

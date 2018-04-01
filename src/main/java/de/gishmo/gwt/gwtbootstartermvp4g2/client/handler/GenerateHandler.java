@@ -1,13 +1,13 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.handler;
 
+import com.github.mvp4g.mvp4g2.core.ui.AbstractHandler;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.Handler;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.service.ProjectService;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import com.github.mvp4g.mvp4g2.core.ui.AbstractHandler;
-import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
-import com.github.mvp4g.mvp4g2.core.ui.annotation.Handler;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.Resource;
 import org.fusesource.restygwt.client.RestServiceProxy;
@@ -36,7 +36,7 @@ public class GenerateHandler
                                    public void onFailure(Method method,
                                                          Throwable throwable) {
                                      eventBus.hideProgressBar();
-                                     Window.alert("PANIC!!!!!!!!!!!!");
+                                     Window.alert("PANIC: =>" + throwable.getMessage() + "\n" + throwable.getStackTrace());
                                    }
 
                                    @Override
@@ -52,5 +52,13 @@ public class GenerateHandler
                                      eventBus.hideProgressBar();
                                    }
                                  });
+  }
+
+  private String generateStacktrace(Throwable throwable) {
+    String value = "";
+    for (StackTraceElement e : throwable.getStackTrace()) {
+      value += e.getClassName() + ":" + e.getMethodName() + "(" + e.getLineNumber() + ")\n";
+    }
+    return value;
   }
 }

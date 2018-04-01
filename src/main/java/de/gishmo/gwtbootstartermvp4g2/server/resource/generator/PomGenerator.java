@@ -7,8 +7,12 @@ import java.nio.file.Paths;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PomGenerator {
+
+  private static final Logger logger = LoggerFactory.getLogger(PomGenerator.class);
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
   private String               projectFolder;
@@ -26,6 +30,8 @@ public class PomGenerator {
 
   public void generate()
     throws GeneratorException {
+
+    logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< start generating pom");
 
     StringBuilder sb = new StringBuilder();
 
@@ -65,8 +71,11 @@ public class PomGenerator {
       Files.write(Paths.get(new File(this.projectFolder) + File.separator + "pom.xml"),
                   pomContent.getBytes());
     } catch (IOException e) {
+      logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< problems writing file", e);
       throw new GeneratorException("Unable to write generated file: >>" + new File(this.projectFolder) + File.separator + "pom.xml" + "<< -> exception: " + e.getMessage());
     }
+
+    logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< generating pom sucessfully finished");
   }
 
   private String generateGwtPlugin() {

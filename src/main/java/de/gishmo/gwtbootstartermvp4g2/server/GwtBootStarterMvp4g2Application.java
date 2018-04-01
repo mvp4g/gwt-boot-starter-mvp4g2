@@ -9,22 +9,23 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.core.env.Environment;
 
+//@SpringBootApplication
 @SpringBootApplication(scanBasePackages = "de.gishmo.gwtbootstartermvp4g2.server.resource")
-public class ServerApplication
+public class GwtBootStarterMvp4g2Application
   extends SpringBootServletInitializer {
 
-  final static Logger logger = LoggerFactory.getLogger(ServerApplication.class);
+  final static Logger logger = LoggerFactory.getLogger(GwtBootStarterMvp4g2Application.class);
 
   @Autowired
   Environment environment;
 
   @Override
   protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-    return application.sources(ServerApplication.class);
+    return application.sources(GwtBootStarterMvp4g2Application.class);
   }
 
 
   public static void main(String[] args) {
-    SpringApplication.run(ServerApplication.class, args);
+    SpringApplication.run(GwtBootStarterMvp4g2Application.class, args);
   }
 }

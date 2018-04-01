@@ -1,20 +1,5 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource;
 
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.ModuleDescriptorGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,9 +11,28 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.ModuleDescriptorGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 @RestController
 @RequestMapping("/service/project")
 public class ProjectService {
+
+  private static final Logger logger = LoggerFactory.getLogger(ProjectService.class);
 
   @Autowired
   ProjectZip projectZip;
@@ -36,68 +40,91 @@ public class ProjectService {
   @RequestMapping(method = RequestMethod.POST, path = "/generate")
   @ResponseBody
   public synchronized ResponseEntity<String> generate(@RequestBody Mvp4g2GeneraterParms model) {
-    // create folder in tempDirectory
-    String tmpDirPath = System.getProperty("java.io.tmpdir");
-    // create arhive-Folder
-    String projectRootFolder = tmpDirPath + "mvp4g2-boot-strarter-project-" + model.getArtefactId();
-    String projectFolder = projectRootFolder + File.separator + model.getArtefactId();
-    // exists? -> delete
-    if ((new File(projectRootFolder)).exists()) {
+    try {
+      logger.debug("generation started for groupIs >>" + model.getGroupId() + "<< - >>" + model.getArtefactId() + "<<");
+      // create folder in tempDirectory
+      String tmpDirPath = System.getProperty("java.io.tmpdir");
+      logger.debug(">>" + model.getArtefactId() + "<< -> java.io.tempdir >>" + tmpDirPath + "<<");
+      // create archive-Folder
+      String projectRootFolder = tmpDirPath + "mvp4g2-boot-strarter-project-" + model.getArtefactId();
+      logger.debug(">>" + model.getArtefactId() + "<< -> project root directory >>" + projectRootFolder + "<<");
+      String projectFolder = projectRootFolder + File.separator + model.getArtefactId();
+      logger.debug(">>" + model.getArtefactId() + "<< try to create project root directory with path >>" + projectRootFolder + "<<");
+      // exists? -> delete
+      if ((new File(projectRootFolder)).exists()) {
+        deleteFolder(new File(projectRootFolder));
+      }
+      logger.debug(">>" + model.getArtefactId() + "<< project root directory with path >>" + projectRootFolder + "<< created");
+      // create ...
+      File projectRootFolderFile = new File(projectRootFolder);
+      if (!projectRootFolderFile.mkdirs()) {
+        logger.error(">>" + model.getArtefactId() + "<< creation of project folder (1) failed! >>" + projectRootFolder + "<< ");
+        return new ResponseEntity<>("ERROR: creation of project folder (1) failed!",
+                                    HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      File projectFolderFile = new File(projectFolder);
+      if (!projectFolderFile.mkdirs()) {
+        logger.error(">>" + model.getArtefactId() + "<< creation of project folder (1) failed! >>" + projectRootFolder + "<< ");
+        return new ResponseEntity<>("ERROR: creation of project folder (2) failed!",
+                                    HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      // create Java sources (must run first, because this creates the project structre)
+      try {
+        logger.debug(">>" + model.getArtefactId() + "<< generating sources!");
+        SourceGenerator.builder()
+                       .mvp4g2GeneraterParms(model)
+                       .projectFolder(projectFolder)
+                       .build()
+                       .generate();
+      } catch (GeneratorException e) {
+        logger.error(">>" + model.getArtefactId() + "<< source genertion failed!", e);
+        return new ResponseEntity<>(e.getMessage(),
+                                    HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      // create POM
+      try {
+        logger.debug(">>" + model.getArtefactId() + "<< generating pom!");
+        PomGenerator.builder()
+                    .mvp4g2GeneraterParms(model)
+                    .projectFolder(projectFolder)
+                    .build()
+                    .generate();
+      } catch (GeneratorException e) {
+        logger.error(">>" + model.getArtefactId() + "<< pom genertion failed!", e);
+        return new ResponseEntity<>(e.getMessage(),
+                                    HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      // create Module Descriptor
+      try {
+        logger.debug(">>" + model.getArtefactId() + "<< generating module dexcriptor!");
+        ModuleDescriptorGenerator.builder()
+                                 .mvp4g2GeneraterParms(model)
+                                 .projectFolder(projectFolder)
+                                 .build()
+                                 .generate();
+      } catch (GeneratorException e) {
+        logger.error(">>" + model.getArtefactId() + "<< module descriptor genertion failed!", e);
+        return new ResponseEntity<>(e.getMessage(),
+                                    HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      // zip the content
+      logger.debug(">>" + model.getArtefactId() + "<< creating zip");
+      this.zipIt(projectRootFolder);
+      logger.debug(">>" + model.getArtefactId() + "<< zip created");
+      // save path to session
+      projectZip.setPathToGenerateProjectZip(projectRootFolder + ".zip");
+      logger.debug(">>" + model.getArtefactId() + "<< saving path to session");
+      // delete tmp folder
+      logger.debug(">>" + model.getArtefactId() + "<< delete temp folders");
       deleteFolder(new File(projectRootFolder));
-    }
-    // create ...
-    File projectRootFolderFile = new File(projectRootFolder);
-    if (!projectRootFolderFile.mkdirs()) {
-      return new ResponseEntity<>("ERROR: creation of project folder (1) failed!",
-                                  HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    File projectFolderFile = new File(projectFolder);
-    if (!projectFolderFile.mkdirs()) {
-      return new ResponseEntity<>("ERROR: creation of project folder (2) failed!",
-                                  HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // create Java sources (must run first, because this creates the project strucutre)
-    try {
-      SourceGenerator.builder()
-                     .mvp4g2GeneraterParms(model)
-                     .projectFolder(projectFolder)
-                     .build()
-                     .generate();
-    } catch (GeneratorException e) {
+      logger.debug(">>" + model.getArtefactId() + "<< temp folders deleted");
+      return new ResponseEntity<>(projectRootFolder + ".zip",
+                                  HttpStatus.OK);
+    } catch (Exception e) {
+      logger.error(">>" + model.getArtefactId() + "<< -> exception: " + e);
       return new ResponseEntity<>(e.getMessage(),
-                                  HttpStatus.INTERNAL_SERVER_ERROR);
+                                  HttpStatus.SERVICE_UNAVAILABLE);
     }
-    // create POM
-    try {
-      PomGenerator.builder()
-                  .mvp4g2GeneraterParms(model)
-                  .projectFolder(projectFolder)
-                  .build()
-                  .generate();
-    } catch (GeneratorException e) {
-      return new ResponseEntity<>(e.getMessage(),
-                                  HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // create Module Descriptor
-    try {
-      ModuleDescriptorGenerator.builder()
-                               .mvp4g2GeneraterParms(model)
-                               .projectFolder(projectFolder)
-                               .build()
-                               .generate();
-    } catch (GeneratorException e) {
-      return new ResponseEntity<>(e.getMessage(),
-                                  HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    // zip the content
-    this.zipIt(projectRootFolder);
-    // save path to session
-    projectZip.setNameOfProjectZip("mvp4g2-boot-strarter-project-" + model.getArtefactId() + ".zip");
-    projectZip.setPathToGenerateProjectZip(projectRootFolder + ".zip");
-    // delete tmp folder
-    deleteFolder(new File(projectRootFolder));
-    return new ResponseEntity<>(projectRootFolder + ".zip",
-                                HttpStatus.OK);
   }
 
   private void zipIt(String projectFolder) {

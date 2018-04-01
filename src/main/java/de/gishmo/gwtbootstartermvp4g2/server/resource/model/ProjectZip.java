@@ -9,15 +9,8 @@ import org.springframework.stereotype.Component;
 public class ProjectZip {
 
   private String pathToGenerateProjectZip;
-  private String nameOfProjectZip;
 
   public ProjectZip() {
-  }
-
-  public ProjectZip(String pathToGenerateProjectZip,
-                    String nameOfProjectZip) {
-    this.pathToGenerateProjectZip = pathToGenerateProjectZip;
-    this.nameOfProjectZip = nameOfProjectZip;
   }
 
   public String getPathToGenerateProjectZip() {
@@ -26,13 +19,5 @@ public class ProjectZip {
 
   public void setPathToGenerateProjectZip(String pathToGenerateProjectZip) {
     this.pathToGenerateProjectZip = pathToGenerateProjectZip;
-  }
-
-  public String getNameOfProjectZip() {
-    return nameOfProjectZip;
-  }
-
-  public void setNameOfProjectZip(String nameOfProjectZip) {
-    this.nameOfProjectZip = nameOfProjectZip;
   }
 }
