@@ -44,9 +44,15 @@ public class ProjectService {
       logger.debug("generation started for groupIs >>" + model.getGroupId() + "<< - >>" + model.getArtefactId() + "<<");
       // create folder in tempDirectory
       String tmpDirPath = System.getProperty("java.io.tmpdir");
+      if (!tmpDirPath.endsWith(File.separator)) {
+        tmpDirPath = tmpDirPath + File.separator;
+      }
       logger.debug(">>" + model.getArtefactId() + "<< -> java.io.tempdir >>" + tmpDirPath + "<<");
       // create archive-Folder
       String projectRootFolder = tmpDirPath + "mvp4g2-boot-strarter-project-" + model.getArtefactId();
+      if (!projectRootFolder.endsWith(File.separator)) {
+        projectRootFolder = projectRootFolder + File.pathSeparator;
+      }
       logger.debug(">>" + model.getArtefactId() + "<< -> project root directory >>" + projectRootFolder + "<<");
       String projectFolder = projectRootFolder + File.separator + model.getArtefactId();
       logger.debug(">>" + model.getArtefactId() + "<< try to create project root directory with path >>" + projectRootFolder + "<<");
@@ -77,7 +83,8 @@ public class ProjectService {
                        .build()
                        .generate();
       } catch (GeneratorException e) {
-        logger.error(">>" + model.getArtefactId() + "<< source genertion failed!", e);
+        logger.error(">>" + model.getArtefactId() + "<< source genertion failed!",
+                     e);
         return new ResponseEntity<>(e.getMessage(),
                                     HttpStatus.INTERNAL_SERVER_ERROR);
       }
@@ -90,7 +97,8 @@ public class ProjectService {
                     .build()
                     .generate();
       } catch (GeneratorException e) {
-        logger.error(">>" + model.getArtefactId() + "<< pom genertion failed!", e);
+        logger.error(">>" + model.getArtefactId() + "<< pom genertion failed!",
+                     e);
         return new ResponseEntity<>(e.getMessage(),
                                     HttpStatus.INTERNAL_SERVER_ERROR);
       }
@@ -103,7 +111,8 @@ public class ProjectService {
                                  .build()
                                  .generate();
       } catch (GeneratorException e) {
-        logger.error(">>" + model.getArtefactId() + "<< module descriptor genertion failed!", e);
+        logger.error(">>" + model.getArtefactId() + "<< module descriptor genertion failed!",
+                     e);
         return new ResponseEntity<>(e.getMessage(),
                                     HttpStatus.INTERNAL_SERVER_ERROR);
       }
