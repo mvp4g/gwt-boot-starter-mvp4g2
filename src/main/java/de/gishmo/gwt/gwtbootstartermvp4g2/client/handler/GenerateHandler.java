@@ -1,21 +1,31 @@
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.handler;
 
-import com.github.mvp4g.mvp4g2.core.ui.AbstractHandler;
-import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
-import com.github.mvp4g.mvp4g2.core.ui.annotation.Handler;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
-import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
-import de.gishmo.gwt.gwtbootstartermvp4g2.client.service.ProjectService;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.Resource;
 import org.fusesource.restygwt.client.RestServiceProxy;
 import org.fusesource.restygwt.client.TextCallback;
 
+import com.github.mvp4g.mvp4g2.core.ui.AbstractHandler;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
+import com.github.mvp4g.mvp4g2.core.ui.annotation.Handler;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.user.client.Window;
+import com.sencha.gxt.core.client.XTemplates;
+import com.sencha.gxt.themebuilder.base.client.config.ThemeDetails;
+import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
+
+import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
+import de.gishmo.gwt.gwtbootstartermvp4g2.client.service.ProjectService;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+
 @Handler
 public class GenerateHandler
   extends AbstractHandler<GwtBootStarterMvp4g2EventBus> {
+
+  private static ThemeDetails themeDetails = GWT.create(ThemeDetails.class);
 
   private ProjectService projectService;
 
@@ -43,13 +53,48 @@ public class GenerateHandler
                                    public void onSuccess(Method method,
                                                          String value) {
                                      GWT.debugger();
-                                     String url = GWT.getHostPageBaseURL() +
-                                                  "loadZip/download?archive=" +
-                                                  model.getArtefactId() + ".zip";
-                                     Window.open(url,
-                                                 "download window",
-                                                 "");
+                                     String url = GWT.getHostPageBaseURL() + "loadZip/download?archive=" + model.getArtefactId() + ".zip";
+
+                                     DownloadTemplate    template  = GWT.create(DownloadTemplate.class);
+                                     HtmlLayoutContainer container = new HtmlLayoutContainer(template.getTemplate(url));
+                                     container.getElement()
+                                              .getStyle()
+                                              .setProperty("fontSize",
+                                                           themeDetails.field()
+                                                                       .text()
+                                                                       .size());
+                                     container.getElement()
+                                              .getStyle()
+                                              .setProperty("fontFamily",
+                                                           themeDetails.field()
+                                                                       .text()
+                                                                       .family());
+                                     container.getElement()
+                                              .getStyle()
+                                              .setProperty("color",
+                                                           themeDetails.field()
+                                                                       .text()
+                                                                       .color());
+
+                                     Dialog dialog = new Dialog();
+                                     dialog.setHeading("Download your project ...");
+                                     dialog.setPixelSize(-1,
+                                                         -1);
+                                     dialog.setMinWidth(0);
+                                     dialog.setMinHeight(0);
+                                     dialog.setResizable(false);
+                                     dialog.setShadow(true);
+                                     dialog.setWidget(container);
+                                     dialog.setPredefinedButtons(Dialog.PredefinedButton.CLOSE);
+                                     dialog.setButtonAlign(BoxLayoutContainer.BoxLayoutPack.CENTER);
+                                     dialog.setBodyStyle("padding 12px;");
+
+                                     //                                     Window.open(url,
+                                     //                                                 "download window",
+                                     //                                                 "");
                                      eventBus.hideProgressBar();
+
+                                     dialog.show();
                                    }
                                  });
   }
@@ -60,5 +105,11 @@ public class GenerateHandler
       value += e.getClassName() + ":" + e.getMethodName() + "(" + e.getLineNumber() + ")\n";
     }
     return value;
+  }
+
+  public interface DownloadTemplate
+    extends XTemplates {
+    @XTemplate(source = "Download.html")
+    SafeHtml getTemplate(String url);
   }
 }
