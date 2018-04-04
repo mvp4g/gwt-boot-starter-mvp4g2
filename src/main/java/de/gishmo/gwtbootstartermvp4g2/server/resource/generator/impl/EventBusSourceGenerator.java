@@ -79,10 +79,43 @@ public class EventBusSourceGenerator {
                                  .addAnnotation(Start.class)
                                  .addAnnotation(AnnotationSpec.builder(Event.class)
                                                               .addMember("bind",
-                                                                         "$T.class",
+                                                                         "{ $T.class, $T.class, $T.class }",
                                                                          ClassName.get(this.clientPackageJavaConform + ".ui.navigation",
-                                                                                       "NavigationPresenter"))
+                                                                                       "NavigationPresenter"),
+                                                                         ClassName.get(this.clientPackageJavaConform + ".ui.header",
+                                                                                       "HeaderPresenter"),
+                                                                         ClassName.get(this.clientPackageJavaConform + ".ui.statusbar",
+                                                                                       "StatusbarPresenter"))
                                                               .build())
+                                 .build());
+     // event: setContent
+    typeSpec.addMethod(MethodSpec.methodBuilder("setContent")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addJavadoc("This event will set the element (parameter) in the content\n" +
+                                             "area of the shell. We will use this event to update the shell\n" +
+                                             "with the current content area.\n" +
+                                             "\n" +
+                                             "@param widget the element of the widget, that will be\n" +
+                                             "              displayed inside the content area of the shell.")
+                                 .addAnnotation(Event.class)
+                                 .addParameter(ParameterSpec.builder(Widget.class,
+                                                                     "widget")
+                                                            .build())
+                                 .build());
+    // event: setHeader
+    typeSpec.addMethod(MethodSpec.methodBuilder("setHeader")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addJavadoc("This event will set the element (parameter) in the north\n" +
+                                             "area of the shell.\n" +
+                                             "\n" +
+                                             "@param widget the element of the widget, that will be\n" +
+                                             "              displayed inside the north area of the shell.")
+                                 .addAnnotation(Event.class)
+                                 .addParameter(ParameterSpec.builder(Widget.class,
+                                                                     "widget")
+                                                            .build())
                                  .build());
     // event: setNavigation
     typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
@@ -98,16 +131,15 @@ public class EventBusSourceGenerator {
                                                                      "widget")
                                                             .build())
                                  .build());
-    // event: setContent
-    typeSpec.addMethod(MethodSpec.methodBuilder("setContent")
+    // event: setHeader
+    typeSpec.addMethod(MethodSpec.methodBuilder("setStatusbar")
                                  .addModifiers(Modifier.PUBLIC,
                                                Modifier.ABSTRACT)
-                                 .addJavadoc("This event will set the element (parameter) in the content\n" +
-                                             "area of the shell. We will use this event to update the shell\n" +
-                                             "with the current content area.\n" +
+                                 .addJavadoc("This event will set the element (parameter) in the south\n" +
+                                             "area of the shell.\n" +
                                              "\n" +
                                              "@param widget the element of the widget, that will be\n" +
-                                             "              displayed inside the content area of the shell.")
+                                             "              displayed inside the south area of the shell.")
                                  .addAnnotation(Event.class)
                                  .addParameter(ParameterSpec.builder(Widget.class,
                                                                      "widget")
