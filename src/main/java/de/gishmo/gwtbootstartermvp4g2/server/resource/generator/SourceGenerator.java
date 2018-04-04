@@ -9,11 +9,13 @@ import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.Application
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ApplicationSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EntryPointSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EventBusSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HeaderSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HistoryConverterGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HostPageSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.NavigationSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.PresenterViewSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ShellSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.StatusBarSourceGenerator;
 
 public class SourceGenerator {
 
@@ -116,6 +118,13 @@ public class SourceGenerator {
                         .directoryJava(this.directoryJava)
                         .build()
                         .generate();
+    // generate header
+    HeaderSourceGenerator.builder()
+                         .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                         .clientPackageJavaConform(this.clientPackageJavaConform)
+                         .directoryJava(this.directoryJava)
+                         .build()
+                         .generate();
     // generate navigation
     NavigationSourceGenerator.builder()
                              .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
@@ -123,6 +132,13 @@ public class SourceGenerator {
                              .directoryJava(this.directoryJava)
                              .build()
                              .generate();
+    // generate Statusbar
+    StatusBarSourceGenerator.builder()
+                            .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                            .clientPackageJavaConform(this.clientPackageJavaConform)
+                            .directoryJava(this.directoryJava)
+                            .build()
+                            .generate();
     // generate presenter & views for every screen
     for (PresenterData presenterData : this.mvp4g2GeneraterParms.getPresenters()) {
       PresenterViewSourceGenerator.builder()

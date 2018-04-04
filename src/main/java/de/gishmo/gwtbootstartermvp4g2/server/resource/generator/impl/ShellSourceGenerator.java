@@ -15,7 +15,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -96,6 +95,20 @@ public class ShellSourceGenerator {
                                                                      "widget")
                                                             .build())
                                  .build());
+    typeSpec.addMethod(MethodSpec.methodBuilder("setHeader")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
+                                                                     "widget")
+                                                            .build())
+                                 .build());
+    typeSpec.addMethod(MethodSpec.methodBuilder("setStatusbar")
+                                 .addModifiers(Modifier.PUBLIC,
+                                               Modifier.ABSTRACT)
+                                 .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
+                                                                     "widget")
+                                                            .build())
+                                 .build());
     typeSpec.addType(TypeSpec.interfaceBuilder("Presenter")
                              .addModifiers(Modifier.PUBLIC,
                                            Modifier.STATIC)
@@ -133,6 +146,18 @@ public class ShellSourceGenerator {
                                         "container",
                                         Modifier.PRIVATE)
                                .build());
+    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
+                                        "header",
+                                        Modifier.PRIVATE)
+                               .build());
+    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
+                                        "navigation",
+                                        Modifier.PRIVATE)
+                               .build());
+    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
+                                        "statusbar",
+                                        Modifier.PRIVATE)
+                               .build());
     typeSpec.addField(FieldSpec.builder(ClassName.get(Widget.class),
                                         "widget",
                                         Modifier.PRIVATE)
@@ -151,14 +176,6 @@ public class ShellSourceGenerator {
                                  .build());
     // createView method
     this.createViewMethodForShell(typeSpec);
-    // setNavigation method
-    typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
-                                 .addAnnotation(Override.class)
-                                 .addModifiers(Modifier.PUBLIC)
-                                 .addParameter(Widget.class,
-                                               "widget")
-                                 .addStatement("container.addWest(widget, 212)")
-                                 .build());
     // setContent method
     typeSpec.addMethod(MethodSpec.methodBuilder("setContent")
                                  .addAnnotation(Override.class)
@@ -168,8 +185,41 @@ public class ShellSourceGenerator {
                                  .beginControlFlow("if (this.widget != null) ")
                                  .addStatement("this.widget.removeFromParent()")
                                  .endControlFlow()
-                                 .addStatement("container.add(widget)")
+                                 .addStatement("this.container.add(widget)")
                                  .addStatement("this.widget = widget")
+                                 .build());
+    // setHeader method
+    typeSpec.addMethod(MethodSpec.methodBuilder("setHeader")
+                                 .addAnnotation(Override.class)
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addParameter(Widget.class,
+                                               "widget")
+                                 .beginControlFlow("if (this.header.getWidget() != null) ")
+                                 .addStatement("this.header.getWidget().removeFromParent()")
+                                 .endControlFlow()
+                                 .addStatement("this.header.setWidget(widget)")
+                                 .build());
+    // setNavigation method
+    typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
+                                 .addAnnotation(Override.class)
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addParameter(Widget.class,
+                                               "widget")
+                                 .beginControlFlow("if (this.navigation.getWidget() != null) ")
+                                 .addStatement("this.navigation.getWidget().removeFromParent()")
+                                 .endControlFlow()
+                                 .addStatement("this.navigation.setWidget(widget)")
+                                 .build());
+    // setHeader method
+    typeSpec.addMethod(MethodSpec.methodBuilder("setStatusbar")
+                                 .addAnnotation(Override.class)
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addParameter(Widget.class,
+                                               "widget")
+                                 .beginControlFlow("if (this.statusbar.getWidget() != null) ")
+                                 .addStatement("this.statusbar.getWidget().removeFromParent()")
+                                 .endControlFlow()
+                                 .addStatement("this.statusbar.setWidget(widget)")
                                  .build());
     typeSpec.addMethod(MethodSpec.methodBuilder("forceLayout")
                                  .addModifiers(Modifier.PUBLIC)
@@ -230,12 +280,26 @@ public class ShellSourceGenerator {
                                                                            "widget")
                                                              .addStatement("view.setContent(widget)")
                                                              .build())
+                                        .addMethod(MethodSpec.methodBuilder("onSetHeader")
+                                                             .addModifiers(Modifier.PUBLIC)
+                                                             .addAnnotation(EventHandler.class)
+                                                             .addParameter(Widget.class,
+                                                                           "widget")
+                                                             .addStatement("view.setHeader(widget)")
+                                                             .build())
                                         .addMethod(MethodSpec.methodBuilder("onSetNavigation")
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addAnnotation(EventHandler.class)
                                                              .addParameter(Widget.class,
                                                                            "widget")
                                                              .addStatement("view.setNavigation(widget)")
+                                                             .build())
+                                        .addMethod(MethodSpec.methodBuilder("onSetStatusbar")
+                                                             .addModifiers(Modifier.PUBLIC)
+                                                             .addAnnotation(EventHandler.class)
+                                                             .addParameter(Widget.class,
+                                                                           "widget")
+                                                             .addStatement("view.setStatusbar(widget)")
                                                              .build())
                                         .addMethod(MethodSpec.methodBuilder("setShell")
                                                              .addModifiers(Modifier.PUBLIC)
@@ -283,46 +347,17 @@ public class ShellSourceGenerator {
                                  .addStatement("container.setSize(\"100%\", \"100%\")")
                                  .addStatement("shell.add(container)")
                                  .addCode("")
-                                 .addStatement("$T header = createNorth()",
-                                               Widget.class)
+                                 .addStatement("header = new $T()",
+                                               SimplePanel.class)
                                  .addStatement("container.addNorth(header, 128)")
                                  .addCode("")
-                                 .addStatement("$T footer = createSouth()",
-                                               Widget.class)
-                                 .addStatement("container.addSouth(footer, 42)")
-                                 .build());
-
-    // addNorth method
-    typeSpec.addMethod(MethodSpec.methodBuilder("createNorth")
-                                 .returns(Widget.class)
-                                 .addModifiers(Modifier.PRIVATE)
-                                 .addStatement("$T container = new $T()",
-                                               SimplePanel.class,
+                                 .addStatement("navigation = new $T()",
                                                SimplePanel.class)
-                                 .addStatement("container.getElement().getStyle().setBackgroundColor(\"whitesmoke\")")
-                                 .addStatement("$T label = new $T(\"That's the header area. Create your header here\")",
-                                               Label.class,
-                                               Label.class)
-                                 .addStatement("label.getElement().getStyle().setMargin(12, $T.Unit.PX)",
-                                               Style.class)
-                                 .addStatement("container.setWidget(label)")
-                                 .addStatement("return container")
-                                 .build());
-    // addSouth method
-    typeSpec.addMethod(MethodSpec.methodBuilder("createSouth")
-                                 .returns(Widget.class)
-                                 .addModifiers(Modifier.PRIVATE)
-                                 .addStatement("$T container = new $T()",
-                                               SimplePanel.class,
+                                 .addStatement("container.addWest(navigation, 212)")
+                                 .addCode("")
+                                 .addStatement("statusbar = new $T()",
                                                SimplePanel.class)
-                                 .addStatement("container.getElement().getStyle().setBackgroundColor(\"whitesmoke\")")
-                                 .addStatement("$T label = new $T(\"That's the footer area. Create your footer here\")",
-                                               Label.class,
-                                               Label.class)
-                                 .addStatement("label.getElement().getStyle().setMargin(12, $T.Unit.PX)",
-                                               Style.class)
-                                 .addStatement("container.setWidget(label)")
-                                 .addStatement("return container")
+                                 .addStatement("container.addSouth(statusbar, 42)")
                                  .build());
   }
 
