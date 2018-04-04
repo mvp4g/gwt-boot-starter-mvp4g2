@@ -20,22 +20,31 @@ package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
+
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
+import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor.PresenterEditor;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 
 @Presenter(viewClass = ContentView.class, viewInterface = IContentView.class)
 public class ContentPresenter
-  extends AbstractPresenter<GwtBootStarterMvp4g2EventBus,
-                             IContentView>
+  extends AbstractPresenter<GwtBootStarterMvp4g2EventBus, IContentView>
   implements IContentView.Presenter {
 
   private Mvp4g2GeneraterParms model;
 
+  private PresenterEditor presenterEditor;
 
   public ContentPresenter() {
+    super();
+    this.createEditorPresenter();
   }
 
+  private void createEditorPresenter() {
+    presenterEditor = new PresenterEditor(model -> {
+      // TODO
+    });
+  }
 
   public void bind() {
     this.model = new Mvp4g2GeneraterParms();
@@ -86,13 +95,13 @@ public class ContentPresenter
     }
   }
 
-//  @EventHandler
-//  public void onShowContent(String id) {
-//    view.showContent(id);
-//  }
-//
-//  @Override
-//  public void doRemoveMail(String id) {
-//    eventBus.removeEmail(id);
-//  }
+  @Override
+  public void doAdd() {
+    this.presenterEditor.add();
+  }
+
+  @Override
+  public void doEdit(PresenterData model) {
+    this.presenterEditor.edit(model);
+  }
 }

@@ -130,19 +130,11 @@ public class PresenterData {
       return false;
     }
     PresenterData that = (PresenterData) o;
-    return isShell() == that.isShell() &&
-           isConfirmation() == that.isConfirmation() &&
-           isShowPresenterAtStart() == that.isShowPresenterAtStart() &&
-           isDeletable() == that.isDeletable() &&
-           isEditable() == that.isEditable() &&
-           Objects.equals(getId(),
-                          that.getId()) &&
-           Objects.equals(getName(),
-                          that.getName()) &&
-           Objects.equals(getHistoryName(),
-                          that.getHistoryName()) &&
-           Objects.equals(getParameters(),
-                          that.getParameters());
+    return isShell() == that.isShell() && isConfirmation() == that.isConfirmation() && isShowPresenterAtStart() == that.isShowPresenterAtStart() && isDeletable() == that.isDeletable() && isEditable() == that.isEditable() && Objects.equals(getId(),
+                                                                                                                                                                                                                                               that.getId()) && Objects.equals(getName(),
+                                                                                                                                                                                                                                                                               that.getName()) && Objects.equals(getHistoryName(),
+                                                                                                                                                                                                                                                                                                                 that.getHistoryName()) && Objects.equals(getParameters(),
+                                                                                                                                                                                                                                                                                                                                                          that.getParameters());
   }
 
   @Override
@@ -157,5 +149,16 @@ public class PresenterData {
                         isDeletable(),
                         isEditable(),
                         getParameters());
+  }
+
+  public PresenterData copy() {
+    return new PresenterData(this.name + " copy",
+                             this.historyName == null || this.historyName.length() == 0 ? ""
+                               : this.historyName + "copy",
+                             false,
+                             true,
+                             this.confirmation,
+                             true,
+                             true);
   }
 }

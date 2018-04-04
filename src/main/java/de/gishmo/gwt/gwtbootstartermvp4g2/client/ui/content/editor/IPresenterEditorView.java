@@ -15,29 +15,27 @@
  *
  */
 
-package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
+package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor;
 
-import com.google.gwt.user.client.ui.IsWidget;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 
-import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
+public interface IPresenterEditorView {
 
-public interface IContentView
-  extends IsLazyReverseView<IContentView.Presenter>,
-          IsWidget {
+  void edit(PresenterData model,
+            boolean isNew);
 
-  void edit(Mvp4g2GeneraterParms model);
+  IPresenterEditorView.Presenter getPresenter();
 
-  void flush(Mvp4g2GeneraterParms model);
+  void setPresenter(IPresenterEditorView.Presenter presenter);
 
-  boolean isValid();
+  void show();
+
+  //
+  //  void flush(Mvp4g2GeneraterParms model);
+  //
+  //  boolean isValid();
 
   interface Presenter {
-
-    void doAdd();
-
-    void doEdit(PresenterData model);
 
   }
 }

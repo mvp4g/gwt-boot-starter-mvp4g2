@@ -53,6 +53,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.model.PresenterDataProps;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.resources.ImageResources;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
@@ -97,7 +98,7 @@ public class ContentView
   private TextButton editButton;
   private TextButton deleteButton;
 
-  private PresenterDataProps presenterDataProps = GWT.create(PresenterDataProps.class);
+  private PresenterDataProps       presenterDataProps = GWT.create(PresenterDataProps.class);
   private ListStore<PresenterData> store;
   private Grid<PresenterData>      grid;
 
@@ -162,8 +163,8 @@ public class ContentView
     ccHistoryName.setFixed(true);
 
     ColumnConfig<PresenterData, Boolean> ccConfirmation = new ColumnConfig<>(presenterDataProps.confirmation(),
-                                                                      125,
-                                                                      "Confirmation");
+                                                                             125,
+                                                                             "Confirmation");
     ccConfirmation.setCell(new AbstractCell<Boolean>() {
       @Override
       public void render(Context context,
@@ -175,24 +176,9 @@ public class ContentView
     ccConfirmation.setFixed(true);
     ccConfirmation.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-    ColumnConfig<PresenterData, Boolean> ccShell = new ColumnConfig<>(presenterDataProps.shell(),
-                                                                      75,
-                                                                      "Shell");
-    ccShell.setCell(new AbstractCell<Boolean>() {
-      @Override
-      public void render(Context context,
-                         Boolean s,
-                         SafeHtmlBuilder safeHtmlBuilder) {
-        safeHtmlBuilder.append(SafeHtmlUtils.fromTrustedString(s ? "Yes" : "No"));
-      }
-    });
-    ccShell.setFixed(true);
-    ccShell.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-
     List<ColumnConfig<PresenterData, ?>> list = new ArrayList<>();
     list.add(ccName);
     list.add(ccHistoryName);
-    list.add(ccShell);
     list.add(ccConfirmation);
     ColumnModel<PresenterData> cm = new ColumnModel<>(list);
     grid = new Grid<>(store,
@@ -234,14 +220,12 @@ public class ContentView
     this.groupId.addValidator(new RegExValidator("^[a-z0-9.]*$",
                                                  "a - z, 0 - 9 and '.' allowed"));
 
-
     this.history = new CheckBox();
     this.history.setBoxLabel("Check, if the application supports history handling");
 
     this.historyOnStart = new CheckBox();
     this.historyOnStart.setBoxLabel("Check, if the application handles history on start");
     historyOnStart.setEnabled(false);
-
 
     this.gwtVersion = new StringComboBox();
     this.gwtVersion.add(new ArrayList<String>() {{
@@ -361,47 +345,46 @@ public class ContentView
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            12));
 
-
-//    CssFloatLayoutContainer flc01 = new CssFloatLayoutContainer();
-//    vlc.add(flc01,
-//            new VerticalLayoutContainer.VerticalLayoutData(1,
-//                                                           -1));
-//    flc01.add(this.applicationLoader,
-//              new CssFloatLayoutContainer.CssFloatData(1));
-//
-//    vlc.add(this.addDistance("12px"),
-//            new VerticalLayoutContainer.VerticalLayoutData(1,
-//                                                           12));
-//
-//    CssFloatLayoutContainer flc02 = new CssFloatLayoutContainer();
-//    vlc.add(flc02,
-//            new VerticalLayoutContainer.VerticalLayoutData(1,
-//                                                           -1));
-//    flc02.add(this.history,
-//              new CssFloatLayoutContainer.CssFloatData(1));
-//    vlc.add(this.addDistance("12px"),
-//            new VerticalLayoutContainer.VerticalLayoutData(1,
-//                                                           12));
-//
-//    CssFloatLayoutContainer flc03 = new CssFloatLayoutContainer();
-//    vlc.add(flc03,
-//            new VerticalLayoutContainer.VerticalLayoutData(1,
-//                                                           -1));
-//    flc03.add(this.historyOnStart,
-//              new CssFloatLayoutContainer.CssFloatData(1));
-//    flc01.add(this.createFielLabal("Artifact Id",
-//                                   this.artifactId),
-//              new CssFloatLayoutContainer.CssFloatData(0.5,
-//                                                       ContentView.MARGINS));
-//
-//    CssFloatLayoutContainer flc02 = new CssFloatLayoutContainer();
-//    vlc.add(flc02,
-//            new VerticalLayoutContainer.VerticalLayoutData(1,
-//                                                           -1));
-//    flc02.add(this.createFielLabal("GWT-Version",
-//                                   this.gwtVersion),
-//              new CssFloatLayoutContainer.CssFloatData(0.5,
-//                                                       ContentView.MARGINS));
+    //    CssFloatLayoutContainer flc01 = new CssFloatLayoutContainer();
+    //    vlc.add(flc01,
+    //            new VerticalLayoutContainer.VerticalLayoutData(1,
+    //                                                           -1));
+    //    flc01.add(this.applicationLoader,
+    //              new CssFloatLayoutContainer.CssFloatData(1));
+    //
+    //    vlc.add(this.addDistance("12px"),
+    //            new VerticalLayoutContainer.VerticalLayoutData(1,
+    //                                                           12));
+    //
+    //    CssFloatLayoutContainer flc02 = new CssFloatLayoutContainer();
+    //    vlc.add(flc02,
+    //            new VerticalLayoutContainer.VerticalLayoutData(1,
+    //                                                           -1));
+    //    flc02.add(this.history,
+    //              new CssFloatLayoutContainer.CssFloatData(1));
+    //    vlc.add(this.addDistance("12px"),
+    //            new VerticalLayoutContainer.VerticalLayoutData(1,
+    //                                                           12));
+    //
+    //    CssFloatLayoutContainer flc03 = new CssFloatLayoutContainer();
+    //    vlc.add(flc03,
+    //            new VerticalLayoutContainer.VerticalLayoutData(1,
+    //                                                           -1));
+    //    flc03.add(this.historyOnStart,
+    //              new CssFloatLayoutContainer.CssFloatData(1));
+    //    flc01.add(this.createFielLabal("Artifact Id",
+    //                                   this.artifactId),
+    //              new CssFloatLayoutContainer.CssFloatData(0.5,
+    //                                                       ContentView.MARGINS));
+    //
+    //    CssFloatLayoutContainer flc02 = new CssFloatLayoutContainer();
+    //    vlc.add(flc02,
+    //            new VerticalLayoutContainer.VerticalLayoutData(1,
+    //                                                           -1));
+    //    flc02.add(this.createFielLabal("GWT-Version",
+    //                                   this.gwtVersion),
+    //              new CssFloatLayoutContainer.CssFloatData(0.5,
+    //                                                       ContentView.MARGINS));
   }
 
   private ContentPanel createContentPanel(String heading) {
@@ -457,8 +440,17 @@ public class ContentView
         }
       }
     });
-  }
 
+    this.grid.addRowClickHandler(rowClickEvent -> {
+      editButton.setEnabled(this.store.get(rowClickEvent.getRowIndex()) != null);
+      deleteButton.setEnabled(this.store.get(rowClickEvent.getRowIndex()) != null);
+    });
+
+    this.addButton.addSelectHandler(selectEvent -> getPresenter().doAdd());
+    this.editButton.addSelectHandler(selectEvent -> getPresenter().doEdit(grid.getSelectionModel()
+                                                                              .getSelectedItem()
+                                                                              .copy()));
+  }
 
   @Override
   public void edit(Mvp4g2GeneraterParms model) {
