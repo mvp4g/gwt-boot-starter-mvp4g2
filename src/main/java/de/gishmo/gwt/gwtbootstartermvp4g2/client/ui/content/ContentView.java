@@ -53,7 +53,6 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
-
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.model.PresenterDataProps;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.resources.ImageResources;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
@@ -449,7 +448,7 @@ public class ContentView
     this.addButton.addSelectHandler(selectEvent -> getPresenter().doAdd());
     this.editButton.addSelectHandler(selectEvent -> getPresenter().doEdit(grid.getSelectionModel()
                                                                               .getSelectedItem()
-                                                                              .copy()));
+                                                                              .clone()));
   }
 
   @Override
@@ -484,6 +483,12 @@ public class ContentView
   public boolean isValid() {
     // TODO implement!
     return true;
+  }
+
+  @Override
+  public void updateGrid(Mvp4g2GeneraterParms mvp4g2GeneraterParms) {
+    this.store.clear();
+    this.store.addAll(mvp4g2GeneraterParms.getPresenters());
   }
 
   private void setThemeFontDetails(Element el) {

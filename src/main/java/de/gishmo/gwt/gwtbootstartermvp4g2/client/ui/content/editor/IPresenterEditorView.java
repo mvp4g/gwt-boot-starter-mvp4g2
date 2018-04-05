@@ -30,12 +30,9 @@ public interface IPresenterEditorView {
 
   void show();
 
-  //
-  //  void flush(Mvp4g2GeneraterParms model);
-  //
-  //  boolean isValid();
-
   interface Presenter {
+
+    void doSave(PresenterData flush);
 
   }
 }

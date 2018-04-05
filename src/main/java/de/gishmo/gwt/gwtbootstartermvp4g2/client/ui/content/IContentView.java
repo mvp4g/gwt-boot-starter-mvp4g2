@@ -33,6 +33,8 @@ public interface IContentView
 
   boolean isValid();
 
+  void updateGrid(Mvp4g2GeneraterParms mvp4g2GeneraterParms);
+
   interface Presenter {
 
     void doAdd();

@@ -17,10 +17,11 @@
 
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
+import java.util.stream.IntStream;
+
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
-
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor.PresenterEditor;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
@@ -31,7 +32,7 @@ public class ContentPresenter
   extends AbstractPresenter<GwtBootStarterMvp4g2EventBus, IContentView>
   implements IContentView.Presenter {
 
-  private Mvp4g2GeneraterParms model;
+  private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
   private PresenterEditor presenterEditor;
 
@@ -41,46 +42,62 @@ public class ContentPresenter
   }
 
   private void createEditorPresenter() {
-    presenterEditor = new PresenterEditor(model -> {
-      // TODO
+    presenterEditor = new PresenterEditor((model, isNew) -> {
+      if (isNew) {
+        mvp4g2GeneraterParms.getPresenters()
+                            .add(model);
+      } else {
+        IntStream.range(0,
+                        mvp4g2GeneraterParms.getPresenters()
+                                            .size())
+                 .filter(i -> mvp4g2GeneraterParms.getPresenters()
+                                                  .get(i)
+                                                  .getId()
+                                                  .equals(model.getId()))
+                 .findFirst()
+                 .ifPresent(i -> mvp4g2GeneraterParms.getPresenters()
+                                                     .set(i,
+                                                          model));
+      }
+      view.updateGrid(this.mvp4g2GeneraterParms);
     });
   }
 
   public void bind() {
-    this.model = new Mvp4g2GeneraterParms();
+    this.mvp4g2GeneraterParms = new Mvp4g2GeneraterParms();
 
-    this.model.setGroupId("com.example");
-    this.model.setArtefactId("MyTestProject");
-    this.model.setApplicationLoader(true);
-    this.model.setDebug(true);
-    this.model.setHistory(true);
-    this.model.setHistoryOnStart(true);
+    this.mvp4g2GeneraterParms.setGroupId("com.example");
+    this.mvp4g2GeneraterParms.setArtefactId("MyTestProject");
+    this.mvp4g2GeneraterParms.setApplicationLoader(true);
+    this.mvp4g2GeneraterParms.setDebug(true);
+    this.mvp4g2GeneraterParms.setHistory(true);
+    this.mvp4g2GeneraterParms.setHistoryOnStart(true);
 
-    this.model.getPresenters()
-              .add(new PresenterData("search",
-                                     "R2D2",
-                                     false,
-                                     true,
-                                     false,
-                                     true,
-                                     true));
-    this.model.getPresenters()
-              .add(new PresenterData("list",
-                                     "C3P0",
-                                     false,
-                                     false,
-                                     false,
-                                     true,
-                                     true));
-    this.model.getPresenters()
-              .add(new PresenterData("detail",
-                                     "BB8",
-                                     false,
-                                     false,
-                                     true,
-                                     true,
-                                     true));
-    view.edit(this.model);
+    this.mvp4g2GeneraterParms.getPresenters()
+                             .add(new PresenterData("search",
+                                                    "R2D2",
+                                                    false,
+                                                    true,
+                                                    false,
+                                                    true,
+                                                    true));
+    this.mvp4g2GeneraterParms.getPresenters()
+                             .add(new PresenterData("list",
+                                                    "C3P0",
+                                                    false,
+                                                    false,
+                                                    false,
+                                                    true,
+                                                    true));
+    this.mvp4g2GeneraterParms.getPresenters()
+                             .add(new PresenterData("detail",
+                                                    "BB8",
+                                                    false,
+                                                    false,
+                                                    true,
+                                                    true,
+                                                    true));
+    view.edit(this.mvp4g2GeneraterParms);
     eventBus.setCenter(view.asWidget());
   }
 
@@ -88,8 +105,8 @@ public class ContentPresenter
   public void onGenerateProject() {
     eventBus.showProgressBar();
     if (view.isValid()) {
-      view.flush(this.model);
-      eventBus.generate(this.model);
+      view.flush(this.mvp4g2GeneraterParms);
+      eventBus.generate(this.mvp4g2GeneraterParms);
     } else {
       // TODO error message
     }

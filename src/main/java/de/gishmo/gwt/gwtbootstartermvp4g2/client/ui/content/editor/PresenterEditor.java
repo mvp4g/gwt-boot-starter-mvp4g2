@@ -61,9 +61,16 @@ public class PresenterEditor
     this.view.show();
   }
 
+  @Override
+  public void doSave(PresenterData model) {
+    this.delegate.save(model,
+                       this.isNew);
+  }
+
   public interface PresenterEditorDelegate {
 
-    void save(PresenterData model);
+    void save(PresenterData model,
+              boolean isNew);
 
   }
 }
