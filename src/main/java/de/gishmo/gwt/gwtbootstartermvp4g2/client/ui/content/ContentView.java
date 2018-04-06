@@ -23,7 +23,6 @@ import java.util.List;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -472,23 +471,5 @@ public class ContentView
 
     this.editButton.setEnabled(false);
     this.deleteButton.setEnabled(false);
-  }
-
-  private void setThemeFontDetails(Element el) {
-    el.getStyle()
-      .setProperty("fontSize",
-                   themeDetails.panel()
-                               .font()
-                               .size());
-    el.getStyle()
-      .setProperty("fontFamily",
-                   themeDetails.panel()
-                               .font()
-                               .family());
-    el.getStyle()
-      .setProperty("color",
-                   themeDetails.panel()
-                               .font()
-                               .color());
   }
 }

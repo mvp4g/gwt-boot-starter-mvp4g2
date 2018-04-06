@@ -39,11 +39,6 @@ public class ButtonBarView
     return this.container;
   }
 
-//  @Override
-//  public void setStatus(String status) {
-//    this.label.setText(status);
-//  }
-
   @Override
   public void createView() {
     this.container = new CenterLayoutContainer();

@@ -544,7 +544,7 @@ public class PomGenerator {
                                   "mvp4g2 version"))
       .append(this.addAddrLine(4,
                                "mvp4g2.version",
-                               "1.0-rc-2"))
+                               "1.0-rc-3"))
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addCommentLine(4,
                                   "GWT needs at least java 1.6"))
