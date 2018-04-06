@@ -21,14 +21,20 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.Window;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
+import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
+import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.validator.RegExValidator;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 
 public class PresenterEditorView
   extends Dialog
@@ -36,12 +42,17 @@ public class PresenterEditorView
              Editor<PresenterData> {
 
   @Path("name")
-  TextField name;
+  TextField                    name;
   @Path("historyName")
-  TextField historyName;
+  TextField                    historyName;
   @Path("confirmation")
-  CheckBox  confirmation;
-  private VerticalLayoutContainer container;
+  CheckBox                     confirmation;
+  @Path("viewCreationMethod")
+  ComboBox<ViewCreationMethod> viewCreationMethod;
+
+  private ListStore<ViewCreationMethod> viewGenerationMethodListStore;
+
+  private VerticalLayoutContainer        container;
   private IPresenterEditorView.Presenter presenter;
 
   private TextButton saveButton;
@@ -64,11 +75,28 @@ public class PresenterEditorView
   private void createWidgets() {
     this.name = new TextField();
     this.name.setAllowBlank(false);
+    this.name.addValidator(new RegExValidator("^[a-zA-Z0-9.]*$",
+                                              "a - z, A - Z, 0 - 9 and '.' allowed"));
 
     this.historyName = new TextField();
+    this.name.addValidator(new RegExValidator("^[a-zA-Z0-9]*$",
+                                              "a - z, A - Z and 0 - 9 allowed"));
 
     this.confirmation = new CheckBox();
     this.confirmation.setBoxLabel("implement confirmation for this presenter");
+
+    this.viewGenerationMethodListStore = new ListStore<>(new ModelKeyProvider<ViewCreationMethod>() {
+      @Override
+      public String getKey(ViewCreationMethod viewCreationMethod) {
+        return viewCreationMethod.name();
+      }
+    });
+    this.viewGenerationMethodListStore.add(ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK);
+    this.viewGenerationMethodListStore.add(ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER);
+    this.viewCreationMethod = new ComboBox<>(this.viewGenerationMethodListStore,
+                                               viewCreationMethod -> viewCreationMethod.getText());
+    this.viewCreationMethod.setForceSelection(true);
+    this.viewCreationMethod.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
 
     this.saveButton = new TextButton("Save");
     this.cancelButton = new TextButton("Cancel");
@@ -94,21 +122,30 @@ public class PresenterEditorView
                        new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                       -1));
 
+    FieldLabel fl03 = new FieldLabel(this.viewCreationMethod,
+                                     "View Creation Method");
+    fl03.setLabelAlign(FormPanel.LabelAlign.TOP);
+    this.container.add(fl03,
+                       new VerticalLayoutContainer.VerticalLayoutData(1,
+                                                                      -1));
+
     this.container.add(this.confirmation,
                        new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                       -1));
-    super.getButtonBar().add(this.saveButton);
-    super.getButtonBar().add(this.cancelButton);
+    super.getButtonBar()
+         .add(this.saveButton);
+    super.getButtonBar()
+         .add(this.cancelButton);
   }
 
   public void bind() {
     this.saveButton.addSelectHandler(selectEvent -> {
       if (isValid()) {
         getPresenter().doSave(this.driver.flush());
+        super.hide();
       } else {
         Window.alert("please, correct all errors!");
       }
-      super.hide();
     });
 
     this.cancelButton.addSelectHandler(selectEvent -> super.hide());
@@ -118,7 +155,26 @@ public class PresenterEditorView
   }
 
   private boolean isValid() {
-    return this.name.isValid();
+    boolean nameIsValid = this.name.isValid();
+    boolean historyNameIsValid = this.historyName.isValid();
+    if (nameIsValid && historyNameIsValid) {
+      if (getPresenter().doIsHistoryNameAlreadyUsed(driver.flush())) {
+        this.historyName.markInvalid("History Name must be unique!");
+      }
+    }
+    return nameIsValid && historyNameIsValid;
+  }
+
+  @Override
+  public void clearView() {
+    this.name.setValue("");
+    this.name.clearInvalid();
+
+    this.historyName.setValue("");
+    this.historyName.clearInvalid();
+
+    this.confirmation.setValue(false);
+    this.confirmation.clearInvalid();
   }
 
   @Override
@@ -141,6 +197,7 @@ public class PresenterEditorView
   @Override
   public void show() {
     super.show();
+    this.name.focus();
   }
 
   interface Driver

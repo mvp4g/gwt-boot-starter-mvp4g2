@@ -59,6 +59,7 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 
 public class ContentView
   extends LazyReverseView<IContentView.Presenter>
@@ -175,10 +176,30 @@ public class ContentView
     ccConfirmation.setFixed(true);
     ccConfirmation.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
+    ColumnConfig<PresenterData, ViewCreationMethod> ccViewGenerationMethod = new ColumnConfig<>(presenterDataProps.viewCreationMethod(),
+                                                                                                175,
+                                                                                                "View Generation Method");
+    ccViewGenerationMethod.setCell(new AbstractCell<ViewCreationMethod>() {
+      @Override
+      public void render(Context context,
+                         ViewCreationMethod s,
+                         SafeHtmlBuilder safeHtmlBuilder) {
+        GWT.debugger();
+        if (ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK == s) {
+          safeHtmlBuilder.append(SafeHtmlUtils.fromTrustedString("Framework"));
+        } else {
+          safeHtmlBuilder.append(SafeHtmlUtils.fromTrustedString("Presenter"));
+        }
+      }
+    });
+    ccViewGenerationMethod.setFixed(true);
+    ccViewGenerationMethod.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+
     List<ColumnConfig<PresenterData, ?>> list = new ArrayList<>();
     list.add(ccName);
     list.add(ccHistoryName);
     list.add(ccConfirmation);
+    list.add(ccViewGenerationMethod);
     ColumnModel<PresenterData> cm = new ColumnModel<>(list);
     grid = new Grid<>(store,
                       cm);
@@ -343,47 +364,6 @@ public class ContentView
     vlc.add(addDistance("12px"),
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            12));
-
-    //    CssFloatLayoutContainer flc01 = new CssFloatLayoutContainer();
-    //    vlc.add(flc01,
-    //            new VerticalLayoutContainer.VerticalLayoutData(1,
-    //                                                           -1));
-    //    flc01.add(this.applicationLoader,
-    //              new CssFloatLayoutContainer.CssFloatData(1));
-    //
-    //    vlc.add(this.addDistance("12px"),
-    //            new VerticalLayoutContainer.VerticalLayoutData(1,
-    //                                                           12));
-    //
-    //    CssFloatLayoutContainer flc02 = new CssFloatLayoutContainer();
-    //    vlc.add(flc02,
-    //            new VerticalLayoutContainer.VerticalLayoutData(1,
-    //                                                           -1));
-    //    flc02.add(this.history,
-    //              new CssFloatLayoutContainer.CssFloatData(1));
-    //    vlc.add(this.addDistance("12px"),
-    //            new VerticalLayoutContainer.VerticalLayoutData(1,
-    //                                                           12));
-    //
-    //    CssFloatLayoutContainer flc03 = new CssFloatLayoutContainer();
-    //    vlc.add(flc03,
-    //            new VerticalLayoutContainer.VerticalLayoutData(1,
-    //                                                           -1));
-    //    flc03.add(this.historyOnStart,
-    //              new CssFloatLayoutContainer.CssFloatData(1));
-    //    flc01.add(this.createFielLabal("Artifact Id",
-    //                                   this.artifactId),
-    //              new CssFloatLayoutContainer.CssFloatData(0.5,
-    //                                                       ContentView.MARGINS));
-    //
-    //    CssFloatLayoutContainer flc02 = new CssFloatLayoutContainer();
-    //    vlc.add(flc02,
-    //            new VerticalLayoutContainer.VerticalLayoutData(1,
-    //                                                           -1));
-    //    flc02.add(this.createFielLabal("GWT-Version",
-    //                                   this.gwtVersion),
-    //              new CssFloatLayoutContainer.CssFloatData(0.5,
-    //                                                       ContentView.MARGINS));
   }
 
   private ContentPanel createContentPanel(String heading) {
@@ -489,6 +469,9 @@ public class ContentView
   public void updateGrid(Mvp4g2GeneraterParms mvp4g2GeneraterParms) {
     this.store.clear();
     this.store.addAll(mvp4g2GeneraterParms.getPresenters());
+
+    this.editButton.setEnabled(false);
+    this.deleteButton.setEnabled(false);
   }
 
   private void setThemeFontDetails(Element el) {

@@ -26,6 +26,7 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor.PresenterEditor;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 
 @Presenter(viewClass = ContentView.class, viewInterface = IContentView.class)
 public class ContentPresenter
@@ -78,6 +79,7 @@ public class ContentPresenter
                                                     "R2D2",
                                                     false,
                                                     true,
+                                                    ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER,
                                                     false,
                                                     true,
                                                     true));
@@ -86,6 +88,7 @@ public class ContentPresenter
                                                     "C3P0",
                                                     false,
                                                     false,
+                                                    ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK,
                                                     false,
                                                     true,
                                                     true));
@@ -94,6 +97,7 @@ public class ContentPresenter
                                                     "BB8",
                                                     false,
                                                     false,
+                                                    ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK,
                                                     true,
                                                     true,
                                                     true));
@@ -114,11 +118,12 @@ public class ContentPresenter
 
   @Override
   public void doAdd() {
-    this.presenterEditor.add();
+    this.presenterEditor.add(this.mvp4g2GeneraterParms.getPresenters());
   }
 
   @Override
   public void doEdit(PresenterData model) {
-    this.presenterEditor.edit(model);
+    this.presenterEditor.edit(this.mvp4g2GeneraterParms.getPresenters(),
+                              model);
   }
 }

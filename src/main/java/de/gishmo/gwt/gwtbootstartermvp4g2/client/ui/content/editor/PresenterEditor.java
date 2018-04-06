@@ -17,10 +17,15 @@
 
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 
 public class PresenterEditor
   implements IPresenterEditorView.Presenter {
+
+  private List<PresenterData> presenterDataList;
 
   private PresenterData           presenterData;
   private IPresenterEditorView    view;
@@ -35,30 +40,66 @@ public class PresenterEditor
     this.view.setPresenter(this);
 
     this.delegate = delegate;
+
+    this.presenterDataList = new ArrayList<>();
   }
 
-  public void add() {
+  public void add(List<PresenterData> presenterDataList) {
+    this.presenterDataList = presenterDataList;
     this.presenterData = new PresenterData();
     this.isNew = true;
+    this.view.clearView();
     this.view.edit(this.presenterData,
                    isNew);
     this.view.show();
   }
 
-  public void edit(PresenterData presenterData) {
+  public void edit(List<PresenterData> presenterDataList,
+                   PresenterData presenterData) {
+    this.presenterDataList = presenterDataList;
     this.presenterData = presenterData;
     this.isNew = false;
+    this.view.clearView();
     this.view.edit(this.presenterData,
                    isNew);
     this.view.show();
   }
 
-  public void copy(PresenterData presenterData) {
+  public void copy(List<PresenterData> presenterDataList,
+                   PresenterData presenterData) {
+    this.presenterDataList = presenterDataList;
     this.presenterData = presenterData.copy();
     this.isNew = true;
+    this.view.clearView();
     this.view.edit(this.presenterData,
                    isNew);
     this.view.show();
+  }
+
+  @Override
+  public boolean doIsHistoryNameAlreadyUsed(PresenterData model) {
+    if (model.getHistoryName() == null || model.getHistoryName()
+                                               .trim()
+                                               .length() == 0) {
+      return true;
+    }
+    for (PresenterData data : presenterDataList) {
+      if (isNew) {
+        if (model.getHistoryName()
+                 .equals(data.getHistoryName())) {
+          return false;
+        }
+      } else {
+        if (model.getHistoryName()
+                 .equals(data.getHistoryName())) {
+          if (!model.getId()
+                    .equals(data.getId())) {
+            return false;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   @Override

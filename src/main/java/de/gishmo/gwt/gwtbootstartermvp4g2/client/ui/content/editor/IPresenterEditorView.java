@@ -21,6 +21,8 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 
 public interface IPresenterEditorView {
 
+  void clearView();
+
   void edit(PresenterData model,
             boolean isNew);
 
@@ -31,6 +33,8 @@ public interface IPresenterEditorView {
   void show();
 
   interface Presenter {
+
+    boolean doIsHistoryNameAlreadyUsed(PresenterData model);
 
     void doSave(PresenterData flush);
 

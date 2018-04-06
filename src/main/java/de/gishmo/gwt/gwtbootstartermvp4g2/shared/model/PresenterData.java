@@ -11,9 +11,10 @@ public class PresenterData {
   private String name;
   private String historyName;
 
-  private boolean shell;
-  private boolean confirmation;
-  private boolean showPresenterAtStart;
+  private boolean            shell;
+  private boolean            confirmation;
+  private boolean            showPresenterAtStart;
+  private ViewCreationMethod viewCreationMethod;
 
   private boolean deletable;
   private boolean editable;
@@ -26,6 +27,7 @@ public class PresenterData {
          "",
          false,
          false,
+         ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK,
          false,
          true,
          true);
@@ -36,6 +38,7 @@ public class PresenterData {
                         String historyName,
                         boolean shell,
                         boolean showPresenterAtStart,
+                        ViewCreationMethod viewCreationMethod,
                         boolean confirmation,
                         boolean deletable,
                         boolean editable) {
@@ -44,6 +47,7 @@ public class PresenterData {
     this.historyName = historyName;
     this.shell = shell;
     this.showPresenterAtStart = showPresenterAtStart;
+    this.viewCreationMethod = viewCreationMethod;
     this.confirmation = confirmation;
     this.deletable = deletable;
     this.editable = editable;
@@ -55,6 +59,7 @@ public class PresenterData {
                        String historyName,
                        boolean shell,
                        boolean showPresenterAtStart,
+                       ViewCreationMethod viewCreationMethod,
                        boolean confirmation,
                        boolean deletable,
                        boolean editable) {
@@ -63,9 +68,21 @@ public class PresenterData {
          historyName,
          shell,
          showPresenterAtStart,
+         viewCreationMethod,
          confirmation,
          deletable,
          editable);
+  }
+
+  public PresenterData copy() {
+    return new PresenterData(name + " copy",
+                             (this.historyName != null && this.historyName.length() > 0) ? this.historyName + " copy" : this.historyName,
+                             false,
+                             true,
+                             this.viewCreationMethod,
+                             this.confirmation,
+                             true,
+                             true);
   }
 
   @Override
@@ -77,6 +94,7 @@ public class PresenterData {
                         isShell(),
                         isConfirmation(),
                         isShowPresenterAtStart(),
+                        getViewCreationMethod(),
                         isDeletable(),
                         isEditable(),
                         getParameters());
@@ -91,11 +109,20 @@ public class PresenterData {
       return false;
     }
     PresenterData that = (PresenterData) o;
-    return isShell() == that.isShell() && isConfirmation() == that.isConfirmation() && isShowPresenterAtStart() == that.isShowPresenterAtStart() && isDeletable() == that.isDeletable() && isEditable() == that.isEditable() && Objects.equals(getId(),
-                                                                                                                                                                                                                                               that.getId()) && Objects.equals(getName(),
-                                                                                                                                                                                                                                                                               that.getName()) && Objects.equals(getHistoryName(),
-                                                                                                                                                                                                                                                                                                                 that.getHistoryName()) && Objects.equals(getParameters(),
-                                                                                                                                                                                                                                                                                                                                                          that.getParameters());
+    return isShell() == that.isShell() &&
+           isConfirmation() == that.isConfirmation() &&
+           isShowPresenterAtStart() == that.isShowPresenterAtStart() &&
+           isDeletable() == that.isDeletable() &&
+           isEditable() == that.isEditable() &&
+           Objects.equals(getId(),
+                          that.getId()) &&
+           Objects.equals(getName(),
+                          that.getName()) &&
+           Objects.equals(getHistoryName(),
+                          that.getHistoryName()) &&
+           getViewCreationMethod() == that.getViewCreationMethod() &&
+           Objects.equals(getParameters(),
+                          that.getParameters());
   }
 
   public PresenterData clone() {
@@ -104,29 +131,10 @@ public class PresenterData {
                              historyName,
                              false,
                              true,
+                             this.viewCreationMethod,
                              this.confirmation,
                              true,
                              true);
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getHistoryName() {
-    return historyName;
   }
 
   public boolean isShell() {
@@ -165,6 +173,38 @@ public class PresenterData {
     return editable;
   }
 
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getHistoryName() {
+    return historyName;
+  }
+
+  public void setHistoryName(String historyName) {
+    this.historyName = historyName;
+  }
+
+  public ViewCreationMethod getViewCreationMethod() {
+    return viewCreationMethod;
+  }
+
+  public void setViewCreationMethod(ViewCreationMethod viewCreationMethod) {
+    this.viewCreationMethod = viewCreationMethod;
+  }
+
   public List<Parameter> getParameters() {
     return parameters;
   }
@@ -175,19 +215,5 @@ public class PresenterData {
 
   public void setEditable(boolean editable) {
     this.editable = editable;
-  }
-
-  public void setHistoryName(String historyName) {
-    this.historyName = historyName;
-  }
-
-  public PresenterData copy() {
-    return new PresenterData(name + " copy",
-                             (this.historyName != null && this.historyName.length() > 0) ? this.historyName + " copy" : this.historyName,
-                             false,
-                             true,
-                             this.confirmation,
-                             true,
-                             true);
   }
 }

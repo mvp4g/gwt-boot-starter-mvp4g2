@@ -9,9 +9,11 @@ import com.github.mvp4g.mvp4g2.core.history.IsNavigationConfirmation;
 import com.github.mvp4g.mvp4g2.core.history.NavigationEventCommand;
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
+import com.github.mvp4g.mvp4g2.core.ui.IsViewCreator;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
@@ -30,6 +32,7 @@ import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
@@ -165,23 +168,28 @@ public class PresenterViewSourceGenerator {
 
   private void generatePresenterClass()
     throws GeneratorException {
+    AnnotationSpec.Builder presenterAnnotation = AnnotationSpec.builder(Presenter.class)
+                                                               .addMember("viewClass",
+                                                                          "$T.class",
+                                                                          ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
+                                                                                                                                              .toLowerCase(),
+                                                                                        GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
+                                                               .addMember("viewInterface",
+                                                                          "$T.class",
+                                                                          ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
+                                                                                                                                              .toLowerCase(),
+                                                                                        "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"));
+    if (ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER == this.presenterData.getViewCreationMethod()) {
+      presenterAnnotation.addMember("viewCreator",
+                                    "$T.VIEW_CREATION_METHOD.PRESENTER",
+                                    Presenter.class);
+    }
     TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "Prensenter")
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
                                         .addModifiers(Modifier.PUBLIC)
-                                        .addAnnotation(AnnotationSpec.builder(Presenter.class)
-                                                                     .addMember("viewClass",
-                                                                                "$T.class",
-                                                                                ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
-                                                                                                                                                    .toLowerCase(),
-                                                                                              GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
-                                                                     .addMember("viewInterface",
-                                                                                "$T.class",
-                                                                                ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
-                                                                                                                                                    .toLowerCase(),
-                                                                                              "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
-                                                                     .build())
+                                        .addAnnotation(presenterAnnotation.build())
                                         .superclass(ParameterizedTypeName.get(ClassName.get(AbstractPresenter.class),
                                                                               ClassName.get(this.clientPackageJavaConform,
                                                                                             GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
@@ -193,6 +201,12 @@ public class PresenterViewSourceGenerator {
                                                                          "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter"));
     if (presenterData.isConfirmation()) {
       typeSpec.addSuperinterface(IsNavigationConfirmation.class);
+    }
+    if (ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER == this.presenterData.getViewCreationMethod()) {
+      typeSpec.addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsViewCreator.class),
+                                                           ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
+                                                                                                                               .toLowerCase(),
+                                                                         "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")));
     }
     typeSpec.addMethod(MethodSpec.constructorBuilder()
                                  .addModifiers(Modifier.PUBLIC)
@@ -248,6 +262,27 @@ public class PresenterViewSourceGenerator {
                                    .nextControlFlow("else")
                                    .addStatement("event.fireEvent()")
                                    .endControlFlow()
+                                   .build());
+    }
+    if (ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER == this.presenterData.getViewCreationMethod()) {
+      typeSpec.addMethod(MethodSpec.methodBuilder("createView")
+                                   .addJavadoc("Because we have told mvp4g2, that this presenter will create it's view\n" +
+                                               "(viewCreator = Presenter.VIEW_CREATION_METHOD.PRESENTER), we have to\n" +
+                                               "implement this method.\n" +
+                                               "\n" +
+                                               "This enables use, to use GWT.create instead of new (what the framework is doing!)\n" +
+                                               "\n" +
+                                               "@return a new instance of the view.\n")
+                                   .addModifiers(Modifier.PUBLIC)
+                                   .addAnnotation(Override.class)
+                                   .returns(ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
+                                                                                                                .toLowerCase(),
+                                                          "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
+                                   .addStatement("return $T.create($T.class)",
+                                                 GWT.class,
+                                                 ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
+                                                                                                                     .toLowerCase(),
+                                                               GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
                                    .build());
     }
 
