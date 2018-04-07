@@ -23,7 +23,6 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.Window;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
@@ -49,7 +48,6 @@ public class PresenterEditorView
   CheckBox                     confirmation;
   @Path("viewCreationMethod")
   ComboBox<ViewCreationMethod> viewCreationMethod;
-
   private ListStore<ViewCreationMethod> viewGenerationMethodListStore;
 
   private VerticalLayoutContainer        container;
@@ -85,12 +83,7 @@ public class PresenterEditorView
     this.confirmation = new CheckBox();
     this.confirmation.setBoxLabel("implement confirmation for this presenter");
 
-    this.viewGenerationMethodListStore = new ListStore<>(new ModelKeyProvider<ViewCreationMethod>() {
-      @Override
-      public String getKey(ViewCreationMethod viewCreationMethod) {
-        return viewCreationMethod.name();
-      }
-    });
+    this.viewGenerationMethodListStore = new ListStore<>(viewCreationMethod -> viewCreationMethod.name());
     this.viewGenerationMethodListStore.add(ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK);
     this.viewGenerationMethodListStore.add(ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER);
     this.viewCreationMethod = new ComboBox<>(this.viewGenerationMethodListStore,

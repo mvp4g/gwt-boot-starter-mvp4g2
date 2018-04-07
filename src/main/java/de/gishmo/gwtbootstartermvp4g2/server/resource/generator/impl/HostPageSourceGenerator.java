@@ -43,7 +43,6 @@ public class HostPageSourceGenerator {
   public void generate()
     throws GeneratorException {
     this.generateHostPage();
-    this.generateCssFile();
   }
 
   private void generateHostPage()
@@ -136,69 +135,6 @@ public class HostPageSourceGenerator {
     } catch (IOException e) {
       throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryResourcesStatic.getPath() + this.mvp4g2GeneraterParms.getArtefactId() + ".html") + "<< -> exception: " + e.getMessage());
     }
-  }
-
-  private void generateCssFile()
-    throws GeneratorException {
-
-    StringBuilder sb = new StringBuilder();
-
-    String fileContent = sb.toString();
-
-    try {
-      Files.write(Paths.get(directoryResourcesStatic.getPath() + File.separator + this.mvp4g2GeneraterParms.getArtefactId() + ".css"),
-                  fileContent.getBytes());
-    } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryResourcesStatic.getPath() + this.mvp4g2GeneraterParms.getArtefactId() + ".css") + "<< -> exception: " + e.getMessage());
-    }
-
-
-//    String srcScript = this.mvp4g2GeneraterParms.getArtefactId()
-//                                                .toLowerCase() + "/" + this.mvp4g2GeneraterParms.getArtefactId()
-//                                                                                                .toLowerCase() + ".nocache.js";
-//
-//    String html = GeneratorConstants.COPYRIGHT_HTML + HostPageSourceGenerator.LINE_BREAK + HostPageSourceGenerator.LINE_BREAK;
-//
-//
-//    html = html + document().render() + HostPageSourceGenerator.LINE_BREAK + HostPageSourceGenerator.LINE_BREAK +
-//           html().with(
-//             head().with(
-//               meta().attr("http-equiv",
-//                           "content-type")
-//                     .attr("content",
-//                           "text/html; charset=UTF-8"),
-//               title("Mvp4g2 Boot Starter Project: " + mvp4g2GeneraterParms.getArtefactId()),
-//               link().attr("type",
-//                           "text/css")
-//                     .attr("rel",
-//                           "stylesheet")
-//                     .attr("href",
-//                           this.mvp4g2GeneraterParms.getArtefactId() + ".css"),
-//               script().attr("type",
-//                             "text/javascript")
-//                       .attr("language",
-//                             "javascript")
-//                       .attr("src",
-//                             srcScript)
-//
-//             ),
-//             body(
-//               noscript(
-//                 div(
-//                   "Your web browser must have JavaScript enabled in order for this application to display correctly."
-//                 ).attr("style",
-//                        "width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif")
-//               )
-//             )
-//           )
-//                 .renderFormatted();
-//
-//    try {
-//      Files.write(Paths.get(directoryResourcesStatic.getPath() + File.separator + this.mvp4g2GeneraterParms.getArtefactId() + ".html"),
-//                  html.getBytes());
-//    } catch (IOException e) {
-//      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryResourcesStatic.getPath() + this.mvp4g2GeneraterParms.getArtefactId() + ".html") + "<< -> exception: " + e.getMessage());
-//    }
   }
 
   public static class Builder {

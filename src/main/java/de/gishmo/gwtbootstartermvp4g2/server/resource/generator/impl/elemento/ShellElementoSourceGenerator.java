@@ -1,4 +1,4 @@
-package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
+package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,14 +11,6 @@ import com.github.mvp4g.mvp4g2.core.ui.IsShell;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -32,8 +24,13 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
+import elemental2.dom.DomGlobal;
+import elemental2.dom.Element;
+import elemental2.dom.HTMLElement;
+import elemental2.dom.Node;
+import org.jboss.gwt.elemento.core.Elements;
 
-public class ShellSourceGenerator {
+public class ShellElementoSourceGenerator {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
@@ -43,7 +40,7 @@ public class ShellSourceGenerator {
 
   private String presenterPackage;
 
-  private ShellSourceGenerator(Builder builder) {
+  private ShellElementoSourceGenerator(Builder builder) {
     super();
 
     this.mvp4g2GeneraterParms = builder.mvp4g2GeneraterParms;
@@ -78,34 +75,34 @@ public class ShellSourceGenerator {
                                         .addMethod(MethodSpec.methodBuilder("asWidget")
                                                              .addModifiers(Modifier.PUBLIC,
                                                                            Modifier.ABSTRACT)
-                                                             .returns(ClassName.get(Widget.class))
-                                                             .addJavadoc("mvp4g2 does not know Widget-, Element- or any other GWT specific class. So, the\n" + "presenter have to manage the widget by themselves. The method will\n" + "enable the presenter to get the view. (In our case it is a\n" + "GWT widget)\n" + "\n" + "@return The shell widget\n")
+                                                             .returns(ClassName.get(Element.class))
+                                                             .addJavadoc(GeneratorConstants.AS_WIDGET_TEXT)
                                                              .build());
     typeSpec.addMethod(MethodSpec.methodBuilder("setContent")
                                  .addModifiers(Modifier.PUBLIC,
                                                Modifier.ABSTRACT)
-                                 .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
+                                 .addParameter(ParameterSpec.builder(ClassName.get(Element.class),
                                                                      "widget")
                                                             .build())
                                  .build());
     typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
                                  .addModifiers(Modifier.PUBLIC,
                                                Modifier.ABSTRACT)
-                                 .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
+                                 .addParameter(ParameterSpec.builder(ClassName.get(Element.class),
                                                                      "widget")
                                                             .build())
                                  .build());
     typeSpec.addMethod(MethodSpec.methodBuilder("setHeader")
                                  .addModifiers(Modifier.PUBLIC,
                                                Modifier.ABSTRACT)
-                                 .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
+                                 .addParameter(ParameterSpec.builder(ClassName.get(Element.class),
                                                                      "widget")
                                                             .build())
                                  .build());
     typeSpec.addMethod(MethodSpec.methodBuilder("setStatusbar")
                                  .addModifiers(Modifier.PUBLIC,
                                                Modifier.ABSTRACT)
-                                 .addParameter(ParameterSpec.builder(ClassName.get(Widget.class),
+                                 .addParameter(ParameterSpec.builder(ClassName.get(Element.class),
                                                                      "widget")
                                                             .build())
                                  .build());
@@ -138,28 +135,24 @@ public class ShellSourceGenerator {
 
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.shell",
                                                                          "IShellView"));
-    typeSpec.addField(FieldSpec.builder(ClassName.get(ResizeLayoutPanel.class),
+    typeSpec.addField(FieldSpec.builder(ClassName.get(HTMLElement.class),
                                         "shell",
                                         Modifier.PRIVATE)
                                .build());
-    typeSpec.addField(FieldSpec.builder(ClassName.get(DockLayoutPanel.class),
-                                        "container",
+    typeSpec.addField(FieldSpec.builder(ClassName.get(HTMLElement.class),
+                                        "content",
                                         Modifier.PRIVATE)
                                .build());
-    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
+    typeSpec.addField(FieldSpec.builder(ClassName.get(HTMLElement.class),
                                         "header",
                                         Modifier.PRIVATE)
                                .build());
-    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
+    typeSpec.addField(FieldSpec.builder(ClassName.get(HTMLElement.class),
                                         "navigation",
                                         Modifier.PRIVATE)
                                .build());
-    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
+    typeSpec.addField(FieldSpec.builder(ClassName.get(HTMLElement.class),
                                         "statusbar",
-                                        Modifier.PRIVATE)
-                               .build());
-    typeSpec.addField(FieldSpec.builder(ClassName.get(Widget.class),
-                                        "widget",
                                         Modifier.PRIVATE)
                                .build());
     // constrcutor
@@ -171,7 +164,7 @@ public class ShellSourceGenerator {
     typeSpec.addMethod(MethodSpec.methodBuilder("asWidget")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .returns(Widget.class)
+                                 .returns(Element.class)
                                  .addStatement("return shell")
                                  .build());
     // createView method
@@ -180,49 +173,61 @@ public class ShellSourceGenerator {
     typeSpec.addMethod(MethodSpec.methodBuilder("setContent")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .addParameter(Widget.class,
+                                 .addParameter(Element.class,
                                                "widget")
-                                 .beginControlFlow("if (this.widget != null) ")
-                                 .addStatement("this.widget.removeFromParent()")
+                                 .beginControlFlow("if (this.content.childElementCount > 0) ")
+                                 .beginControlFlow("for (int i = 0; i < this.content.childNodes.length; i++)")
+                                 .addStatement("$T oldChild = this.content.childNodes.item(i)",
+                                               Node.class)
+                                 .addStatement("this.content.removeChild(oldChild)")
                                  .endControlFlow()
-                                 .addStatement("this.container.add(widget)")
-                                 .addStatement("this.widget = widget")
+                                 .endControlFlow()
+                                 .addStatement("this.content.appendChild(widget)")
                                  .build());
     // setHeader method
     typeSpec.addMethod(MethodSpec.methodBuilder("setHeader")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .addParameter(Widget.class,
+                                 .addParameter(Element.class,
                                                "widget")
-                                 .beginControlFlow("if (this.header.getWidget() != null) ")
-                                 .addStatement("this.header.getWidget().removeFromParent()")
+                                 .beginControlFlow("if (this.header.childElementCount > 0) ")
+                                 .beginControlFlow("for (int i = 0; i < this.header.childNodes.length; i++)")
+                                 .addStatement("$T oldChild = this.header.childNodes.item(i)",
+                                               Node.class)
+                                 .addStatement("this.header.removeChild(oldChild)")
                                  .endControlFlow()
-                                 .addStatement("this.header.setWidget(widget)")
+                                 .endControlFlow()
+                                 .addStatement("this.header.appendChild(widget)")
                                  .build());
     // setNavigation method
     typeSpec.addMethod(MethodSpec.methodBuilder("setNavigation")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .addParameter(Widget.class,
+                                 .addParameter(Element.class,
                                                "widget")
-                                 .beginControlFlow("if (this.navigation.getWidget() != null) ")
-                                 .addStatement("this.navigation.getWidget().removeFromParent()")
+                                 .beginControlFlow("if (this.navigation.childElementCount > 0) ")
+                                 .beginControlFlow("for (int i = 0; i < this.navigation.childNodes.length; i++)")
+                                 .addStatement("$T oldChild = this.navigation.childNodes.item(i)",
+                                               Node.class)
+                                 .addStatement("this.navigation.removeChild(oldChild)")
                                  .endControlFlow()
-                                 .addStatement("this.navigation.setWidget(widget)")
+                                 .endControlFlow()
+                                 .addStatement("this.navigation.appendChild(widget)")
                                  .build());
     // setHeader method
     typeSpec.addMethod(MethodSpec.methodBuilder("setStatusbar")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .addParameter(Widget.class,
+                                 .addParameter(Element.class,
                                                "widget")
-                                 .beginControlFlow("if (this.statusbar.getWidget() != null) ")
-                                 .addStatement("this.statusbar.getWidget().removeFromParent()")
+                                 .beginControlFlow("if (this.statusbar.childElementCount > 0) ")
+                                 .beginControlFlow("for (int i = 0; i < this.statusbar.childNodes.length; i++)")
+                                 .addStatement("$T oldChild = this.statusbar.childNodes.item(i)",
+                                               Node.class)
+                                 .addStatement("this.statusbar.removeChild(oldChild)")
                                  .endControlFlow()
-                                 .addStatement("this.statusbar.setWidget(widget)")
-                                 .build());
-    typeSpec.addMethod(MethodSpec.methodBuilder("forceLayout")
-                                 .addModifiers(Modifier.PUBLIC)
+                                 .endControlFlow()
+                                 .addStatement("this.statusbar.appendChild(widget)")
                                  .build());
 
     JavaFile javaFile = JavaFile.builder(this.presenterPackage,
@@ -276,36 +281,36 @@ public class ShellSourceGenerator {
                                         .addMethod(MethodSpec.methodBuilder("onSetContent")
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addAnnotation(EventHandler.class)
-                                                             .addParameter(Widget.class,
+                                                             .addParameter(Element.class,
                                                                            "widget")
                                                              .addStatement("view.setContent(widget)")
                                                              .build())
                                         .addMethod(MethodSpec.methodBuilder("onSetHeader")
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addAnnotation(EventHandler.class)
-                                                             .addParameter(Widget.class,
+                                                             .addParameter(Element.class,
                                                                            "widget")
                                                              .addStatement("view.setHeader(widget)")
                                                              .build())
                                         .addMethod(MethodSpec.methodBuilder("onSetNavigation")
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addAnnotation(EventHandler.class)
-                                                             .addParameter(Widget.class,
+                                                             .addParameter(Element.class,
                                                                            "widget")
                                                              .addStatement("view.setNavigation(widget)")
                                                              .build())
                                         .addMethod(MethodSpec.methodBuilder("onSetStatusbar")
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addAnnotation(EventHandler.class)
-                                                             .addParameter(Widget.class,
+                                                             .addParameter(Element.class,
                                                                            "widget")
                                                              .addStatement("view.setStatusbar(widget)")
                                                              .build())
                                         .addMethod(MethodSpec.methodBuilder("setShell")
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addAnnotation(Override.class)
-                                                             .addStatement("$T.get().add(view.asWidget())",
-                                                                           RootLayoutPanel.class)
+                                                             .addStatement("$T.document.body.appendChild(view.asWidget())",
+                                                                           DomGlobal.class)
                                                              .build());
 
 
@@ -321,43 +326,20 @@ public class ShellSourceGenerator {
   }
 
   private void createViewMethodForShell(TypeSpec.Builder typeSpec) {
-    TypeSpec resizeHandler = TypeSpec.anonymousClassBuilder("")
-                                     .addSuperinterface(ResizeHandler.class)
-                                     .addMethod(MethodSpec.methodBuilder("onResize")
-                                                          .addAnnotation(Override.class)
-                                                          .addModifiers(Modifier.PUBLIC)
-                                                          .addParameter(ResizeEvent.class,
-                                                                        "event")
-                                                          .addStatement("forceLayout()")
-                                                          .build())
-                                     .build();
-
     typeSpec.addMethod(MethodSpec.methodBuilder("createView")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .addStatement("shell = new $T()",
-                                               ClassName.get(ResizeLayoutPanel.class))
-                                 .addStatement("shell.setSize(\"100%\", \"100%\")")
-                                 .addStatement("shell.addResizeHandler($L)",
-                                               resizeHandler)
-                                 .addCode("")
-                                 .addStatement("container = new $T($T.PX)",
-                                               DockLayoutPanel.class,
-                                               Style.Unit.class)
-                                 .addStatement("container.setSize(\"100%\", \"100%\")")
-                                 .addStatement("shell.add(container)")
-                                 .addCode("")
-                                 .addStatement("header = new $T()",
-                                               SimplePanel.class)
-                                 .addStatement("container.addNorth(header, 128)")
-                                 .addCode("")
-                                 .addStatement("navigation = new $T()",
-                                               SimplePanel.class)
-                                 .addStatement("container.addWest(navigation, 212)")
-                                 .addCode("")
-                                 .addStatement("statusbar = new $T()",
-                                               SimplePanel.class)
-                                 .addStatement("container.addSouth(statusbar, 42)")
+                                 .addStatement("this.shell = $T.div().css(\"shell\")" +
+                                               ".add(header = $T.div().css(\"shellHeader\").asElement())" +
+                                               ".add(navigation = $T.div().css(\"shellNavigation\").asElement())" +
+                                               ".add(statusbar = $T.div().css(\"shellFooter\").asElement())" +
+                                               ".add(content = $T.div().css(\"shellContent\").asElement())" +
+                                               ".asElement()",
+                                               Elements.class,
+                                               Elements.class,
+                                               Elements.class,
+                                               Elements.class,
+                                               Elements.class)
                                  .build());
   }
 
@@ -382,8 +364,8 @@ public class ShellSourceGenerator {
       return this;
     }
 
-    public ShellSourceGenerator build() {
-      return new ShellSourceGenerator(this);
+    public ShellElementoSourceGenerator build() {
+      return new ShellElementoSourceGenerator(this);
     }
   }
 }

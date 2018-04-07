@@ -16,6 +16,8 @@ public class Mvp4g2GeneraterParms {
   private boolean history;
   private boolean debug;
 
+  private WidgetLibrary widgetLibrary;
+
   private List<PresenterData> presenters;
 
   public Mvp4g2GeneraterParms() {
@@ -84,6 +86,14 @@ public class Mvp4g2GeneraterParms {
 
   public void setPresenters(List<PresenterData> presenters) {
     this.presenters = presenters;
+  }
+
+  public WidgetLibrary getWidgetLibrary() {
+    return widgetLibrary;
+  }
+
+  public void setWidgetLibrary(WidgetLibrary widgetLibrary) {
+    this.widgetLibrary = widgetLibrary;
   }
 
   public boolean hasNavigationConfirmation() {

@@ -24,9 +24,11 @@ import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor.PresenterEditor;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 
 @Presenter(viewClass = ContentView.class, viewInterface = IContentView.class)
 public class ContentPresenter
@@ -73,6 +75,8 @@ public class ContentPresenter
     this.mvp4g2GeneraterParms.setDebug(true);
     this.mvp4g2GeneraterParms.setHistory(true);
     this.mvp4g2GeneraterParms.setHistoryOnStart(true);
+    this.mvp4g2GeneraterParms.setGwtVersion(DataConstants.GWT_VERSION_2_8_2);
+    this.mvp4g2GeneraterParms.setWidgetLibrary(WidgetLibrary.GWT);
 
     this.mvp4g2GeneraterParms.getPresenters()
                              .add(new PresenterData("search",

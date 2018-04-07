@@ -1,4 +1,4 @@
-package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
+package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,12 +13,6 @@ import com.github.mvp4g.mvp4g2.core.ui.IsViewCreator;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -35,8 +29,12 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
+import elemental2.dom.DomGlobal;
+import elemental2.dom.Element;
+import elemental2.dom.HTMLDivElement;
+import org.jboss.gwt.elemento.core.Elements;
 
-public class PresenterViewSourceGenerator {
+public class PresenterViewElementoSourceGenerator {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
@@ -48,7 +46,7 @@ public class PresenterViewSourceGenerator {
 
   private PresenterData presenterData;
 
-  private PresenterViewSourceGenerator(Builder builder) {
+  private PresenterViewElementoSourceGenerator(Builder builder) {
     super();
 
     this.mvp4g2GeneraterParms = builder.mvp4g2GeneraterParms;
@@ -86,8 +84,8 @@ public class PresenterViewSourceGenerator {
                                         .addMethod(MethodSpec.methodBuilder("asWidget")
                                                              .addModifiers(Modifier.PUBLIC,
                                                                            Modifier.ABSTRACT)
-                                                             .returns(ClassName.get(Widget.class))
-                                                             .addJavadoc("mvp4g2 does not know Widget-, Element- or any other GWT specific class. So, the\n" + "presenter have to manage the widget by themselves. The method will\n" + "enable the presenter to get the view. (In our case it is a\n" + "GWT widget)\n" + "\n" + "@return The shell widget\n")
+                                                             .returns(ClassName.get(Element.class))
+                                                             .addJavadoc(GeneratorConstants.AS_WIDGET_TEXT)
                                                              .build());
     if (presenterData.isConfirmation()) {
       typeSpec.addMethod(MethodSpec.methodBuilder("isDirty")
@@ -127,7 +125,7 @@ public class PresenterViewSourceGenerator {
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                .toLowerCase(),
                                                                          "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"));
-    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
+    typeSpec.addField(FieldSpec.builder(ClassName.get(HTMLDivElement.class),
                                         "container",
                                         Modifier.PRIVATE)
                                .build());
@@ -140,7 +138,7 @@ public class PresenterViewSourceGenerator {
     typeSpec.addMethod(MethodSpec.methodBuilder("asWidget")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .returns(Widget.class)
+                                 .returns(Element.class)
                                  .addStatement("return container")
                                  .build());
     // createView method
@@ -255,8 +253,8 @@ public class PresenterViewSourceGenerator {
                                                                        "event")
                                                               .build())
                                    .beginControlFlow("if (view.isDirty())")
-                                   .beginControlFlow("if ($T.confirm(\"Do you really want to cancel?\"))",
-                                                     Window.class)
+                                   .beginControlFlow("if ($T.window.confirm(\"Do you really want to cancel?\"))",
+                                                     DomGlobal.class)
                                    .addStatement("event.fireEvent()")
                                    .endControlFlow()
                                    .nextControlFlow("else")
@@ -270,7 +268,8 @@ public class PresenterViewSourceGenerator {
                                                "(viewCreator = Presenter.VIEW_CREATION_METHOD.PRESENTER), we have to\n" +
                                                "implement this method.\n" +
                                                "\n" +
-                                               "This enables use, to use GWT.create instead of new (what the framework is doing!)\n" +
+                                               "This enables use, to use GWT.create or something else instead of new (what the framework is doing!)\n" +
+                                               "Because this implementation does not know 'GWT.create()' we will do a simple new ... \n" +
                                                "\n" +
                                                "@return a new instance of the view.\n")
                                    .addModifiers(Modifier.PUBLIC)
@@ -278,8 +277,7 @@ public class PresenterViewSourceGenerator {
                                    .returns(ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                 .toLowerCase(),
                                                           "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
-                                   .addStatement("return $T.create($T.class)",
-                                                 GWT.class,
+                                   .addStatement("return new $T()",
                                                  ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                      .toLowerCase(),
                                                                GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
@@ -301,16 +299,9 @@ public class PresenterViewSourceGenerator {
     MethodSpec.Builder method = MethodSpec.methodBuilder("createView")
                                           .addAnnotation(Override.class)
                                           .addModifiers(Modifier.PUBLIC)
-                                          .addStatement("container = new $T()",
-                                                        ClassName.get(SimplePanel.class))
-                                          .addStatement("$T label = new $T($S)",
-                                                        Label.class,
-                                                        Label.class,
-                                                        this.presenterData.getName())
-                                          .addStatement("label.getElement().getStyle().setMargin(12, $T.Unit.PX)",
-                                                        Style.class)
-                                          .addStatement("container.setWidget(label)",
-                                                        Label.class,
+                                          .addStatement("container = $T.div().add($T.label().textContent($S).style(\"margin: 12px; font-size: medium;\").asElement()).asElement()",
+                                                        Elements.class,
+                                                        Elements.class,
                                                         this.presenterData.getName());
     typeSpec.addMethod(method.build());
   }
@@ -345,8 +336,8 @@ public class PresenterViewSourceGenerator {
       return this;
     }
 
-    public PresenterViewSourceGenerator build() {
-      return new PresenterViewSourceGenerator(this);
+    public PresenterViewElementoSourceGenerator build() {
+      return new PresenterViewElementoSourceGenerator(this);
     }
   }
 }

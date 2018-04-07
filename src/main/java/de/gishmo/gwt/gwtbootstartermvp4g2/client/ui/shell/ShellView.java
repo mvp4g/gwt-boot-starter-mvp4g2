@@ -151,6 +151,10 @@ public class ShellView
                     "Mvp4g2 Documentation",
                     "https://github.com/mvp4g/mvp4g2/wiki");
 
+    this.createLink(innerContainer,
+                    "Generator Documentation",
+                    "https://github.com/mvp4g/mvp4g2/wiki/Mvp4g2-Project-Generator");
+
     return clc;
   }
 

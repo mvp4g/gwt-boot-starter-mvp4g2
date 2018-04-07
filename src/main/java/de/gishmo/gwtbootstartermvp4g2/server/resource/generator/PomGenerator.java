@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +72,8 @@ public class PomGenerator {
       Files.write(Paths.get(new File(this.projectFolder) + File.separator + "pom.xml"),
                   pomContent.getBytes());
     } catch (IOException e) {
-      logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< problems writing file", e);
+      logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< problems writing file",
+                   e);
       throw new GeneratorException("Unable to write generated file: >>" + new File(this.projectFolder) + File.separator + "pom.xml" + "<< -> exception: " + e.getMessage());
     }
 
@@ -120,13 +122,15 @@ public class PomGenerator {
                                "compile"))
       .append(this.addAddrLine(10,
                                "moduleName",
-                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId().toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()
+                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "moduleShortName",
                                GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "modules",
-                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId().toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()
+                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "failOnError",
                                "true"))
@@ -491,8 +495,14 @@ public class PomGenerator {
       .append(this.addDependency(4,
                                  "com.github.mvp4g",
                                  "mvp4g2-processor",
-                                 "${mvp4g2.version}"))
-      .append("  </dependencies>")
+                                 "${mvp4g2.version}"));
+    if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append(this.addDependency(4,
+                                 "org.jboss.gwt.elemento",
+                                 "elemento-core",
+                                 "${elemento.version}"));
+    }
+    sb.append("  </dependencies>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK);
 
@@ -545,8 +555,16 @@ public class PomGenerator {
       .append(this.addAddrLine(4,
                                "mvp4g2.version",
                                "1.0-rc-3"))
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addCommentLine(4,
+      .append(GeneratorConstants.LINE_BREAK);
+    if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append(this.addCommentLine(4,
+                                    "Elemento version"))
+        .append(this.addAddrLine(4,
+                                 "elemento.version",
+                                 "0.8.1"))
+        .append(GeneratorConstants.LINE_BREAK);
+    }
+    sb.append(this.addCommentLine(4,
                                   "GWT needs at least java 1.6"))
       .append(this.addAddrLine(4,
                                "maven.compiler.source",

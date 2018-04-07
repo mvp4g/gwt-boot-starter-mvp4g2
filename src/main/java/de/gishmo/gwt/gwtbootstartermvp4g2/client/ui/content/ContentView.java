@@ -30,6 +30,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.ListStore;
@@ -41,6 +42,7 @@ import com.sencha.gxt.widget.core.client.container.CssFloatLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
+import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.StringComboBox;
@@ -59,6 +61,7 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 
 public class ContentView
   extends LazyReverseView<IContentView.Presenter>
@@ -79,9 +82,6 @@ public class ContentView
   private VerticalLayoutContainer innerContainer;
   private VerticalLayoutContainer wrapperContainer;
 
-  private ContentPanel            contentPanel;
-  private VerticalLayoutContainer cpInnerContainer;
-
   private StringComboBox gwtVersion;
 
   private TextField groupId;
@@ -92,6 +92,9 @@ public class ContentView
 
   private CheckBox historyOnStart;
   private CheckBox history;
+
+  private ComboBox<WidgetLibrary>  widgetLibrary;
+  private ListStore<WidgetLibrary> widgetLibraryStore;
 
   private TextButton addButton;
   private TextButton editButton;
@@ -253,6 +256,13 @@ public class ContentView
     this.gwtVersion.setValue(DataConstants.DEFAULT_GWT_VERSION);
     this.gwtVersion.setAllowBlank(false);
 
+    this.widgetLibraryStore = new ListStore<>(widgetLibrary -> widgetLibrary.name());
+    this.widgetLibraryStore.add(WidgetLibrary.ELEMENTO);
+    this.widgetLibraryStore.add(WidgetLibrary.GWT);
+    this.widgetLibrary = new ComboBox<>(this.widgetLibraryStore,
+                                             widgetLibrary -> widgetLibrary.getText());
+    this.widgetLibrary.setForceSelection(true);
+    this.widgetLibrary.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
   }
 
   private void setUpProjectMetaData() {
@@ -282,6 +292,10 @@ public class ContentView
                                    this.gwtVersion),
               new CssFloatLayoutContainer.CssFloatData(0.5,
                                                        ContentView.MARGINS_LEFT));
+    flc02.add(this.createFielLabal("Widget Set",
+                                   this.widgetLibrary),
+              new CssFloatLayoutContainer.CssFloatData(0.5,
+                                                       ContentView.MARGINS_RIGHT));
   }
 
   private void setUpApplicationMetaData() {
@@ -434,6 +448,8 @@ public class ContentView
   public void edit(Mvp4g2GeneraterParms model) {
     this.groupId.setValue(model.getGroupId());
     this.artifactId.setValue(model.getArtefactId());
+    this.gwtVersion.setValue(model.getGwtVersion());
+    this.widgetLibrary.setValue(model.getWidgetLibrary());
     this.applicationLoader.setValue(model.isApplicationLoader());
     this.debug.setValue(model.isDebug());
     this.history.setValue(model.isHistory(),
@@ -447,6 +463,7 @@ public class ContentView
   @Override
   public void flush(Mvp4g2GeneraterParms model) {
     model.setGwtVersion(gwtVersion.getValue());
+    model.setWidgetLibrary(widgetLibrary.getValue());
 
     model.setGroupId(this.groupId.getValue());
     model.setArtefactId(this.artifactId.getValue());

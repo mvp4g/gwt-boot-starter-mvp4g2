@@ -38,4 +38,11 @@ public class GeneratorConstants {
                                                             "limitations under the License.%n");
 
   public static final String LINE_BREAK     = "\n";
+
+  public static final String AS_WIDGET_TEXT = "mvp4g2 does not know Widget-, Element- or any other GWT specific class. So, the\n" +
+                                              "presenter have to manage the widget by themselves. The method will\n" +
+                                              "enable the presenter to get the view. (In our case it is a\n" +
+                                              "GWT widget)\n" +
+                                              "\n" +
+                                              "@return The shell widget\n";
 }

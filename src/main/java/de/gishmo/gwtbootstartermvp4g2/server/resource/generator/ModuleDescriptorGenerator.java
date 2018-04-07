@@ -1,12 +1,13 @@
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
 
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 
 public class ModuleDescriptorGenerator {
 
@@ -53,27 +54,33 @@ public class ModuleDescriptorGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append("  <inherits name='com.google.gwt.user.User'/>")
       .append(GeneratorConstants.LINE_BREAK)
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- Inherit the default GWT style sheet.  You can change       -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- the theme of your GWT application by uncommenting          -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- any one of the following lines.                            -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <inherits name='com.google.gwt.user.theme.clean.Clean'/>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- <inherits historyName='com.google.gwt.user.theme.standard.Standard'/> -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- <inherits historyName='com.google.gwt.user.theme.chrome.Chrome'/> -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- <inherits historyName='com.google.gwt.user.theme.dark.Dark'/>     -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- Other module inherits                                      -->")
+      .append(GeneratorConstants.LINE_BREAK);
+    if (WidgetLibrary.GWT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append("  <!-- Inherit the default GWT style sheet.  You can change       -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <!-- the theme of your GWT application by uncommenting          -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <!-- any one of the following lines.                            -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <inherits name='com.google.gwt.user.theme.clean.Clean'/>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <!-- <inherits historyName='com.google.gwt.user.theme.standard.Standard'/> -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <!-- <inherits historyName='com.google.gwt.user.theme.chrome.Chrome'/> -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <!-- <inherits historyName='com.google.gwt.user.theme.dark.Dark'/>     -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append(GeneratorConstants.LINE_BREAK);
+    }
+    sb.append("  <!-- Other module inherits                                      -->")
       .append(GeneratorConstants.LINE_BREAK)
       .append("  <inherits name='com.github.mvp4g.mvp4g2.Mvp4g2'/>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(GeneratorConstants.LINE_BREAK)
+      .append(GeneratorConstants.LINE_BREAK);
+    if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append("  <inherits name='org.jboss.gwt.elemento.Core'/>")
+        .append(GeneratorConstants.LINE_BREAK);
+    }
+    sb.append(GeneratorConstants.LINE_BREAK)
       .append("  <!-- Specify the app entry point class.                         -->")
       .append(GeneratorConstants.LINE_BREAK)
       .append("  <entry-point class='" + this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()

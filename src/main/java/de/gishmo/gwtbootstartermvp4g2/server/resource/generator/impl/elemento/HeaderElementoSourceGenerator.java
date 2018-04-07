@@ -1,4 +1,4 @@
-package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
+package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +9,6 @@ import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -25,8 +21,12 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
+import elemental2.dom.Element;
+import elemental2.dom.HTMLElement;
+import org.jboss.gwt.elemento.core.Elements;
 
-public class HeaderSourceGenerator {
+
+public class HeaderElementoSourceGenerator {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
@@ -36,7 +36,7 @@ public class HeaderSourceGenerator {
 
   private String presenterPackage;
 
-  private HeaderSourceGenerator(Builder builder) {
+  private HeaderElementoSourceGenerator(Builder builder) {
     super();
 
     this.mvp4g2GeneraterParms = builder.mvp4g2GeneraterParms;
@@ -70,12 +70,8 @@ public class HeaderSourceGenerator {
                                         .addMethod(MethodSpec.methodBuilder("asWidget")
                                                              .addModifiers(Modifier.PUBLIC,
                                                                            Modifier.ABSTRACT)
-                                                             .returns(ClassName.get(Widget.class))
-                                                             .addJavadoc("mvp4g2 does not know Widget-, Element- or any other GWT specific class. So, the\n" +
-                                                                         "presenter have to manage the widget by themselves. The method will\n" +
-                                                                         "enable the presenter to get the view. (In our case it is a\n" +
-                                                                         "GWT widget)\n" + "\n" +
-                                                                         "@return The header widget\n")
+                                                             .returns(ClassName.get(Element.class))
+                                                             .addJavadoc(GeneratorConstants.AS_WIDGET_TEXT)
                                                              .build());
 
     typeSpec.addType(TypeSpec.interfaceBuilder("Presenter")
@@ -107,7 +103,7 @@ public class HeaderSourceGenerator {
 
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.header",
                                                                          "IHeaderView"));
-    typeSpec.addField(FieldSpec.builder(ClassName.get(SimplePanel.class),
+    typeSpec.addField(FieldSpec.builder(ClassName.get(HTMLElement.class),
                                         "container",
                                         Modifier.PRIVATE)
                                .build());
@@ -120,7 +116,7 @@ public class HeaderSourceGenerator {
     typeSpec.addMethod(MethodSpec.methodBuilder("asWidget")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .returns(Widget.class)
+                                 .returns(Element.class)
                                  .addStatement("return container")
                                  .build());
     // createView method
@@ -186,16 +182,8 @@ public class HeaderSourceGenerator {
     MethodSpec.Builder method = MethodSpec.methodBuilder("createView")
                                           .addAnnotation(Override.class)
                                           .addModifiers(Modifier.PUBLIC)
-                                          .addStatement("container = new $T()",
-                                                        SimplePanel.class)
-                                          .addStatement("container.setSize(\"100%\",\"100%\")")
-                                          .addStatement("container.getElement().getStyle().setBackgroundColor(\"whitesmoke\")")
-                                          .addStatement("container.getElement().getStyle().setPadding(12, $T.Unit.PX)",
-                                                        Style.class)
-                                          .addStatement("$T label = new $T(\"That's the header area. Create your header here\")",
-                                                        Label.class,
-                                                        Label.class)
-                                          .addStatement("container.setWidget(label)");
+                                          .addStatement("container = $T.header().add(\"That's the header area. Create your header here\").asElement()",
+                                                        Elements.class);
 
     typeSpec.addMethod(method.build());
   }
@@ -221,8 +209,8 @@ public class HeaderSourceGenerator {
       return this;
     }
 
-    public HeaderSourceGenerator build() {
-      return new HeaderSourceGenerator(this);
+    public HeaderElementoSourceGenerator build() {
+      return new HeaderElementoSourceGenerator(this);
     }
   }
 }
