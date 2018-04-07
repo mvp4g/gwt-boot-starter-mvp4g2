@@ -155,6 +155,10 @@ public class ShellView
                     "Generator Documentation",
                     "https://github.com/mvp4g/mvp4g2/wiki/Mvp4g2-Project-Generator");
 
+    this.createLink(innerContainer,
+                    "Generator Issues",
+                    "https://github.com/mvp4g/gwt-boot-starter-mvp4g2/issues");
+
     return clc;
   }
 

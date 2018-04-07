@@ -25,6 +25,13 @@ import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gwt.Navigat
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gwt.PresenterViewGwtSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gwt.ShellGwtSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gwt.StatusBarGwtSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gxt.CssPageGxtSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gxt.EventBusGxtSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gxt.HeaderGxtSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gxt.NavigationGxtSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gxt.PresenterViewGxtSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gxt.ShellGxtSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gxt.StatusBarGxtSourceGenerator;
 
 public class SourceGenerator {
 
@@ -197,6 +204,48 @@ public class SourceGenerator {
                                        .build()
                                        .generate();
 
+    } else if (WidgetLibrary.GXT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      // Css file
+      CssPageGxtSourceGenerator.builder()
+                               .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                               .directoryResourcesStatic(this.directoryResourcesStatic)
+                               .build()
+                               .generate();
+      // EventBus
+      EventBusGxtSourceGenerator.builder()
+                                .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                .clientPackageJavaConform(this.clientPackageJavaConform)
+                                .directoryJava(this.directoryJava)
+                                .build()
+                                .generate();
+      // generate shell
+      ShellGxtSourceGenerator.builder()
+                             .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                             .clientPackageJavaConform(this.clientPackageJavaConform)
+                             .directoryJava(this.directoryJava)
+                             .build()
+                             .generate();
+      // generate header
+      HeaderGxtSourceGenerator.builder()
+                              .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                              .clientPackageJavaConform(this.clientPackageJavaConform)
+                              .directoryJava(this.directoryJava)
+                              .build()
+                              .generate();
+      // generate Statusbar
+      StatusBarGxtSourceGenerator.builder()
+                                 .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                 .clientPackageJavaConform(this.clientPackageJavaConform)
+                                 .directoryJava(this.directoryJava)
+                                 .build()
+                                 .generate();
+      // generate navigation
+      NavigationGxtSourceGenerator.builder()
+                                  .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                  .clientPackageJavaConform(this.clientPackageJavaConform)
+                                  .directoryJava(this.directoryJava)
+                                  .build()
+                                  .generate();
     }
     // generate presenter & views for every screen
     for (PresenterData presenterData : this.mvp4g2GeneraterParms.getPresenters()) {
@@ -216,6 +265,14 @@ public class SourceGenerator {
                                             .presenterData(presenterData)
                                             .build()
                                             .generate();
+      } else if (WidgetLibrary.GXT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+        PresenterViewGxtSourceGenerator.builder()
+                                       .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                       .clientPackageJavaConform(this.clientPackageJavaConform)
+                                       .directoryJava(this.directoryJava)
+                                       .presenterData(presenterData)
+                                       .build()
+                                       .generate();
       }
     }
     // TODO generate model

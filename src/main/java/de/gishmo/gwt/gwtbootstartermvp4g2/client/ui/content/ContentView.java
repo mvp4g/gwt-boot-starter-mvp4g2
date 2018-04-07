@@ -259,6 +259,7 @@ public class ContentView
     this.widgetLibraryStore = new ListStore<>(widgetLibrary -> widgetLibrary.name());
     this.widgetLibraryStore.add(WidgetLibrary.ELEMENTO);
     this.widgetLibraryStore.add(WidgetLibrary.GWT);
+    this.widgetLibraryStore.add(WidgetLibrary.GXT);
     this.widgetLibrary = new ComboBox<>(this.widgetLibraryStore,
                                              widgetLibrary -> widgetLibrary.getText());
     this.widgetLibrary.setForceSelection(true);

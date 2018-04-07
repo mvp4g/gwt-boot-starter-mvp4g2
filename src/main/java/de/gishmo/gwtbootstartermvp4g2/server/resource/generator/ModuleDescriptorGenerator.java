@@ -80,6 +80,12 @@ public class ModuleDescriptorGenerator {
       sb.append("  <inherits name='org.jboss.gwt.elemento.Core'/>")
         .append(GeneratorConstants.LINE_BREAK);
     }
+    if (WidgetLibrary.GXT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append("  <inherits name='com.sencha.gxt.ui.GXT'/>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <inherits name='com.sencha.gxt.theme.neptune.Theme'/>")
+        .append(GeneratorConstants.LINE_BREAK);
+    }
     sb.append(GeneratorConstants.LINE_BREAK)
       .append("  <!-- Specify the app entry point class.                         -->")
       .append(GeneratorConstants.LINE_BREAK)

@@ -49,7 +49,8 @@ public class PomGenerator {
     sb.append(this.generateHeadlines())
       .append(this.generateProperties())
       .append(this.generateDependencyManagement())
-      .append(this.generateDependencies());
+      .append(this.generateDependencies())
+      .append(this.generateRepositories());
 
     sb.append("  <build>")
       .append(GeneratorConstants.LINE_BREAK)
@@ -78,6 +79,31 @@ public class PomGenerator {
     }
 
     logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< generating pom sucessfully finished");
+  }
+
+  private String generateRepositories() {
+    StringBuilder sb = new StringBuilder();
+
+    if (WidgetLibrary.GXT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append("  <repositories>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <repository>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("      <id>sencha-gxt-repository</id>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("      <name>sencha-gxt-repository</name>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("      <!-- GPL -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("      <url>https://maven.sencha.com/repo/gxt-gpl-release</url>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    </repository>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  </repositories>")
+        .append(GeneratorConstants.LINE_BREAK);
+    }
+
+    return sb.toString();
   }
 
   private String generateGwtPlugin() {
@@ -498,9 +524,19 @@ public class PomGenerator {
                                  "${mvp4g2.version}"));
     if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
       sb.append(this.addDependency(4,
-                                 "org.jboss.gwt.elemento",
-                                 "elemento-core",
-                                 "${elemento.version}"));
+                                   "org.jboss.gwt.elemento",
+                                   "elemento-core",
+                                   "${elemento.version}"));
+    }
+    if (WidgetLibrary.GXT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append(this.addDependency(4,
+                                   "com.sencha.gxt",
+                                   "gxt",
+                                   "${gxt.version}"));
+      sb.append(this.addDependency(4,
+                                   "com.sencha.gxt",
+                                   "gxt-theme-neptune",
+                                   "${gxt.version}"));
     }
     sb.append("  </dependencies>")
       .append(GeneratorConstants.LINE_BREAK)
@@ -562,6 +598,14 @@ public class PomGenerator {
         .append(this.addAddrLine(4,
                                  "elemento.version",
                                  "0.8.1"))
+        .append(GeneratorConstants.LINE_BREAK);
+    }
+    if (WidgetLibrary.GXT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append(this.addCommentLine(4,
+                                    "GXT version"))
+        .append(this.addAddrLine(4,
+                                 "gxt.version",
+                                 "4.0.0"))
         .append(GeneratorConstants.LINE_BREAK);
     }
     sb.append(this.addCommentLine(4,
