@@ -79,7 +79,7 @@ public class PomGenerator {
       .append("    <plugins>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.generateCompilerPlugin())
-//      .append(this.geenrateBuildHelperPlugin())
+      .append(this.geenrateBuildHelperPlugin())
       .append(this.generateGwtPlugin())
       .append(this.generateWarPlugin())
       .append("    </plugins>")
