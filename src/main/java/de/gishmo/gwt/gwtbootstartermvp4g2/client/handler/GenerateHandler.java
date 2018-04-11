@@ -97,6 +97,7 @@ public class GenerateHandler
                                      dialog.setHeading("Download your project ...");
                                      dialog.setPixelSize(-1,
                                                          -1);
+                                     dialog.setModal(true);
                                      dialog.setMinWidth(0);
                                      dialog.setMinHeight(0);
                                      dialog.setResizable(false);
