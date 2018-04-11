@@ -64,8 +64,7 @@ public class ModuleDescriptorGenerator {
       .append("<!DOCTYPE module PUBLIC \"-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN\"\n" +
               "  \"http://gwtproject.org/doctype/2.8.2/gwt-module.dtd\">")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("<module rename-to=\"" + this.mvp4g2GeneraterParms.getArtefactId()
-                                                                .toLowerCase() + "\">")
+      .append("<module rename-to=\"" + this.mvp4g2GeneraterParms.getArtefactId() + "\">")
       .append(GeneratorConstants.LINE_BREAK)
       .append("  <!-- Inherit the core Web Toolkit stuff.                        -->")
       .append(GeneratorConstants.LINE_BREAK)
@@ -123,19 +122,16 @@ public class ModuleDescriptorGenerator {
     String moduleDescriptorContent = sb.toString();
 
     // create directory ...
-    String pathToModuleDescriptor = this.projectFolder + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + this.mvp4g2GeneraterParms.getGroupId()
-                                                                                                                                                                                     .replace(".",
-                                                                                                                                                                                              File.separator) + File.separator + this.mvp4g2GeneraterParms.getArtefactId()
-                                                                                                                                                                                                                                                          .toLowerCase();
+    String pathToModuleDescriptor = this.projectFolder + File.separator + "src" + File.separator + "main";
     File folderModuleDescriptor = new File(pathToModuleDescriptor);
     try {
       if (!folderModuleDescriptor.exists()) {
         folderModuleDescriptor.mkdirs();
       }
-      Files.write(Paths.get(folderModuleDescriptor + File.separator + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + ".gwt.xml"),
+      Files.write(Paths.get(folderModuleDescriptor + File.separator + "module.gwt.xml"),
                   moduleDescriptorContent.getBytes());
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + folderModuleDescriptor + File.separator + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + ".gwt.xml" + "<< -> exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + folderModuleDescriptor + File.separator + "module.gwt.xml" + "<< -> exception: " + e.getMessage());
     }
   }
 

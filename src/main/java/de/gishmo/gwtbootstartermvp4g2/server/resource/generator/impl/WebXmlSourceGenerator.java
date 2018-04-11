@@ -26,12 +26,13 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 
-public class HostPageSourceGenerator {
+// TODO CSS generieren !
+public class WebXmlSourceGenerator {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
   private File                 directoryWebapp;
 
-  private HostPageSourceGenerator(Builder builder) {
+  private WebXmlSourceGenerator(Builder builder) {
     super();
 
     this.mvp4g2GeneraterParms = builder.mvp4g2GeneraterParms;
@@ -64,90 +65,54 @@ public class HostPageSourceGenerator {
   private void generateHostPage()
     throws GeneratorException {
 
-    String title = "Mvp4g2 Boot Starter Project ==> " + this.mvp4g2GeneraterParms.getArtefactId();
-    String srcScript = this.mvp4g2GeneraterParms.getArtefactId() + "/" + this.mvp4g2GeneraterParms.getArtefactId() + ".nocache.js";
-
     StringBuilder sb = new StringBuilder();
 
-    sb.append("<!doctype html>")
+    sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.COPYRIGHT_HTML)
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
-      .append("<!-- The DOCTYPE declaration above will set the     -->")
+      .append("<web-app xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("<!-- browser's rendering engine into                -->")
+      .append("         xmlns=\"http://java.sun.com/xml/ns/javaee\" xmlns:web=\"http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd\"")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("<!-- \"Standards Mode\". Replacing this declaration   -->")
+      .append("         xsi:schemaLocation=\"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd\"")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("<!-- with a \"Quirks Mode\" doctype is not supported. -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("<html>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <head>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">")
+      .append("         version=\"2.5\">")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
-      .append("    <!-- Any title is fine (please update)               -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("    <title>")
-      .append(title)
-      .append("</title>")
+      .append("  <!-- Servlets -->")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
-      .append("    <!-- Consider inlining CSS to reduce the number of requested files -->")
+      .append("  <!-- Default page to serve -->")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"")
-      .append(this.mvp4g2GeneraterParms.getArtefactId())
-      .append(".css\">")
+      .append("  <welcome-file-list>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
-      .append("    <!-- This script loads your compiled module.   -->")
+      .append("        <welcome-file>")
+      .append(mvp4g2GeneraterParms.getArtefactId() + ".html")
+      .append("</welcome-file>")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("    <!-- If you add any GWT meta tags, they must   -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("    <!-- be added before this line.                -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("    <script type=\"text/javascript\" language=\"javascript\" src=\"")
-      .append(srcScript)
-      .append("\"></script>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  </head>")
+      .append("  </welcome-file-list>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- The body can have arbitrary html, or      -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- you can leave the body empty if you want  -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <!-- to create a completely dynamic UI.        -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  <body>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("    <noscript>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("      Your web browser must have JavaScript enabled")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("      in order for this application to display correctly.")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("    </noscript>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  </body>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("</html>")
+      .append(" </web-app>")
       .append(GeneratorConstants.LINE_BREAK);
 
     String fileContent = sb.toString();
 
+    String pathToWebInf = this.directoryWebapp.getPath() + File.separator + "WEB-INF";
     try {
-      Files.write(Paths.get(directoryWebapp.getPath() + File.separator + this.mvp4g2GeneraterParms.getArtefactId() + ".html"),
+      // create WEB-INF-directory
+      File fileWebInf = new File(pathToWebInf);
+      if (!fileWebInf.exists()) {
+        fileWebInf.mkdirs();
+      }
+      Files.write(Paths.get(fileWebInf.getPath() + File.separator + "web.xml"),
                   fileContent.getBytes());
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryWebapp.getPath() + this.mvp4g2GeneraterParms.getArtefactId() + ".html") + "<< -> exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + pathToWebInf + "web.xml" + "<< -> exception: " + e.getMessage());
     }
   }
 
@@ -166,8 +131,8 @@ public class HostPageSourceGenerator {
       return this;
     }
 
-    public HostPageSourceGenerator build() {
-      return new HostPageSourceGenerator(this);
+    public WebXmlSourceGenerator build() {
+      return new WebXmlSourceGenerator(this);
     }
   }
 }

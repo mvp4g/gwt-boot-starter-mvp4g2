@@ -29,13 +29,13 @@ import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstan
 public class CssPageElementoSourceGenerator {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-  private File                 directoryResourcesStatic;
+  private File                 directoryWebapp;
 
   private CssPageElementoSourceGenerator(Builder builder) {
     super();
 
     this.mvp4g2GeneraterParms = builder.mvp4g2GeneraterParms;
-    this.directoryResourcesStatic = builder.directoryResourcesStatic;
+    this.directoryWebapp = builder.directoryWebapp;
   }
 
   public static Builder builder() {
@@ -321,25 +321,25 @@ public class CssPageElementoSourceGenerator {
     String fileContent = sb.toString();
 
     try {
-      Files.write(Paths.get(directoryResourcesStatic.getPath() + File.separator + this.mvp4g2GeneraterParms.getArtefactId() + ".css"),
+      Files.write(Paths.get(directoryWebapp.getPath() + File.separator + this.mvp4g2GeneraterParms.getArtefactId() + ".css"),
                   fileContent.getBytes());
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryResourcesStatic.getPath() + this.mvp4g2GeneraterParms.getArtefactId() + ".css") + "<< -> exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryWebapp.getPath() + this.mvp4g2GeneraterParms.getArtefactId() + ".css") + "<< -> exception: " + e.getMessage());
     }
   }
 
   public static class Builder {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-    File                 directoryResourcesStatic;
+    File                 directoryWebapp;
 
     public Builder mvp4g2GeneraterParms(Mvp4g2GeneraterParms mvp4g2GeneraterParms) {
       this.mvp4g2GeneraterParms = mvp4g2GeneraterParms;
       return this;
     }
 
-    public Builder directoryResourcesStatic(File directoryResourcesStatic) {
-      this.directoryResourcesStatic = directoryResourcesStatic;
+    public Builder directoryWebapp(File directoryWebapp) {
+      this.directoryWebapp = directoryWebapp;
       return this;
     }
 

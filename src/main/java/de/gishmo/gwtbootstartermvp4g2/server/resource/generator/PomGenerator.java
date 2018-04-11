@@ -59,7 +59,9 @@ public class PomGenerator {
       .append(GeneratorConstants.COPYRIGHT_HTML)
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
-      .append("<project xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" + "         xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" + "         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">")
+      .append("<project xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+              "         xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" +
+              "         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK);
 
@@ -71,13 +73,25 @@ public class PomGenerator {
 
     sb.append("  <build>")
       .append(GeneratorConstants.LINE_BREAK)
+      .append(this.generateOutputDirectory())
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(this.generateResources())
       .append("    <plugins>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.generateCompilerPlugin())
-      .append(this.geenrateBuildHelperPlugin())
+//      .append(this.geenrateBuildHelperPlugin())
       .append(this.generateGwtPlugin())
       .append(this.generateWarPlugin())
       .append("    </plugins>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("    <pluginManagement>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("      <plugins>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(this.generateEcliseM2E())
+      .append("      </plugins>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("    </pluginManagement>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("  </build>")
       .append(GeneratorConstants.LINE_BREAK);
@@ -96,6 +110,110 @@ public class PomGenerator {
     }
 
     logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< generating pom sucessfully finished");
+  }
+
+  private String generateEcliseM2E() {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append("        <plugin>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(this.addAddrLine(10,
+                               "groupId",
+                               "org.eclipse.m2e"))
+      .append(this.addAddrLine(10,
+                               "artifactId",
+                               "lifecycle-mapping"))
+      .append(this.addAddrLine(10,
+                               "version",
+                               "${plugin.version.eclipse.lifecyle}"))
+      .append("          <configuration>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("            <lifecycleMappingMetadata>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("              <pluginExecutions>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                <pluginExecution>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                  <pluginExecutionFilter>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(this.addAddrLine(20,
+                               "groupId",
+                               "org.apache.maven.plugins"))
+      .append(this.addAddrLine(20,
+                               "artifactId",
+                               "maven-war-plugin"))
+      .append(this.addAddrLine(20,
+                               "versionRange",
+                               "[3.0.0,)"))
+      .append("                    <goals>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                      <goal>exploded</goal>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                    </goals>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                  </pluginExecutionFilter>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                  <action>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                    <execute>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(this.addAddrLine(22,
+                               "runOnConfiguration",
+                               "true"))
+      .append(this.addAddrLine(22,
+                               "runOnIncremental",
+                               "true"))
+      .append("                    </execute>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                  </action>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("                </pluginExecution>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("              </pluginExecutions>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("            </lifecycleMappingMetadata>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("          </configuration>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("        </plugin>")
+      .append(GeneratorConstants.LINE_BREAK);
+
+    return sb.toString();
+  }
+
+  private String generateResources() {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append("    <resources>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("      <resource>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("        <directory>src/main/java</directory>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("          <includes>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("            <include>**</include>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("          </includes>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("      </resource>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("    </resources>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(GeneratorConstants.LINE_BREAK);
+
+    return sb.toString();
+  }
+
+  private String generateOutputDirectory() {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(addCommentLine(4,
+                             "Compiled Classes"))
+      .append("    <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>")
+      .append(GeneratorConstants.LINE_BREAK);
+
+    return sb.toString();
   }
 
   private String generateRepositories() {
@@ -140,23 +258,23 @@ public class PomGenerator {
       .append(this.addAddrLine(8,
                                "extensions",
                                "true"))
-      .append("        <executions>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("          <execution>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("            <goals>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(14,
-                               "goal",
-                               "compile"))
-      .append(this.addAddrLine(14,
-                               "goal",
-                               "package-app"))
-      .append("            </goals>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("          </execution>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("        </executions>")
+//      .append("        <executions>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("          <execution>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("            <goals>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(14,
+//                               "goal",
+//                               "compile"))
+//      .append(this.addAddrLine(14,
+//                               "goal",
+//                               "package-app"))
+//      .append("            </goals>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("          </execution>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("        </executions>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("        <configuration>")
       .append(GeneratorConstants.LINE_BREAK)
@@ -169,57 +287,57 @@ public class PomGenerator {
                                                                                                        .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "moduleShortName",
-                               GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
-      .append(this.addAddrLine(10,
-                               "modules",
-                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()
-                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+                               this.mvp4g2GeneraterParms.getArtefactId()))
+//      .append(this.addAddrLine(10,
+//                               "modules",
+//                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()
+//                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "failOnError",
                                "true"))
       .append(this.addAddrLine(10,
                                "sourceLevel",
                                "${maven.compiler.source}"))
-      .append("          <compilerArgs>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(12,
-                               "arg",
-                               "-compileReport"))
-      .append(this.addAddrLine(12,
-                               "arg",
-                               "-XcompilerMetrics"))
-      .append(this.addAddrLine(12,
-                               "arg",
-                               "-setProperty"))
-      .append(this.addAddrLine(12,
-                               "arg",
-                               "mvp4g2.logging=true"))
-      .append("          </compilerArgs>")
-      .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(10,
                                "logLevel",
                                "TRACE"))
-      .append(this.addAddrLine(10,
-                               "skipModule",
-                               "true"))
-      .append(this.addAddrLine(10,
-                               "codeServerPort",
-                               "9876"))
-      .append("          <devmodeArgs>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(12,
-                               "arg",
-                               "-port"))
-      .append(this.addAddrLine(12,
-                               "arg",
-                               "8888"))
-      .append(this.addAddrLine(12,
-                               "arg",
-                               "-codeServerPort"))
-      .append(this.addAddrLine(12,
-                               "arg",
-                               "9876"))
-      .append("          </devmodeArgs>")
+//      .append("          <compilerArgs>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(12,
+//                               "arg",
+//                               "-compileReport"))
+//      .append(this.addAddrLine(12,
+//                               "arg",
+//                               "-XcompilerMetrics"))
+//      .append(this.addAddrLine(12,
+//                               "arg",
+//                               "-setProperty"))
+//      .append(this.addAddrLine(12,
+//                               "arg",
+//                               "mvp4g2.logging=true"))
+//      .append("          </compilerArgs>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(10,
+//                               "skipModule",
+//                               "true"))
+//      .append(this.addAddrLine(10,
+//                               "codeServerPort",
+//                               "9876"))
+//      .append("          <devmodeArgs>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(12,
+//                               "arg",
+//                               "-port"))
+//      .append(this.addAddrLine(12,
+//                               "arg",
+//                               "8888"))
+//      .append(this.addAddrLine(12,
+//                               "arg",
+//                               "-codeServerPort"))
+//      .append(this.addAddrLine(12,
+//                               "arg",
+//                               "9876"))
+//      .append("          </devmodeArgs>")
       .append("          <startupUrls>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(12,
@@ -232,29 +350,55 @@ public class PomGenerator {
                                "${project.build.directory}/devModeWorkDir"))
       .append(this.addAddrLine(8,
                                "launcherDir",
-                               "${project.build.directory}/classes/static"))
+                               "${project.build.directory}/${project.build.finalName}"))
       .append(this.addAddrLine(8,
                                "warDir",
                                "${project.build.directory}/${project.build.finalName}"))
-      .append(this.addAddrLine(8,
-                               "webappDirectory",
-                               "${project.build.directory}/${project.build.finalName}"))
-      .append("          <systemProperties>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(12,
-                               "gwt.persistentunitcachedir",
-                               "${project.build.directory}/gwt/unitCache/"))
-      .append(this.addAddrLine(12,
-                               "gwt.war.directory",
-                               "${project.basedir}/${project.build.finalName}"))
-      .append("          </systemProperties>")
-      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(8,
+//                               "webappDirectory",
+//                               "${project.build.directory}/${project.build.finalName}"))
+//      .append("          <systemProperties>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(12,
+//                               "gwt.persistentunitcachedir",
+//                               "${project.build.directory}/gwt/unitCache/"))
+//      .append(this.addAddrLine(12,
+//                               "gwt.war.directory",
+//                               "${project.basedir}/${project.build.finalName}"))
+//      .append("          </systemProperties>")
+//      .append(GeneratorConstants.LINE_BREAK)
       .append("        </configuration>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("      </plugin>")
       .append(GeneratorConstants.LINE_BREAK);
 
     return sb.toString();
+  }
+
+  private String addAddrLine(int indent,
+                             String tagName,
+                             String value) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(this.addIndent(indent))
+      .append("<")
+      .append(tagName)
+      .append(">")
+      .append(value)
+      .append("</")
+      .append(tagName)
+      .append(">")
+      .append(GeneratorConstants.LINE_BREAK);
+
+    return sb.toString();
+  }
+
+  private String addIndent(int indent) {
+    StringBuilder s = new StringBuilder();
+    for (int i = 0; i < indent; i++) {
+      s.append(" ");
+    }
+    return s.toString();
   }
 
   private String generateWarPlugin() {
@@ -270,7 +414,7 @@ public class PomGenerator {
                                "maven-war-plugin"))
       .append(this.addAddrLine(8,
                                "version",
-                               "3.0.0"))
+                               "${plugin.version.maven.war}"))
       .append("        <configuration>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("          <webResources>")
@@ -279,7 +423,7 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(14,
                                "directory",
-                               "${project.build.directory}/classes/static"))
+                               "${project.build.directory}/${project.build.finalName}"))
       .append("            </resource>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("          </webResources>")
@@ -295,7 +439,7 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(12,
                                "id",
-                               "war"))
+                               "copy-war-contents-to-exploded-dir"))
       .append(this.addAddrLine(12,
                                "phase",
                                "compile"))
@@ -303,7 +447,7 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(14,
                                "goal",
-                               "war"))
+                               "exploded"))
       .append("            </goals>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("          </execution>")
@@ -378,7 +522,7 @@ public class PomGenerator {
                                "maven-compiler-plugin"))
       .append(this.addAddrLine(8,
                                "version",
-                               "3.6.1"))
+                               "${plugin.version.maven.compiler}"))
       .append("        <configuration>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(10,
@@ -387,96 +531,96 @@ public class PomGenerator {
       .append(this.addAddrLine(10,
                                "target",
                                "${maven.compiler.target}"))
-      .append(this.addAddrLine(10,
-                               "showWarnings",
-                               "true"))
-      .append(this.addAddrLine(10,
-                               "showDeprecation",
-                               "true"))
-      .append(this.addAddrLine(10,
-                               "meminitial",
-                               "128m"))
-      .append(this.addAddrLine(10,
-                               "maxmem",
-                               "1024m"))
-      .append(this.addAddrLine(10,
-                               "encoding",
-                               "${project.build.sourceEncoding}"))
-      .append("          <compilerArgs>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(12,
-                               "compilerArgument",
-                               "-Xlint:all"))
-      .append("          </compilerArgs>")
-      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(10,
+//                               "showWarnings",
+//                               "true"))
+//      .append(this.addAddrLine(10,
+//                               "showDeprecation",
+//                               "true"))
+//      .append(this.addAddrLine(10,
+//                               "meminitial",
+//                               "128m"))
+//      .append(this.addAddrLine(10,
+//                               "maxmem",
+//                               "1024m"))
+//      .append(this.addAddrLine(10,
+//                               "encoding",
+//                               "${project.build.sourceEncoding}"))
+//      .append("          <compilerArgs>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(12,
+//                               "compilerArgument",
+//                               "-Xlint:all"))
+//      .append("          </compilerArgs>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("        </configuration>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("        <executions>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("          <execution>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(12,
+//                               "id",
+//                               "process-annotations"))
+//      .append(this.addAddrLine(12,
+//                               "phase",
+//                               "generate-sources"))
+//      .append("            <goals>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(14,
+//                               "goal",
+//                               "compile"))
+//      .append("            </goals>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("            <configuration>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(14,
+//                               "proc",
+//                               "only"))
+//      .append("              <annotationProcessors>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(16,
+//                               "annotationProcessor",
+//                               "com.github.mvp4g.mvp4g2.processor.Mvp4g2Processor"))
+//      .append("              </annotationProcessors>")
+//      .append(GeneratorConstants.LINE_BREAK)
       .append("        </configuration>")
       .append(GeneratorConstants.LINE_BREAK)
-      .append("        <executions>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("          <execution>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(12,
-                               "id",
-                               "process-annotations"))
-      .append(this.addAddrLine(12,
-                               "phase",
-                               "generate-sources"))
-      .append("            <goals>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(14,
-                               "goal",
-                               "compile"))
-      .append("            </goals>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("            <configuration>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(14,
-                               "proc",
-                               "only"))
-      .append("              <annotationProcessors>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(16,
-                               "annotationProcessor",
-                               "com.github.mvp4g.mvp4g2.processor.Mvp4g2Processor"))
-      .append("              </annotationProcessors>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("            </configuration>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("          </execution>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("          <execution>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(12,
-                               "id",
-                               "default-compile"))
-      .append(this.addAddrLine(12,
-                               "phase",
-                               "compile"))
-      .append("            <goals>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(14,
-                               "goal",
-                               "compile"))
-      .append("            </goals>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("            <configuration>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(14,
-                               "proc",
-                               "only"))
-      .append("              <compilerArgs>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append(this.addAddrLine(16,
-                               "arg",
-                               "-proc:none"))
-      .append("              </compilerArgs>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("            </configuration>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("          </execution>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("        </executions>")
-      .append(GeneratorConstants.LINE_BREAK)
+//      .append("          </execution>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("          <execution>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(12,
+//                               "id",
+//                               "default-compile"))
+//      .append(this.addAddrLine(12,
+//                               "phase",
+//                               "compile"))
+//      .append("            <goals>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(14,
+//                               "goal",
+//                               "compile"))
+//      .append("            </goals>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("            <configuration>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(14,
+//                               "proc",
+//                               "only"))
+//      .append("              <compilerArgs>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append(this.addAddrLine(16,
+//                               "arg",
+//                               "-proc:none"))
+//      .append("              </compilerArgs>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("            </configuration>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("          </execution>")
+//      .append(GeneratorConstants.LINE_BREAK)
+//      .append("        </executions>")
+//      .append(GeneratorConstants.LINE_BREAK)
       .append("      </plugin>")
       .append(GeneratorConstants.LINE_BREAK);
 
@@ -486,7 +630,9 @@ public class PomGenerator {
   private String generateDependencyManagement() {
     StringBuilder sb = new StringBuilder();
 
-    sb.append("  <dependencyManagement>")
+    sb.append(this.addCommentLine(2,
+                                  "GWT BOM"))
+      .append("  <dependencyManagement>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("    <dependencies>")
       .append(GeneratorConstants.LINE_BREAK)
@@ -522,15 +668,6 @@ public class PomGenerator {
                                  null,
                                  null,
                                  "provided"))
-      .append(this.addDependency(4,
-                                 "com.google.gwt",
-                                 "gwt-codeserver",
-                                 null,
-                                 null,
-                                 "provided"))
-      .append(this.addDependency(4,
-                                 "com.google.gwt",
-                                 "gwt-servlet"))
       .append(this.addDependency(4,
                                  "com.github.mvp4g",
                                  "mvp4g2",
@@ -584,6 +721,10 @@ public class PomGenerator {
                                "gwt-app"))
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(2,
+                               "name",
+                               this.mvp4g2GeneraterParms.getArtefactId() + " - Mvp4g2 Boot Starter Project"))
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(this.addAddrLine(2,
                                "description",
                                "Mvp4g2 Boot Starter Project"))
       .append(GeneratorConstants.LINE_BREAK)
@@ -626,6 +767,21 @@ public class PomGenerator {
         .append(GeneratorConstants.LINE_BREAK);
     }
     sb.append(this.addCommentLine(4,
+                                  "plugin versions"))
+      .append(this.addAddrLine(4,
+                               "plugin.version.eclipse.lifecyle",
+                               "1.0.0"))
+      .append(this.addAddrLine(4,
+                               "plugin.version.maven.compiler",
+                               "3.6.1"))
+      .append(this.addAddrLine(4,
+                               "plugin.version.maven.gwt",
+                               "1.0-rc-9"))
+      .append(this.addAddrLine(4,
+                               "plugin.version.maven.war",
+                               "3.0.0"))
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(this.addCommentLine(4,
                                   "GWT needs at least java 1.6"))
       .append(this.addAddrLine(4,
                                "maven.compiler.source",
@@ -634,33 +790,19 @@ public class PomGenerator {
                                "maven.compiler.target",
                                "1.8"))
       .append(GeneratorConstants.LINE_BREAK)
-
       .append(this.addAddrLine(4,
                                "project.build.sourceEncoding",
                                "UTF-8"))
+      .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(4,
                                "generated.source.directory",
                                "${project.build.directory}/generated-sources/annotations"))
+      .append(GeneratorConstants.LINE_BREAK)
+      .append(this.addAddrLine(4,
+                               "webappDirectory",
+                               "${project.build.directory}/${project.build.finalName}"))
       .append("  </properties>")
       .append(GeneratorConstants.LINE_BREAK)
-      .append(GeneratorConstants.LINE_BREAK);
-
-    return sb.toString();
-  }
-
-  private String addAddrLine(int indent,
-                             String tagName,
-                             String value) {
-    StringBuilder sb = new StringBuilder();
-
-    sb.append(this.addIndent(indent))
-      .append("<")
-      .append(tagName)
-      .append(">")
-      .append(value)
-      .append("</")
-      .append(tagName)
-      .append(">")
       .append(GeneratorConstants.LINE_BREAK);
 
     return sb.toString();
@@ -743,14 +885,6 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK);
 
     return sb.toString();
-  }
-
-  private String addIndent(int indent) {
-    StringBuilder s = new StringBuilder();
-    for (int i = 0; i < indent; i++) {
-      s.append(" ");
-    }
-    return s.toString();
   }
 
   public static class Builder {

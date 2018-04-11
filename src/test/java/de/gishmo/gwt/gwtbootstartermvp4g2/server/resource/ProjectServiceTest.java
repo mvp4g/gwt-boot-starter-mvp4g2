@@ -15,7 +15,7 @@
  *
  */
 
-package test.de.gishmo.gwtbootstartermvp4g2.server.resource;
+package de.gishmo.gwt.gwtbootstartermvp4g2.server.resource;
 
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
