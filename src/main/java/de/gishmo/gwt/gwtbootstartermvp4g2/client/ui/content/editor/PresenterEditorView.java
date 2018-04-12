@@ -32,6 +32,7 @@ import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.form.validator.RegExValidator;
+import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.UiUtils;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 
@@ -83,7 +84,7 @@ public class PresenterEditorView
                                               "a - z, A - Z and 0 - 9 allowed"));
 
     this.showPresenterAtStart = new CheckBox();
-    this.showPresenterAtStart.setBoxLabel("show this screen in case there is no history");
+    this.showPresenterAtStart.setBoxLabel("show this screen as start screen in case there is no history");
 
     this.confirmation = new CheckBox();
     this.confirmation.setBoxLabel("implement confirmation for this presenter");
@@ -92,7 +93,7 @@ public class PresenterEditorView
     this.viewGenerationMethodListStore.add(ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK);
     this.viewGenerationMethodListStore.add(ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER);
     this.viewCreationMethod = new ComboBox<>(this.viewGenerationMethodListStore,
-                                               viewCreationMethod -> viewCreationMethod.getText());
+                                             viewCreationMethod -> viewCreationMethod.getText());
     this.viewCreationMethod.setForceSelection(true);
     this.viewCreationMethod.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
 
@@ -127,13 +128,26 @@ public class PresenterEditorView
                        new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                       -1));
 
+    this.container.add(UiUtils.createDistanceContainer(6),
+                       new VerticalLayoutContainer.VerticalLayoutData(1,
+                                                                      -1));
+
     this.container.add(this.showPresenterAtStart,
+                       new VerticalLayoutContainer.VerticalLayoutData(1,
+                                                                      -1));
+
+    this.container.add(UiUtils.createDistanceContainer(12),
                        new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                       -1));
 
     this.container.add(this.confirmation,
                        new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                       -1));
+
+    this.container.add(UiUtils.createDistanceContainer(6),
+                       new VerticalLayoutContainer.VerticalLayoutData(1,
+                                                                      -1));
+
     super.getButtonBar()
          .add(this.saveButton);
     super.getButtonBar()

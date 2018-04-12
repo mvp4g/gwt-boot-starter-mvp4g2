@@ -17,6 +17,9 @@
 
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
@@ -25,7 +28,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
@@ -38,7 +40,12 @@ import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.CssFloatLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.form.*;
+import com.sencha.gxt.widget.core.client.form.CheckBox;
+import com.sencha.gxt.widget.core.client.form.ComboBox;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.FormPanel;
+import com.sencha.gxt.widget.core.client.form.StringComboBox;
+import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.form.validator.RegExValidator;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -49,14 +56,16 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.model.PresenterDataProps;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.resources.ImageResources;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.UiUtils;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 
 public class ContentView
-    extends LazyReverseView<IContentView.Presenter>
-    implements IContentView {
+  extends LazyReverseView<IContentView.Presenter>
+  implements IContentView {
 
   private final static Margins MARGINS_LEFT = new Margins(0,
                                                           12,
@@ -153,6 +162,7 @@ public class ContentView
     ColumnConfig<PresenterData, String> ccName = new ColumnConfig<>(presenterDataProps.name(),
                                                                     450,
                                                                     "Name");
+
     ColumnConfig<PresenterData, String> ccHistoryName = new ColumnConfig<>(presenterDataProps.historyName(),
                                                                            112,
                                                                            "History Name");
@@ -167,8 +177,8 @@ public class ContentView
     ccHistoryName.setFixed(true);
 
     ColumnConfig<PresenterData, Boolean> ccShowyPresenterOnStart = new ColumnConfig<>(presenterDataProps.showPresenterAtStart(),
-                                                                                       112,
-                                                                                       "Start Screen");
+                                                                                      100,
+                                                                                      "Start Screen");
     ccShowyPresenterOnStart.setCell(new AbstractCell<Boolean>() {
       @Override
       public void render(Context context,
@@ -181,7 +191,7 @@ public class ContentView
     ccShowyPresenterOnStart.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
     ColumnConfig<PresenterData, Boolean> ccConfirmation = new ColumnConfig<>(presenterDataProps.confirmation(),
-                                                                             112,
+                                                                             100,
                                                                              "Confirmation");
     ccConfirmation.setCell(new AbstractCell<Boolean>() {
       @Override
@@ -223,7 +233,7 @@ public class ContentView
     grid = new Grid<>(store,
                       cm);
     grid.setSize("100%",
-                 "256px");
+                 "192px");
     grid.getView()
         .setStripeRows(true);
     grid.setBorders(false);
@@ -260,10 +270,10 @@ public class ContentView
                                                  "a - z, 0 - 9 and '.' allowed"));
 
     this.history = new CheckBox();
-    this.history.setBoxLabel("Check, if the application supports history handling");
+    this.history.setBoxLabel("Application supports history handling");
 
     this.historyOnStart = new CheckBox();
-    this.historyOnStart.setBoxLabel("Check, if the application handles history on start");
+    this.historyOnStart.setBoxLabel("Application handles history token on start (book marking)");
     historyOnStart.setEnabled(false);
 
     this.gwtVersion = new StringComboBox();
@@ -327,20 +337,19 @@ public class ContentView
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            -1));
     flc01.add(this.applicationLoader,
-              new CssFloatLayoutContainer.CssFloatData(1));
+              new CssFloatLayoutContainer.CssFloatData(.5,
+                                                       new Margins(0,
+                                                                   12,
+                                                                   0,
+                                                                   0)));
+    flc01.add(this.debug,
+              new CssFloatLayoutContainer.CssFloatData(.5,
+                                                       new Margins(0,
+                                                                   0,
+                                                                   0,
+                                                                   12)));
 
-    vlc.add(this.addDistance("12px"),
-            new VerticalLayoutContainer.VerticalLayoutData(1,
-                                                           12));
-
-    CssFloatLayoutContainer flc02 = new CssFloatLayoutContainer();
-    vlc.add(flc02,
-            new VerticalLayoutContainer.VerticalLayoutData(1,
-                                                           -1));
-    flc02.add(this.debug,
-              new CssFloatLayoutContainer.CssFloatData(1));
-
-    vlc.add(this.addDistance("24px"),
+    vlc.add(UiUtils.createDistanceContainer(24),
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            24));
 
@@ -349,17 +358,17 @@ public class ContentView
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            -1));
     flc03.add(this.history,
-              new CssFloatLayoutContainer.CssFloatData(1));
-    vlc.add(this.addDistance("12px"),
-            new VerticalLayoutContainer.VerticalLayoutData(1,
-                                                           12));
-
-    CssFloatLayoutContainer flc04 = new CssFloatLayoutContainer();
-    vlc.add(flc04,
-            new VerticalLayoutContainer.VerticalLayoutData(1,
-                                                           -1));
-    flc04.add(this.historyOnStart,
-              new CssFloatLayoutContainer.CssFloatData(1));
+              new CssFloatLayoutContainer.CssFloatData(.5,
+                                                       new Margins(0,
+                                                                   12,
+                                                                   0,
+                                                                   0)));
+    flc03.add(this.historyOnStart,
+              new CssFloatLayoutContainer.CssFloatData(.5,
+                                                       new Margins(0,
+                                                                   0,
+                                                                   0,
+                                                                   12)));
   }
 
   private void setUpScreenMetaData() {
@@ -382,7 +391,7 @@ public class ContentView
     vlc.add(toolBar,
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            45));
-    vlc.add(addDistance("12px"),
+    vlc.add(UiUtils.createDistanceContainer(12),
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            12));
     vlc.add(grid,
@@ -392,7 +401,7 @@ public class ContentView
                                                                        0,
                                                                        0,
                                                                        0)));
-    vlc.add(addDistance("12px"),
+    vlc.add(UiUtils.createDistanceContainer(12),
             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                            12));
   }
@@ -411,13 +420,13 @@ public class ContentView
     }
     cp.setBodyBorder(true);
 
-    this.innerContainer.add(addDistance("6px"),
+    this.innerContainer.add(UiUtils.createDistanceContainer(6),
                             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                            6));
     this.innerContainer.add(cp,
                             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                            -1));
-    this.innerContainer.add(addDistance("6px"),
+    this.innerContainer.add(UiUtils.createDistanceContainer(6),
                             new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                            6));
 
@@ -430,12 +439,6 @@ public class ContentView
     fl.setText(label);
     fl.setLabelAlign(FormPanel.LabelAlign.TOP);
     return fl;
-  }
-
-  private Widget addDistance(String height) {
-    SimplePanel sp = new SimplePanel();
-    sp.setHeight(height);
-    return sp;
   }
 
   public void bind() {
