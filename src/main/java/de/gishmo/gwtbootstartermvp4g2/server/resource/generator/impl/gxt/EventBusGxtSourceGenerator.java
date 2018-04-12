@@ -92,7 +92,7 @@ public class EventBusGxtSourceGenerator {
                                              "We will use this event to initiate the setting of the\n" +
                                              "navigation in the west area of the shell by using the bind-attribute.\n" +
                                              "By using the start event to bind the navigation, we make sure\n" +
-                                             "that the navigation will be updated before the content area is updated.")
+                                             "that the navigation will be updated before the content area is updated.\n")
                                  .addAnnotation(Start.class)
                                  .addAnnotation(AnnotationSpec.builder(Event.class)
                                                               .addMember("bind",
@@ -114,7 +114,7 @@ public class EventBusGxtSourceGenerator {
                                              "with the current content area.\n" +
                                              "\n" +
                                              "@param widget the element of the widget, that will be\n" +
-                                             "              displayed inside the content area of the shell.")
+                                             "              displayed inside the content area of the shell.\n")
                                  .addAnnotation(Event.class)
                                  .addParameter(ParameterSpec.builder(Widget.class,
                                                                      "widget")
@@ -128,7 +128,7 @@ public class EventBusGxtSourceGenerator {
                                              "area of the shell.\n" +
                                              "\n" +
                                              "@param widget the element of the widget, that will be\n" +
-                                             "              displayed inside the north area of the shell.")
+                                             "              displayed inside the north area of the shell.\n")
                                  .addAnnotation(Event.class)
                                  .addParameter(ParameterSpec.builder(Widget.class,
                                                                      "widget")
@@ -142,7 +142,7 @@ public class EventBusGxtSourceGenerator {
                                              "area of the shell.\n" +
                                              "\n" +
                                              "@param widget the element of the widget, that will be\n" +
-                                             "              displayed inside the west area of the shell.")
+                                             "              displayed inside the west area of the shell.\n")
                                  .addAnnotation(Event.class)
                                  .addParameter(ParameterSpec.builder(Widget.class,
                                                                      "widget")
@@ -156,7 +156,7 @@ public class EventBusGxtSourceGenerator {
                                              "area of the shell.\n" +
                                              "\n" +
                                              "@param widget the element of the widget, that will be\n" +
-                                             "              displayed inside the south area of the shell.")
+                                             "              displayed inside the south area of the shell.\n")
                                  .addAnnotation(Event.class)
                                  .addParameter(ParameterSpec.builder(Widget.class,
                                                                      "widget")
@@ -170,7 +170,7 @@ public class EventBusGxtSourceGenerator {
                                    .addJavadoc("This event will be used in case:\n" +
                                                "\n" +
                                                "* there is not history-token\n" +
-                                               "* the token is not valid")
+                                               "* the token is not valid\n")
                                    .addAnnotation(InitHistory.class)
                                    .addAnnotation(NotFoundHistory.class)
                                    .addAnnotation(Event.class)
@@ -231,7 +231,7 @@ public class EventBusGxtSourceGenerator {
     javaDocComment += "This event will change the screen displayed inside the\n" +
                       "content area. From the mvp4g2 point of view, it is a\n" +
                       "navigation event. If there is a confirm-presenter defined,\n" +
-                      "this presenter will be asked before the view changed.";
+                      "this presenter will be asked before the view changed.\n";
     return javaDocComment;
   }
 
