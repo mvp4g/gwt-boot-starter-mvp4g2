@@ -225,8 +225,8 @@ public class ContentView
 
     List<ColumnConfig<PresenterData, ?>> list = new ArrayList<>();
     list.add(ccName);
-    list.add(ccShowyPresenterOnStart);
     list.add(ccHistoryName);
+    list.add(ccShowyPresenterOnStart);
     list.add(ccConfirmation);
     list.add(ccViewGenerationMethod);
     ColumnModel<PresenterData> cm = new ColumnModel<>(list);
