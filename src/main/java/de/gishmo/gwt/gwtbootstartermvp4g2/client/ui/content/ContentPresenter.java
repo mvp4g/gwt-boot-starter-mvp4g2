@@ -17,23 +17,20 @@
 
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
-import java.util.stream.IntStream;
-
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor.PresenterEditor;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.*;
 
-@Presenter(viewClass = ContentView.class, viewInterface = IContentView.class)
+import java.util.stream.IntStream;
+
+@Presenter(viewClass = ContentView.class,
+           viewInterface = IContentView.class)
 public class ContentPresenter
-  extends AbstractPresenter<GwtBootStarterMvp4g2EventBus, IContentView>
-  implements IContentView.Presenter {
+    extends AbstractPresenter<GwtBootStarterMvp4g2EventBus, IContentView>
+    implements IContentView.Presenter {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
@@ -62,6 +59,24 @@ public class ContentPresenter
                                                      .set(i,
                                                           model));
       }
+      // now we have to check the showPresenterAtStart ...
+      if (model.isShowPresenterAtStart()) {
+        mvp4g2GeneraterParms.getPresenters()
+                            .stream()
+                            .filter(presenterData -> !model.getId()
+                                                           .equals(presenterData.getId()))
+                            .forEach(presenterData -> presenterData.setShowPresenterAtStart(false));
+      } else {
+        boolean hasStartPresenter = mvp4g2GeneraterParms.getPresenters()
+                                                        .stream()
+                                                        .anyMatch(PresenterData::isShowPresenterAtStart);
+        if (!hasStartPresenter) {
+          mvp4g2GeneraterParms.getPresenters()
+                              .get(0)
+                              .setShowPresenterAtStart(true);
+        }
+      }
+      // update grid
       view.updateGrid(this.mvp4g2GeneraterParms);
     });
   }

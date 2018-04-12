@@ -44,6 +44,8 @@ public class PresenterEditorView
   TextField                    name;
   @Path("historyName")
   TextField                    historyName;
+  @Path("showPresenterAtStart")
+  CheckBox                     showPresenterAtStart;
   @Path("confirmation")
   CheckBox                     confirmation;
   @Path("viewCreationMethod")
@@ -79,6 +81,9 @@ public class PresenterEditorView
     this.historyName = new TextField();
     this.name.addValidator(new RegExValidator("^[a-zA-Z0-9]*$",
                                               "a - z, A - Z and 0 - 9 allowed"));
+
+    this.showPresenterAtStart = new CheckBox();
+    this.showPresenterAtStart.setBoxLabel("show this screen in case there is no history");
 
     this.confirmation = new CheckBox();
     this.confirmation.setBoxLabel("implement confirmation for this presenter");
@@ -119,6 +124,10 @@ public class PresenterEditorView
                                      "View Creation Method");
     fl03.setLabelAlign(FormPanel.LabelAlign.TOP);
     this.container.add(fl03,
+                       new VerticalLayoutContainer.VerticalLayoutData(1,
+                                                                      -1));
+
+    this.container.add(this.showPresenterAtStart,
                        new VerticalLayoutContainer.VerticalLayoutData(1,
                                                                       -1));
 

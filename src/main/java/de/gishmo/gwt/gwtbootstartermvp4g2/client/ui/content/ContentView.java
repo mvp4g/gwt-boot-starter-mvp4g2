@@ -17,9 +17,6 @@
 
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
@@ -41,12 +38,7 @@ import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.CssFloatLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.form.CheckBox;
-import com.sencha.gxt.widget.core.client.form.ComboBox;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
-import com.sencha.gxt.widget.core.client.form.FormPanel;
-import com.sencha.gxt.widget.core.client.form.StringComboBox;
-import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.*;
 import com.sencha.gxt.widget.core.client.form.validator.RegExValidator;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -57,20 +49,20 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.model.PresenterDataProps;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.resources.ImageResources;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContentView
-  extends LazyReverseView<IContentView.Presenter>
-  implements IContentView {
+    extends LazyReverseView<IContentView.Presenter>
+    implements IContentView {
 
-  private final static Margins MARGINS_LEFT  = new Margins(0,
-                                                           12,
-                                                           0,
-                                                           0);
+  private final static Margins MARGINS_LEFT = new Margins(0,
+                                                          12,
+                                                          0,
+                                                          0);
+
   private final static Margins MARGINS_RIGHT = new Margins(0,
                                                            0,
                                                            0,
@@ -78,31 +70,41 @@ public class ContentView
 
   private static ThemeDetails themeDetails = GWT.create(ThemeDetails.class);
 
-  private HBoxLayoutContainer     container;
+  private HBoxLayoutContainer container;
+
   private VerticalLayoutContainer innerContainer;
+
   private VerticalLayoutContainer wrapperContainer;
 
   private StringComboBox gwtVersion;
 
   private TextField groupId;
+
   private TextField artifactId;
 
   private CheckBox applicationLoader;
+
   private CheckBox debug;
 
   private CheckBox historyOnStart;
+
   private CheckBox history;
 
-  private ComboBox<WidgetLibrary>  widgetLibrary;
+  private ComboBox<WidgetLibrary> widgetLibrary;
+
   private ListStore<WidgetLibrary> widgetLibraryStore;
 
   private TextButton addButton;
+
   private TextButton editButton;
+
   private TextButton deleteButton;
 
-  private PresenterDataProps       presenterDataProps = GWT.create(PresenterDataProps.class);
+  private PresenterDataProps presenterDataProps = GWT.create(PresenterDataProps.class);
+
   private ListStore<PresenterData> store;
-  private Grid<PresenterData>      grid;
+
+  private Grid<PresenterData> grid;
 
   public ContentView() {
     super();
@@ -152,7 +154,7 @@ public class ContentView
                                                                     450,
                                                                     "Name");
     ColumnConfig<PresenterData, String> ccHistoryName = new ColumnConfig<>(presenterDataProps.historyName(),
-                                                                           125,
+                                                                           112,
                                                                            "History Name");
     ccHistoryName.setCell(new AbstractCell<String>() {
       @Override
@@ -164,8 +166,22 @@ public class ContentView
     });
     ccHistoryName.setFixed(true);
 
+    ColumnConfig<PresenterData, Boolean> ccShowyPresenterOnStart = new ColumnConfig<>(presenterDataProps.showPresenterAtStart(),
+                                                                                       112,
+                                                                                       "Start Screen");
+    ccShowyPresenterOnStart.setCell(new AbstractCell<Boolean>() {
+      @Override
+      public void render(Context context,
+                         Boolean s,
+                         SafeHtmlBuilder safeHtmlBuilder) {
+        safeHtmlBuilder.append(SafeHtmlUtils.fromTrustedString(s ? "Yes" : "No"));
+      }
+    });
+    ccShowyPresenterOnStart.setFixed(true);
+    ccShowyPresenterOnStart.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+
     ColumnConfig<PresenterData, Boolean> ccConfirmation = new ColumnConfig<>(presenterDataProps.confirmation(),
-                                                                             125,
+                                                                             112,
                                                                              "Confirmation");
     ccConfirmation.setCell(new AbstractCell<Boolean>() {
       @Override
@@ -199,6 +215,7 @@ public class ContentView
 
     List<ColumnConfig<PresenterData, ?>> list = new ArrayList<>();
     list.add(ccName);
+    list.add(ccShowyPresenterOnStart);
     list.add(ccHistoryName);
     list.add(ccConfirmation);
     list.add(ccViewGenerationMethod);
@@ -261,7 +278,7 @@ public class ContentView
     this.widgetLibraryStore.add(WidgetLibrary.GWT);
     this.widgetLibraryStore.add(WidgetLibrary.GXT);
     this.widgetLibrary = new ComboBox<>(this.widgetLibraryStore,
-                                             widgetLibrary -> widgetLibrary.getText());
+                                        widgetLibrary -> widgetLibrary.getText());
     this.widgetLibrary.setForceSelection(true);
     this.widgetLibrary.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
   }

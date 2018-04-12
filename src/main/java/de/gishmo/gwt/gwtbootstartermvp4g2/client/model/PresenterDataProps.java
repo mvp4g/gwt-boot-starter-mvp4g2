@@ -36,6 +36,9 @@ public interface PresenterDataProps
   @Editor.Path("historyName")
   ValueProvider<PresenterData, String> historyName();
 
+  @Editor.Path("showPresenterAtStart")
+  ValueProvider<PresenterData, Boolean> showPresenterAtStart();
+
   @Editor.Path("confirmation")
   ValueProvider<PresenterData, Boolean> confirmation();
 
