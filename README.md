@@ -67,8 +67,8 @@ In this area the features of Mvp4g2 for generated the project are defined.
 
 #### Application Loader
 
-If checked, a application loader will be added to the project source code. More informations about Application Loader
-can be found [here](https://github.com/mvp4g/mvp4g2/wiki/02.-Application-Loader).
+If checked, a [application loader](https://github.com/mvp4g/mvp4g2/wiki/02.-Application-Loader) will be added to the project source code.
+can be found [here].
 
 #### Debug Support
 
