@@ -87,7 +87,7 @@ If checked, the application will handle a [history token on start](https://githu
 ### Screen Meta Data
 
 In this area the screens are defined. A screen in mvp4g2 is a combination of a presenter and a view. There are three
-predefined screens called search, list and detail.
+predefined screens called screen01, screen02 and screen03. The generate need at least one screen to generate a fully working project.
 
 ![Project Meta Data](https://github.com/mvp4g/gwt-boot-starter-mvp4g2/blob/master/etc/images/ScreenMetaData.png?raw=true)
 
