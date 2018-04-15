@@ -39,6 +39,8 @@ public interface IContentView
 
     void doAdd();
 
+    void doDelete(PresenterData model);
+
     void doEdit(PresenterData model);
 
   }

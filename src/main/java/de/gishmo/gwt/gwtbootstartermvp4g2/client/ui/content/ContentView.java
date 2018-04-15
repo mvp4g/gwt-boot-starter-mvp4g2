@@ -35,6 +35,8 @@ import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.themebuilder.base.client.config.ThemeDetails;
 import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.CssFloatLayoutContainer;
@@ -463,6 +465,21 @@ public class ContentView
     this.editButton.addSelectHandler(selectEvent -> getPresenter().doEdit(grid.getSelectionModel()
                                                                               .getSelectedItem()
                                                                               .clone()));
+    this.deleteButton.addSelectHandler(selectEvent -> {
+      ConfirmMessageBox confirm = new ConfirmMessageBox("Delete Screen?",
+                                                        "Are you sure to delete the selected screen?");
+      confirm.addDialogHideHandler(hideEvent -> {
+        if (Dialog.PredefinedButton.YES == hideEvent.getHideButton()) {
+          this.getPresenter().doDelete(grid.getSelectionModel()
+                                           .getSelectedItem());
+          this.store.remove(grid.getSelectionModel()
+                                .getSelectedItem());
+        }
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+      });
+      confirm.show();
+    });
   }
 
   @Override

@@ -22,6 +22,8 @@ import java.util.stream.IntStream;
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
+import com.google.gwt.core.client.GWT;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor.PresenterEditor;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
@@ -31,10 +33,10 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 
 @Presenter(viewClass = ContentView.class,
-           viewInterface = IContentView.class)
+  viewInterface = IContentView.class)
 public class ContentPresenter
-    extends AbstractPresenter<GwtBootStarterMvp4g2EventBus, IContentView>
-    implements IContentView.Presenter {
+  extends AbstractPresenter<GwtBootStarterMvp4g2EventBus, IContentView>
+  implements IContentView.Presenter {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
@@ -130,9 +132,17 @@ public class ContentPresenter
 
   @EventHandler
   public void onGenerateProject() {
-    eventBus.showProgressBar();
+    GWT.debugger();
     if (view.isValid()) {
       view.flush(this.mvp4g2GeneraterParms);
+      if (this.mvp4g2GeneraterParms.getPresenters()
+                                   .size() == 0) {
+        AlertMessageBox messageBox = new AlertMessageBox("Attention",
+                                                         "The generator needs a least one screen defined!");
+        messageBox.show();
+        return;
+      }
+      eventBus.showProgressBar();
       eventBus.generate(this.mvp4g2GeneraterParms);
     } else {
       // TODO error message
@@ -142,6 +152,12 @@ public class ContentPresenter
   @Override
   public void doAdd() {
     this.presenterEditor.add(this.mvp4g2GeneraterParms.getPresenters());
+  }
+
+  @Override
+  public void doDelete(PresenterData model) {
+    this.mvp4g2GeneraterParms.getPresenters()
+                             .remove(model);
   }
 
   @Override
