@@ -7,7 +7,7 @@
 Setting up a Mvp4g2 project can be difficult, especially if you are not familiar with MVP4G2. There are a lot of things
 to do before it is possible to run the project and check wheather it is working or not.
 
-To improve the set up process, we created a
+To improve the process of setting up a GWT project using MVP4G2, we created a
 [Mvp4g2 project generator](http://www.mvp4g.org/gwt-boot-starter-mvp4g2/GwtBootStarterMvp4g2.html). Once you have configurated and generated the project, you will get a zip file containing the - ready to import - Mvp4g2 project.
 
 Keep in mind, Mvp4g2 helps you to structure your application. Navigation, history and confirmation will be generated and
