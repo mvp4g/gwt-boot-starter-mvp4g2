@@ -30,7 +30,7 @@ transfom GWT 2.x code to work with GWT 3!**
 
 In this area the Group Id, the Artifact Id and GWT version of the project is defined.
 
-![Project Meta Data](https://github.com/mvp4g/gwt-boot-starter-mvp4g2/blob/master/etc/images/ProjectMetaData.png?raw=true){: .center-image }
+![Project Meta Data](https://github.com/mvp4g/gwt-boot-starter-mvp4g2/blob/master/etc/images/ProjectMetaData.png?raw=true)
 
 #### Group Id
 
