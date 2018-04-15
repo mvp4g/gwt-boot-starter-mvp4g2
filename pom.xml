@@ -22,8 +22,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.mvp4g</groupId>
-  <artifactId>gwt-boot-starter</artifactId>
-  <version>mvp4g2</version>
+  <artifactId>gwt-boot-starter-mvp4g2</artifactId>
+  <version>1.0.1</version>
 
   <packaging>war</packaging>
 
@@ -65,15 +65,15 @@
   </properties>
 
   <!--<dependencyManagement>-->
-  <!--<dependencies>-->
-  <!--<dependency>-->
-  <!--<groupId>com.google.gwt</groupId>-->
-  <!--<artifactId>gwt</artifactId>-->
-  <!--<version>${gwtVersion}</version>-->
-  <!--<type>pom</type>-->
-  <!--<scope>import</scope>-->
-  <!--</dependency>-->
-  <!--</dependencies>-->
+    <!--<dependencies>-->
+      <!--<dependency>-->
+        <!--<groupId>com.google.gwt</groupId>-->
+        <!--<artifactId>gwt</artifactId>-->
+        <!--<version>${gwtVersion}</version>-->
+        <!--<type>pom</type>-->
+        <!--<scope>import</scope>-->
+      <!--</dependency>-->
+    <!--</dependencies>-->
   <!--</dependencyManagement>-->
 
   <dependencies>
@@ -93,7 +93,7 @@
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-codeserver</artifactId>
       <version>${gwtVersion}</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>com.github.mvp4g</groupId>
@@ -183,6 +183,7 @@
   </repositories>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
@@ -248,16 +249,6 @@
             <devmodeArg>-port</devmodeArg>
             <devmodeArg>${serverPort}</devmodeArg>
           </devmodeArgs>
-
-          <!--<devmodeWorkDir>${project.build.directory}/${project.build.finalName}</devmodeWorkDir>-->
-          <!--<launcherDir>${project.build.directory}/${project.build.finalName}</launcherDir>-->
-          <!--<warDir>${project.build.directory}/${project.build.finalName}</warDir>-->
-          <!--<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>-->
-          <!--<systemProperties>-->
-            <!--<gwt.persistentunitcachedir>${project.build.directory}/gwt/unitCache/</gwt.persistentunitcachedir>-->
-            <!--<gwt.war.directory>${project.build.directory}/${project.build.finalName}</gwt.war.directory>-->
-          <!--</systemProperties>-->
-
           <devmodeWorkDir>${project.build.directory}/classes/static</devmodeWorkDir>
           <launcherDir>${project.build.directory}/classes/static</launcherDir>
           <warDir>${project.build.directory}/classes/static</warDir>

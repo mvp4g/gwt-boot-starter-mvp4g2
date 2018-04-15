@@ -153,7 +153,7 @@ public class ShellView
 
     this.createLink(innerContainer,
                     "Generator Documentation",
-                    "https://github.com/mvp4g/mvp4g2/wiki/Mvp4g2-Project-Generator");
+                    "https://github.com/mvp4g/gwt-boot-starter-mvp4g2");
 
     this.createLink(innerContainer,
                     "Generator Issues",

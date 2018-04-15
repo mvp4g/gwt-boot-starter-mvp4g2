@@ -17,14 +17,18 @@
 
 package de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content;
 
+import java.util.stream.IntStream;
+
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor.PresenterEditor;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.*;
-
-import java.util.stream.IntStream;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.DataConstants;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 
 @Presenter(viewClass = ContentView.class,
            viewInterface = IContentView.class)
@@ -94,7 +98,7 @@ public class ContentPresenter
     this.mvp4g2GeneraterParms.setWidgetLibrary(WidgetLibrary.GWT);
 
     this.mvp4g2GeneraterParms.getPresenters()
-                             .add(new PresenterData("search",
+                             .add(new PresenterData("screen01",
                                                     "R2D2",
                                                     false,
                                                     true,
@@ -103,7 +107,7 @@ public class ContentPresenter
                                                     true,
                                                     true));
     this.mvp4g2GeneraterParms.getPresenters()
-                             .add(new PresenterData("list",
+                             .add(new PresenterData("screen02",
                                                     "C3P0",
                                                     false,
                                                     false,
@@ -112,7 +116,7 @@ public class ContentPresenter
                                                     true,
                                                     true));
     this.mvp4g2GeneraterParms.getPresenters()
-                             .add(new PresenterData("detail",
+                             .add(new PresenterData("screen03",
                                                     "BB8",
                                                     false,
                                                     false,

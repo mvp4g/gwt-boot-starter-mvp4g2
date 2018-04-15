@@ -87,7 +87,7 @@ public class PresenterEditorView
     this.showPresenterAtStart.setBoxLabel("show this screen as start screen in case there is no history");
 
     this.confirmation = new CheckBox();
-    this.confirmation.setBoxLabel("implement confirmation for this presenter");
+    this.confirmation.setBoxLabel("implement confirmation for this screen");
 
     this.viewGenerationMethodListStore = new ListStore<>(viewCreationMethod -> viewCreationMethod.name());
     this.viewGenerationMethodListStore.add(ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK);
@@ -108,7 +108,7 @@ public class PresenterEditorView
     super.setWidget(this.container);
 
     FieldLabel fl01 = new FieldLabel(this.name,
-                                     "Presenter Class Name");
+                                     "Screen Name");
     fl01.setLabelAlign(FormPanel.LabelAlign.TOP);
     this.container.add(fl01,
                        new VerticalLayoutContainer.VerticalLayoutData(1,
@@ -196,7 +196,7 @@ public class PresenterEditorView
   @Override
   public void edit(PresenterData model,
                    boolean isNew) {
-    super.setHeading(isNew ? "Create New Presenter" : "Update Presenter");
+    super.setHeading(isNew ? "Create New Screen" : "Update Screen");
     this.driver.edit(model);
   }
 

@@ -161,7 +161,7 @@ public class ContentView
 
     ColumnConfig<PresenterData, String> ccName = new ColumnConfig<>(presenterDataProps.name(),
                                                                     450,
-                                                                    "Name");
+                                                                    "Screen");
 
     ColumnConfig<PresenterData, String> ccHistoryName = new ColumnConfig<>(presenterDataProps.historyName(),
                                                                            112,
