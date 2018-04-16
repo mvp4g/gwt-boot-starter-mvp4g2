@@ -53,8 +53,8 @@ import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gxt.StatusB
 
 public class SourceGenerator {
 
-  private static final String SRC_MAIN_JAVA             = "src" + File.separator + "main" + File.separator + "java";
-  private static final String SRC_MAIN_WEBAPP           = "src" + File.separator + "main" + File.separator + "webapp";
+  private static final String SRC_MAIN_JAVA   = "src" + File.separator + "main" + File.separator + "java";
+  private static final String SRC_MAIN_WEBAPP = "src" + File.separator + "main" + File.separator + "webapp";
 
   private static final String CLIENT = "client";
 
@@ -299,8 +299,8 @@ public class SourceGenerator {
     String srcPackage = mvp4g2GeneraterParms.getGroupId()
                                             .replace(".",
                                                      File.separator);
-    srcPackage = srcPackage + File.separator + mvp4g2GeneraterParms.getArtefactId()
-                                                                   .toLowerCase();
+    srcPackage = srcPackage + File.separator + GeneratorUtils.removeBadChracters(mvp4g2GeneraterParms.getArtefactId())
+                                                             .toLowerCase();
 
     String clientPackage = srcPackage + File.separator + SourceGenerator.CLIENT;
     this.clientPackageJavaConform = clientPackage.replace(File.separator,

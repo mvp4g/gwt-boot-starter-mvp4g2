@@ -274,14 +274,14 @@ public class ShellGxtSourceGenerator {
                                                                      .build())
                                         .superclass(ParameterizedTypeName.get(ClassName.get(AbstractPresenter.class),
                                                                               ClassName.get(this.clientPackageJavaConform,
-                                                                                            GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
+                                                                                            GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
                                                                               ClassName.get(this.clientPackageJavaConform + ".ui.shell",
                                                                                             "IShellView")))
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.shell",
                                                                          "IShellView.Presenter"))
                                         .addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsShell.class),
                                                                                      ClassName.get(this.clientPackageJavaConform,
-                                                                                                   GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
+                                                                                                   GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
                                                                                      ClassName.get(this.clientPackageJavaConform + ".ui.shell",
                                                                                                    "IShellView")))
                                         .addMethod(MethodSpec.constructorBuilder()

@@ -283,15 +283,15 @@ public class PomGenerator {
                                "compile"))
       .append(this.addAddrLine(10,
                                "moduleName",
-                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()
-                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+                               this.mvp4g2GeneraterParms.getGroupId() + "." +  GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())
+                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "moduleShortName",
-                               this.mvp4g2GeneraterParms.getArtefactId()))
+                               GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())))
 //      .append(this.addAddrLine(10,
 //                               "modules",
 //                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()
-//                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+//                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "failOnError",
                                "true"))
@@ -342,7 +342,7 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(12,
                                "startupUrl",
-                               this.mvp4g2GeneraterParms.getArtefactId() + ".html"))
+                               GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + ".html"))
       .append("          </startupUrls>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(8,
@@ -711,7 +711,7 @@ public class PomGenerator {
                                this.mvp4g2GeneraterParms.getGroupId()))
       .append(this.addAddrLine(2,
                                "artifactId",
-                               this.mvp4g2GeneraterParms.getArtefactId()))
+                               GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(2,
                                "version",
                                "1.0.0-SNAPSHOT"))

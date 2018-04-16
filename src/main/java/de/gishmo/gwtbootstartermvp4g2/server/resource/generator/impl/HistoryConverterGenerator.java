@@ -71,7 +71,7 @@ public class HistoryConverterGenerator {
                                         .addModifiers(Modifier.PUBLIC)
                                         .addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsHistoryConverter.class),
                                                                                      ClassName.get(this.clientPackageJavaConform,
-                                                                                                   GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS)))
+                                                                                                   GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS)))
                                         .addMethod(MethodSpec.constructorBuilder()
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .build());
@@ -86,16 +86,16 @@ public class HistoryConverterGenerator {
                                                                                               "param")
                                                                                      .build())
                                                           .addParameter(ParameterSpec.builder(ClassName.get(this.clientPackageJavaConform,
-                                                                                                            GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
+                                                                                                            GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
                                                                                               "eventBus")
                                                                                      .build());
 
     convertFromTokenMethod.beginControlFlow("switch (historyName)");
     this.mvp4g2GeneraterParms.getPresenters()
                              .forEach(presenterData -> convertFromTokenMethod.addCode("case $S:\n",
-                                                                                      "goto" + GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                                                                      "goto" + GeneratorUtils.setFirstCharacterToUpperCase(presenterData.getName()))
                                                                              .addStatement("eventBus.goto$L()",
-                                                                                           GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                                                                           GeneratorUtils.setFirstCharacterToUpperCase(presenterData.getName()))
                                                                              .addStatement("break"));
     convertFromTokenMethod.endControlFlow();
     typeSpec.addMethod(convertFromTokenMethod.build());

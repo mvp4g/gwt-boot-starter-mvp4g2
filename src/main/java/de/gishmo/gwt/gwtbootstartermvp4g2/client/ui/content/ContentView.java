@@ -257,8 +257,8 @@ public class ContentView
 
     this.artifactId = new TextField();
     this.artifactId.setAllowBlank(false);
-    this.artifactId.addValidator(new RegExValidator("^[a-zA-Z0-9.]*$",
-                                                    "a - z, A - Z, 0 - 9 and '.' allowed"));
+    this.artifactId.addValidator(new RegExValidator("^[-a-zA-Z0-9/.]*$",
+                                                    "a - z, A - Z, 0 - 9, '-' and '.' allowed"));
 
     this.applicationLoader = new CheckBox();
     this.applicationLoader.setBoxLabel("Generate Apllication Loader class");

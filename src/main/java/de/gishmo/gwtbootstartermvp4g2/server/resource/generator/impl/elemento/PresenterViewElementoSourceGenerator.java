@@ -89,7 +89,7 @@ public class PresenterViewElementoSourceGenerator {
 
   private void generateIViewClass()
     throws GeneratorException {
-    TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder("I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")
+    TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder("I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View")
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
@@ -97,7 +97,7 @@ public class PresenterViewElementoSourceGenerator {
                                         .addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsLazyReverseView.class),
                                                                                      ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                                          .toLowerCase(),
-                                                                                                   "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter")))
+                                                                                                   "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View.Presenter")))
                                         .addMethod(MethodSpec.methodBuilder("asWidget")
                                                              .addModifiers(Modifier.PUBLIC,
                                                                            Modifier.ABSTRACT)
@@ -123,13 +123,13 @@ public class PresenterViewElementoSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View" + "<< -> " + "exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View" + "<< -> " + "exception: " + e.getMessage());
     }
   }
 
   private void generateViewClass()
     throws GeneratorException {
-    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View")
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
@@ -137,11 +137,11 @@ public class PresenterViewElementoSourceGenerator {
                                         .superclass(ParameterizedTypeName.get(ClassName.get(LazyReverseView.class),
                                                                               ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                                   .toLowerCase(),
-                                                                                            "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter")))
+                                                                                            "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View.Presenter")))
 
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                .toLowerCase(),
-                                                                         "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"));
+                                                                         "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View"));
     typeSpec.addField(FieldSpec.builder(ClassName.get(HTMLDivElement.class),
                                         "container",
                                         Modifier.PRIVATE)
@@ -177,7 +177,7 @@ public class PresenterViewElementoSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View" + "<< -> " + "exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View" + "<< -> " + "exception: " + e.getMessage());
     }
   }
 
@@ -188,18 +188,18 @@ public class PresenterViewElementoSourceGenerator {
                                                                           "$T.class",
                                                                           ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                               .toLowerCase(),
-                                                                                        GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
+                                                                                        GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View"))
                                                                .addMember("viewInterface",
                                                                           "$T.class",
                                                                           ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                               .toLowerCase(),
-                                                                                        "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"));
+                                                                                        "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View"));
     if (ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER == this.presenterData.getViewCreationMethod()) {
       presenterAnnotation.addMember("viewCreator",
                                     "$T.VIEW_CREATION_METHOD.PRESENTER",
                                     Presenter.class);
     }
-    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "Prensenter")
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "Prensenter")
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
@@ -207,13 +207,13 @@ public class PresenterViewElementoSourceGenerator {
                                         .addAnnotation(presenterAnnotation.build())
                                         .superclass(ParameterizedTypeName.get(ClassName.get(AbstractPresenter.class),
                                                                               ClassName.get(this.clientPackageJavaConform,
-                                                                                            GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
+                                                                                            GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
                                                                               ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                                   .toLowerCase(),
-                                                                                            "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")))
+                                                                                            "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View")))
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                .toLowerCase(),
-                                                                         "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View.Presenter"));
+                                                                         "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View.Presenter"));
     if (presenterData.isConfirmation()) {
       typeSpec.addSuperinterface(IsNavigationConfirmation.class);
     }
@@ -221,7 +221,7 @@ public class PresenterViewElementoSourceGenerator {
       typeSpec.addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsViewCreator.class),
                                                            ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                                .toLowerCase(),
-                                                                         "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View")));
+                                                                         "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View")));
     }
     typeSpec.addMethod(MethodSpec.constructorBuilder()
                                  .addModifiers(Modifier.PUBLIC)
@@ -234,7 +234,7 @@ public class PresenterViewElementoSourceGenerator {
                                  .addComment("This method will be call in case the presenter will handle a event and before the event handling")
                                  .build());
 
-    MethodSpec.Builder onGotoMethod = MethodSpec.methodBuilder("onGoto" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()))
+    MethodSpec.Builder onGotoMethod = MethodSpec.methodBuilder("onGoto" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()))
                                                 .addModifiers(Modifier.PUBLIC)
                                                 .addAnnotation(EventHandler.class)
                                                 .addStatement("eventBus.setContent(view.asWidget())");
@@ -249,7 +249,7 @@ public class PresenterViewElementoSourceGenerator {
                                      .addModifiers(Modifier.PUBLIC)
                                      .addAnnotation(EventHandler.class)
                                      .addStatement("eventBus.goto$L()",
-                                                   GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                                   GeneratorUtils.setFirstCharacterToUpperCase(presenterData.getName()))
                                      .build());
       }
     } else {
@@ -258,7 +258,7 @@ public class PresenterViewElementoSourceGenerator {
                                      .addModifiers(Modifier.PUBLIC)
                                      .addAnnotation(EventHandler.class)
                                      .addStatement("eventBus.goto$L()",
-                                                   GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                                   GeneratorUtils.setFirstCharacterToUpperCase(presenterData.getName()))
                                      .build());
       }
     }
@@ -293,11 +293,11 @@ public class PresenterViewElementoSourceGenerator {
                                    .addAnnotation(Override.class)
                                    .returns(ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                 .toLowerCase(),
-                                                          "I" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
+                                                          "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View"))
                                    .addStatement("return new $T()",
                                                  ClassName.get(this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                                                      .toLowerCase(),
-                                                               GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "View"))
+                                                               GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View"))
                                    .build());
     }
 
@@ -308,7 +308,7 @@ public class PresenterViewElementoSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUperCase(this.presenterData.getName()) + "Presenter" + "<< -> " + "exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "Presenter" + "<< -> " + "exception: " + e.getMessage());
     }
   }
 

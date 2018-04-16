@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
 public class HostPageSourceGenerator {
 
@@ -65,7 +66,7 @@ public class HostPageSourceGenerator {
     throws GeneratorException {
 
     String title = "Mvp4g2 Boot Starter Project ==> " + this.mvp4g2GeneraterParms.getArtefactId();
-    String srcScript = this.mvp4g2GeneraterParms.getArtefactId() + "/" + this.mvp4g2GeneraterParms.getArtefactId() + ".nocache.js";
+    String srcScript = GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId()) + "/" + GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId()) + ".nocache.js";
 
     StringBuilder sb = new StringBuilder();
 
@@ -101,7 +102,7 @@ public class HostPageSourceGenerator {
       .append("    <!-- Consider inlining CSS to reduce the number of requested files -->")
       .append(GeneratorConstants.LINE_BREAK)
       .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"")
-      .append(this.mvp4g2GeneraterParms.getArtefactId())
+      .append(GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()))
       .append(".css\">")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
@@ -144,10 +145,10 @@ public class HostPageSourceGenerator {
     String fileContent = sb.toString();
 
     try {
-      Files.write(Paths.get(directoryWebapp.getPath() + File.separator + this.mvp4g2GeneraterParms.getArtefactId() + ".html"),
+      Files.write(Paths.get(directoryWebapp.getPath() + File.separator + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + ".html"),
                   fileContent.getBytes());
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryWebapp.getPath() + this.mvp4g2GeneraterParms.getArtefactId() + ".html") + "<< -> exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryWebapp.getPath() + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + ".htnl") + "<< -> exception: " + e.getMessage());
     }
   }
 

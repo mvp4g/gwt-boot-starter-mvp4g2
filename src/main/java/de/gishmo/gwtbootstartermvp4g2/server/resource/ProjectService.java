@@ -67,9 +67,6 @@ public class ProjectService {
       logger.debug(">>" + model.getArtefactId() + "<< -> java.io.tempdir >>" + tmpDirPath + "<<");
       // create archive-Folder
       String projectRootFolder = tmpDirPath + "mvp4g2-boot-strarter-project-" + model.getArtefactId();
-      if (!projectRootFolder.endsWith(File.separator)) {
-        projectRootFolder = projectRootFolder + File.pathSeparator;
-      }
       logger.debug(">>" + model.getArtefactId() + "<< -> project root directory >>" + projectRootFolder + "<<");
       String projectFolder = projectRootFolder + File.separator + model.getArtefactId();
       logger.debug(">>" + model.getArtefactId() + "<< try to create project root directory with path >>" + projectRootFolder + "<<");

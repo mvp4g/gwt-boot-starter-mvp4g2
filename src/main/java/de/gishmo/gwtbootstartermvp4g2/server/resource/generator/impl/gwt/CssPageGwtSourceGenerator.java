@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
 public class CssPageGwtSourceGenerator {
 
@@ -54,10 +55,10 @@ public class CssPageGwtSourceGenerator {
     String fileContent = sb.toString();
 
     try {
-      Files.write(Paths.get(directoryWebapp.getPath() + File.separator + this.mvp4g2GeneraterParms.getArtefactId() + ".css"),
+      Files.write(Paths.get(directoryWebapp.getPath() + File.separator + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + ".css"),
                   fileContent.getBytes());
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryWebapp.getPath() + this.mvp4g2GeneraterParms.getArtefactId() + ".css") + "<< -> exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + Paths.get(directoryWebapp.getPath() + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + ".css") + "<< -> exception: " + e.getMessage());
     }
   }
 

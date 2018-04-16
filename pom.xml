@@ -23,7 +23,7 @@
 
   <groupId>com.github.mvp4g</groupId>
   <artifactId>gwt-boot-starter-mvp4g2</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 
   <packaging>war</packaging>
 

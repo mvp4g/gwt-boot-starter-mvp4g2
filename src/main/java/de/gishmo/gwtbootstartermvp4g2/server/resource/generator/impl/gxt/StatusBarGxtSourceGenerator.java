@@ -169,7 +169,7 @@ public class StatusBarGxtSourceGenerator {
                                                                      .build())
                                         .superclass(ParameterizedTypeName.get(ClassName.get(AbstractPresenter.class),
                                                                               ClassName.get(this.clientPackageJavaConform,
-                                                                                            GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
+                                                                                            GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
                                                                               ClassName.get(this.clientPackageJavaConform + ".ui.statusbar",
                                                                                             "IStatusbarView")))
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.statusbar",

@@ -181,7 +181,7 @@ public class NavigationGwtSourceGenerator {
                                                                      .build())
                                         .superclass(ParameterizedTypeName.get(ClassName.get(AbstractPresenter.class),
                                                                               ClassName.get(this.clientPackageJavaConform,
-                                                                                            GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
+                                                                                            GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS),
                                                                               ClassName.get(this.clientPackageJavaConform + ".ui.navigation",
                                                                                             "INavigationView")))
                                         .addSuperinterface(ClassName.get(this.clientPackageJavaConform + ".ui.navigation",
@@ -212,7 +212,7 @@ public class NavigationGwtSourceGenerator {
                              .forEach(presenterData -> doNavigateToMethod.addCode("case $S:\n",
                                                                                   presenterData.getName())
                                                                          .addStatement("eventBus.goto$L()",
-                                                                                       GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                                                                                       GeneratorUtils.setFirstCharacterToUpperCase(presenterData.getName()))
                                                                          .addStatement("break"));
     doNavigateToMethod.endControlFlow();
     typeSpec.addMethod(doNavigateToMethod.build());

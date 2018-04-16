@@ -63,7 +63,7 @@ public class EventBusGwtSourceGenerator {
   public void generate()
     throws GeneratorException {
 
-    TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.EVENT_BUS))
+    TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.EVENT_BUS))
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
@@ -196,7 +196,7 @@ public class EventBusGwtSourceGenerator {
                                                              "true");
                                  }
                                }
-                               typeSpec.addMethod(MethodSpec.methodBuilder("goto" + GeneratorUtils.setFirstCharacterToUperCase(presenterData.getName()))
+                               typeSpec.addMethod(MethodSpec.methodBuilder("goto" + GeneratorUtils.setFirstCharacterToUpperCase(presenterData.getName()))
                                                             .addModifiers(Modifier.PUBLIC,
                                                                           Modifier.ABSTRACT)
                                                             .addJavadoc(createJavaDocComment())
@@ -211,7 +211,7 @@ public class EventBusGwtSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.EVENT_BUS) + "<< -> " + "exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.EVENT_BUS) + "<< -> " + "exception: " + e.getMessage());
     }
   }
 

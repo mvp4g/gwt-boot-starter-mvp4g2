@@ -17,6 +17,11 @@
 
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.lang.model.element.Modifier;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -28,15 +33,11 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
-import javax.lang.model.element.Modifier;
-import java.io.File;
-import java.io.IOException;
-
 public class EntryPointSourceGenerator {
 
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-  private File               directoryJava;
+  private File                 directoryJava;
   private String               clientPackageJavaConform;
 
   private EntryPointSourceGenerator(Builder builder) {
@@ -54,7 +55,7 @@ public class EntryPointSourceGenerator {
   public void generate()
     throws GeneratorException {
 
-    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()))
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()))
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
@@ -64,9 +65,9 @@ public class EntryPointSourceGenerator {
                                                              .addModifiers(Modifier.PUBLIC)
                                                              .addStatement("$T application = new $LImpl()",
                                                                            ClassName.get(this.clientPackageJavaConform,
-                                                                                         this
-                                                                                           .mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.APPLICAITON),
-                                                                           this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.APPLICAITON)
+                                                                                         GeneratorUtils.setFirstCharacterToUpperCase(this
+                                                                                                                                      .mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.APPLICAITON),
+                                                                           GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.APPLICAITON)
                                                              .addStatement("application.run()")
                                                              .build());
 
@@ -84,7 +85,7 @@ public class EntryPointSourceGenerator {
   public static class Builder {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-    File               directoryJava;
+    File                 directoryJava;
     String               clientPackageJavaConform;
 
     public Builder mvp4g2GeneraterParms(Mvp4g2GeneraterParms mvp4g2GeneraterParms) {

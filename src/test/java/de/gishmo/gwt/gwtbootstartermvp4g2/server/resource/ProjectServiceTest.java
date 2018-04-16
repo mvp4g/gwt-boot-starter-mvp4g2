@@ -56,8 +56,8 @@ public class ProjectServiceTest {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms = new Mvp4g2GeneraterParms();
 
-    mvp4g2GeneraterParms.setGroupId("com.example");
-    mvp4g2GeneraterParms.setArtefactId("MyTestProject");
+    mvp4g2GeneraterParms.setGroupId("com.github.mvp4g.hokulani.example");
+    mvp4g2GeneraterParms.setArtefactId("hokulani-example");
     mvp4g2GeneraterParms.setApplicationLoader(true);
     mvp4g2GeneraterParms.setDebug(true);
     mvp4g2GeneraterParms.setHistory(true);
@@ -106,8 +106,8 @@ public class ProjectServiceTest {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms = new Mvp4g2GeneraterParms();
 
-    mvp4g2GeneraterParms.setGroupId("com.example");
-    mvp4g2GeneraterParms.setArtefactId("MyTestProject");
+    mvp4g2GeneraterParms.setGroupId("com.github.mvp4g.hokulani.example");
+    mvp4g2GeneraterParms.setArtefactId("hokulani-example");
     mvp4g2GeneraterParms.setApplicationLoader(true);
     mvp4g2GeneraterParms.setDebug(true);
     mvp4g2GeneraterParms.setHistory(true);

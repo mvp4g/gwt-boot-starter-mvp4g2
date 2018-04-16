@@ -57,17 +57,17 @@ public class ApplicationSourceGenerator {
 
     AnnotationSpec.Builder annotation = AnnotationSpec.builder(Application.class)
                                                       .addMember("eventBus",
-                                                                 this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.EVENT_BUS + ".class");
+                                                                 GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.EVENT_BUS + ".class");
     if (this.mvp4g2GeneraterParms.isApplicationLoader()) {
       annotation.addMember("loader",
-                           this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.LOADER + ".class");
+                           GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.LOADER + ".class");
     }
     if (this.mvp4g2GeneraterParms.isHistoryOnStart()) {
       annotation.addMember("historyOnStart",
                            "true");
     }
 
-    TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.APPLICAITON))
+    TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.APPLICAITON)
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
@@ -82,7 +82,7 @@ public class ApplicationSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.APPLICAITON + "<< -> exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId()) + GeneratorConstants.APPLICAITON + "<< -> exception: " + e.getMessage());
     }
   }
 

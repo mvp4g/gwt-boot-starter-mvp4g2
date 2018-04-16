@@ -19,10 +19,21 @@ package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
 
 public class GeneratorUtils {
 
-  public static String setFirstCharacterToUperCase(String value) {
-    return value.substring(0,
-                           1)
-                .toUpperCase() + value.substring(1);
+  public static String setFirstCharacterToUpperCase(String value) {
+    String returnValue = GeneratorUtils.removeBadChracters(value);
+    return returnValue.substring(0,
+                                 1)
+                      .toUpperCase() + returnValue.substring(1);
   }
 
+  public static String removeBadChracters(String value) {
+    String[] parts = value.split("-");
+    String returnValue = parts[0];
+    for (int i = 1; i < parts.length; i++) {
+      returnValue = returnValue + parts[i].substring(0,
+                                                     1)
+                                          .toUpperCase() + parts[i].substring(1);
+    }
+    return returnValue;
+  }
 }

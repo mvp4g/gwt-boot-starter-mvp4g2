@@ -55,7 +55,7 @@ public class ApplicationLoaderSourceGenerator {
   public void generate()
     throws GeneratorException {
 
-    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.LOADER))
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.LOADER))
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
@@ -77,7 +77,7 @@ public class ApplicationLoaderSourceGenerator {
       javaFile.writeTo(new File(directoryJava,
                                 ""));
     } catch (IOException e) {
-      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.LOADER) + "<< -> " + "exception: " + e.getMessage());
+      throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.LOADER) + "<< -> " + "exception: " + e.getMessage());
     }
   }
 
