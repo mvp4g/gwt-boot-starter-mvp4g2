@@ -56,7 +56,6 @@ public class GenerateHandler
 
   @EventHandler
   public void onGenerate(Mvp4g2GeneraterParms model) {
-    GWT.debugger();
     this.projectService.generate(model,
                                  new TextCallback() {
                                    @Override
@@ -69,7 +68,6 @@ public class GenerateHandler
                                    @Override
                                    public void onSuccess(Method method,
                                                          String value) {
-                                     GWT.debugger();
                                      String url = GWT.getHostPageBaseURL() + "loadZip/download?archive=" + model.getArtefactId() + ".zip";
 
                                      DownloadTemplate    template  = GWT.create(DownloadTemplate.class);

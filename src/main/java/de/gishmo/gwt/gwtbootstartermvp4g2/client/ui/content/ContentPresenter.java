@@ -22,7 +22,6 @@ import java.util.stream.IntStream;
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
-import com.google.gwt.core.client.GWT;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.GwtBootStarterMvp4g2EventBus;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.content.editor.PresenterEditor;
@@ -132,7 +131,6 @@ public class ContentPresenter
 
   @EventHandler
   public void onGenerateProject() {
-    GWT.debugger();
     if (view.isValid()) {
       view.flush(this.mvp4g2GeneraterParms);
       if (this.mvp4g2GeneraterParms.getPresenters()

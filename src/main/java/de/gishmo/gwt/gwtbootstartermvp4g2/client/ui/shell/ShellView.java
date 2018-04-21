@@ -94,7 +94,6 @@ public class ShellView
 
   @Override
   public void showProgressBar() {
-    GWT.debugger();
     if (this.progressBar == null) {
       this.progressBar = new AutoProgressMessageBox("Generate Project Files");
       this.progressBar.setProgressText("generating ... ");

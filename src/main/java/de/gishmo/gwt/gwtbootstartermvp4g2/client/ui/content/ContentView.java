@@ -214,7 +214,6 @@ public class ContentView
       public void render(Context context,
                          ViewCreationMethod s,
                          SafeHtmlBuilder safeHtmlBuilder) {
-        GWT.debugger();
         if (ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK == s) {
           safeHtmlBuilder.append(SafeHtmlUtils.fromTrustedString("Framework"));
         } else {
