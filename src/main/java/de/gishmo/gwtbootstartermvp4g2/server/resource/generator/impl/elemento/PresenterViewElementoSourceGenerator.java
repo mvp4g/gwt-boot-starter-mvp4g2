@@ -199,7 +199,7 @@ public class PresenterViewElementoSourceGenerator {
                                     "$T.VIEW_CREATION_METHOD.PRESENTER",
                                     Presenter.class);
     }
-    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "Prensenter")
+    TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "Presenter")
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)
                                                              .build())
