@@ -40,13 +40,11 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.AbstractEventBusSourceGenerator;
 import elemental2.dom.Element;
 
-public class EventBusElementoSourceGenerator {
-
-  private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-  private File                 directoryJava;
-  private String               clientPackageJavaConform;
+public class EventBusElementoSourceGenerator
+  extends AbstractEventBusSourceGenerator {
 
   private EventBusElementoSourceGenerator(Builder builder) {
     super();

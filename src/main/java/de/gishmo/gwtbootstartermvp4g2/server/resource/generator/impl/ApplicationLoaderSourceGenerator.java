@@ -34,11 +34,8 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
-public class ApplicationLoaderSourceGenerator {
-
-  private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-  private File                 directoryJava;
-  private String               clientPackageJavaConform;
+public class ApplicationLoaderSourceGenerator
+  extends AbstractSourceGenerator {
 
   private ApplicationLoaderSourceGenerator(Builder builder) {
     super();

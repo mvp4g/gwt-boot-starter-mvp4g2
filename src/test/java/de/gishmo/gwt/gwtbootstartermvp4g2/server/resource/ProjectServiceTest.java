@@ -92,9 +92,57 @@ public class ProjectServiceTest {
                                                true,
                                                true,
                                                true));
+    ProjectService projectService = new ProjectService();
+    projectService.generate(mvp4g2GeneraterParms);
+  }
 
+  /**
+   * Method: generate(@RequestBody Mvp4g2GeneraterParms model)
+   */
+  @Test
+  public void testGenerateGxt()
+    throws Exception {
 
-//TODO: Test goes here... 
+    Mvp4g2GeneraterParms mvp4g2GeneraterParms = new Mvp4g2GeneraterParms();
+
+    mvp4g2GeneraterParms.setGroupId("com.github.mvp4g.hokulani.example");
+    mvp4g2GeneraterParms.setArtefactId("hokulani-example");
+    mvp4g2GeneraterParms.setApplicationLoader(true);
+    mvp4g2GeneraterParms.setDebug(true);
+    mvp4g2GeneraterParms.setHistory(true);
+    mvp4g2GeneraterParms.setHistoryOnStart(true);
+    mvp4g2GeneraterParms.setGwtVersion(DataConstants.GWT_VERSION_2_8_2);
+    mvp4g2GeneraterParms.setWidgetLibrary(WidgetLibrary.GXT);
+
+    mvp4g2GeneraterParms.getPresenters()
+                        .add(new PresenterData("search",
+                                               "R2D2",
+                                               false,
+                                               true,
+                                               ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER,
+                                               false,
+                                               true,
+                                               true));
+    mvp4g2GeneraterParms.getPresenters()
+                        .add(new PresenterData("list",
+                                               "C3P0",
+                                               false,
+                                               false,
+                                               ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK,
+                                               false,
+                                               true,
+                                               true));
+    mvp4g2GeneraterParms.getPresenters()
+                        .add(new PresenterData("detail",
+                                               "BB8",
+                                               false,
+                                               false,
+                                               ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK,
+                                               true,
+                                               true,
+                                               true));
+    ProjectService projectService = new ProjectService();
+    projectService.generate(mvp4g2GeneraterParms);
   }
 
   /**

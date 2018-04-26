@@ -38,19 +38,13 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.AbstractStatusSourceGenerator;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import org.jboss.gwt.elemento.core.Elements;
 
-public class StatusBarElementoSourceGenerator {
-
-  private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-
-  private File directoryJava;
-
-  private String clientPackageJavaConform;
-
-  private String presenterPackage;
+public class StatusBarElementoSourceGenerator
+  extends AbstractStatusSourceGenerator {
 
   private StatusBarElementoSourceGenerator(Builder builder) {
     super();
@@ -64,16 +58,7 @@ public class StatusBarElementoSourceGenerator {
     return new Builder();
   }
 
-  public void generate()
-    throws GeneratorException {
-    this.presenterPackage = this.clientPackageJavaConform + ".ui.statusbar";
-
-    this.generateIViewClass();
-    this.generateViewClass();
-    this.generatePresenterClass();
-  }
-
-  private void generateIViewClass()
+  protected void generateIViewClass()
     throws GeneratorException {
     TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder("IStatusbarView")
                                         .addJavadoc(CodeBlock.builder()
@@ -106,7 +91,7 @@ public class StatusBarElementoSourceGenerator {
     }
   }
 
-  private void generateViewClass()
+  protected void generateViewClass()
     throws GeneratorException {
     TypeSpec.Builder typeSpec = TypeSpec.classBuilder("StatusbarView")
                                         .addJavadoc(CodeBlock.builder()
@@ -149,7 +134,7 @@ public class StatusBarElementoSourceGenerator {
     }
   }
 
-  private void generatePresenterClass()
+  protected void generatePresenterClass()
     throws GeneratorException {
     TypeSpec.Builder typeSpec = TypeSpec.classBuilder("StatusbarPresenter")
                                         .addJavadoc(CodeBlock.builder()

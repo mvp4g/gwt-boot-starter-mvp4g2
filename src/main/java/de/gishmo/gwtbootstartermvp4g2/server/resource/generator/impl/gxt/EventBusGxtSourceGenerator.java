@@ -41,12 +41,10 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.AbstractEventBusSourceGenerator;
 
-public class EventBusGxtSourceGenerator {
-
-  private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
-  private File                 directoryJava;
-  private String               clientPackageJavaConform;
+public class EventBusGxtSourceGenerator
+  extends AbstractEventBusSourceGenerator {
 
   private EventBusGxtSourceGenerator(Builder builder) {
     super();
@@ -62,7 +60,6 @@ public class EventBusGxtSourceGenerator {
 
   public void generate()
     throws GeneratorException {
-
     TypeSpec.Builder typeSpec = TypeSpec.interfaceBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId() + GeneratorConstants.EVENT_BUS))
                                         .addJavadoc(CodeBlock.builder()
                                                              .add(GeneratorConstants.COPYRIGHT_JAVA)

@@ -28,6 +28,7 @@ import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.Application
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EntryPointSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HistoryConverterGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HostPageSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ModelSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.WebXmlSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento.CssPageElementoSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento.EventBusElementoSourceGenerator;
@@ -118,13 +119,21 @@ public class SourceGenerator {
                                       .build()
                                       .generate();
     }
+    // Model
+    ModelSourceGenerator.builder()
+                        .clientPackageJavaConform(this.clientPackageJavaConform)
+                        .directoryJava(this.directoryJava)
+                        .build()
+                        .generate();
     // History
-    HistoryConverterGenerator.builder()
-                             .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                             .clientPackageJavaConform(this.clientPackageJavaConform)
-                             .directoryJava(this.directoryJava)
-                             .build()
-                             .generate();
+    if (mvp4g2GeneraterParms.isHistory()) {
+      HistoryConverterGenerator.builder()
+                               .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                               .clientPackageJavaConform(this.clientPackageJavaConform)
+                               .directoryJava(this.directoryJava)
+                               .build()
+                               .generate();
+    }
     if (WidgetLibrary.GWT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
       // Css file
       CssPageGwtSourceGenerator.builder()
