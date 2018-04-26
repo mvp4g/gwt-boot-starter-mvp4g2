@@ -17,22 +17,23 @@
 
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class PomGenerator {
 
   private static final Logger logger = LoggerFactory.getLogger(PomGenerator.class);
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
+
   private String               projectFolder;
 
   private PomGenerator(Builder builder) {
@@ -47,7 +48,7 @@ public class PomGenerator {
   }
 
   public void generate()
-    throws GeneratorException {
+      throws GeneratorException {
 
     logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< start generating pom");
 
@@ -60,8 +61,8 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
       .append("<project xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
-              "         xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" +
-              "         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">")
+                  "         xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" +
+                  "         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK);
 
@@ -258,23 +259,23 @@ public class PomGenerator {
       .append(this.addAddrLine(8,
                                "extensions",
                                "true"))
-//      .append("        <executions>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("          <execution>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("            <goals>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(14,
-//                               "goal",
-//                               "compile"))
-//      .append(this.addAddrLine(14,
-//                               "goal",
-//                               "package-app"))
-//      .append("            </goals>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("          </execution>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("        </executions>")
+      //      .append("        <executions>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("          <execution>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("            <goals>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(14,
+      //                               "goal",
+      //                               "compile"))
+      //      .append(this.addAddrLine(14,
+      //                               "goal",
+      //                               "package-app"))
+      //      .append("            </goals>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("          </execution>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("        </executions>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("        <configuration>")
       .append(GeneratorConstants.LINE_BREAK)
@@ -283,15 +284,19 @@ public class PomGenerator {
                                "compile"))
       .append(this.addAddrLine(10,
                                "moduleName",
-                               this.mvp4g2GeneraterParms.getGroupId() + "." +  GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())
-                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+                               this.mvp4g2GeneraterParms.getGroupId() +
+                                   "." +
+                                   GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())
+                                                 .toLowerCase() +
+                                   "." +
+                                   GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "moduleShortName",
                                GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())))
-//      .append(this.addAddrLine(10,
-//                               "modules",
-//                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()
-//                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+      //      .append(this.addAddrLine(10,
+      //                               "modules",
+      //                               this.mvp4g2GeneraterParms.getGroupId() + "." + this.mvp4g2GeneraterParms.getArtefactId()
+      //                                                                                                       .toLowerCase() + "." + GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "failOnError",
                                "true"))
@@ -301,43 +306,43 @@ public class PomGenerator {
       .append(this.addAddrLine(10,
                                "logLevel",
                                "TRACE"))
-//      .append("          <compilerArgs>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(12,
-//                               "arg",
-//                               "-compileReport"))
-//      .append(this.addAddrLine(12,
-//                               "arg",
-//                               "-XcompilerMetrics"))
-//      .append(this.addAddrLine(12,
-//                               "arg",
-//                               "-setProperty"))
-//      .append(this.addAddrLine(12,
-//                               "arg",
-//                               "mvp4g2.logging=true"))
-//      .append("          </compilerArgs>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(10,
-//                               "skipModule",
-//                               "true"))
-//      .append(this.addAddrLine(10,
-//                               "codeServerPort",
-//                               "9876"))
-//      .append("          <devmodeArgs>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(12,
-//                               "arg",
-//                               "-port"))
-//      .append(this.addAddrLine(12,
-//                               "arg",
-//                               "8888"))
-//      .append(this.addAddrLine(12,
-//                               "arg",
-//                               "-codeServerPort"))
-//      .append(this.addAddrLine(12,
-//                               "arg",
-//                               "9876"))
-//      .append("          </devmodeArgs>")
+      //      .append("          <compilerArgs>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(12,
+      //                               "arg",
+      //                               "-compileReport"))
+      //      .append(this.addAddrLine(12,
+      //                               "arg",
+      //                               "-XcompilerMetrics"))
+      //      .append(this.addAddrLine(12,
+      //                               "arg",
+      //                               "-setProperty"))
+      //      .append(this.addAddrLine(12,
+      //                               "arg",
+      //                               "mvp4g2.logging=true"))
+      //      .append("          </compilerArgs>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(10,
+      //                               "skipModule",
+      //                               "true"))
+      //      .append(this.addAddrLine(10,
+      //                               "codeServerPort",
+      //                               "9876"))
+      //      .append("          <devmodeArgs>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(12,
+      //                               "arg",
+      //                               "-port"))
+      //      .append(this.addAddrLine(12,
+      //                               "arg",
+      //                               "8888"))
+      //      .append(this.addAddrLine(12,
+      //                               "arg",
+      //                               "-codeServerPort"))
+      //      .append(this.addAddrLine(12,
+      //                               "arg",
+      //                               "9876"))
+      //      .append("          </devmodeArgs>")
       .append("          <startupUrls>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(this.addAddrLine(12,
@@ -354,20 +359,23 @@ public class PomGenerator {
       .append(this.addAddrLine(8,
                                "warDir",
                                "${project.build.directory}/${project.build.finalName}"))
-//      .append(this.addAddrLine(8,
-//                               "webappDirectory",
-//                               "${project.build.directory}/${project.build.finalName}"))
-//      .append("          <systemProperties>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(12,
-//                               "gwt.persistentunitcachedir",
-//                               "${project.build.directory}/gwt/unitCache/"))
-//      .append(this.addAddrLine(12,
-//                               "gwt.war.directory",
-//                               "${project.basedir}/${project.build.finalName}"))
-//      .append("          </systemProperties>")
-//      .append(GeneratorConstants.LINE_BREAK)
-      .append("        </configuration>")
+      //      .append(this.addAddrLine(8,
+      //                               "webappDirectory",
+      //                               "${project.build.directory}/${project.build.finalName}"))
+      //      .append("          <systemProperties>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(12,
+      //                               "gwt.persistentunitcachedir",
+      //                               "${project.build.directory}/gwt/unitCache/"))
+      //      .append(this.addAddrLine(12,
+      //                               "gwt.war.directory",
+      //                               "${project.basedir}/${project.build.finalName}"))
+      //      .append("          </systemProperties>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      .append("          <jvmArgs>")
+      .append("            <arg>-Xms1G</arg>")
+      .append("            <arg>-Xmx2G</arg>")
+      .append("          </jvmArgs>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("      </plugin>")
       .append(GeneratorConstants.LINE_BREAK);
@@ -531,96 +539,96 @@ public class PomGenerator {
       .append(this.addAddrLine(10,
                                "target",
                                "${maven.compiler.target}"))
-//      .append(this.addAddrLine(10,
-//                               "showWarnings",
-//                               "true"))
-//      .append(this.addAddrLine(10,
-//                               "showDeprecation",
-//                               "true"))
-//      .append(this.addAddrLine(10,
-//                               "meminitial",
-//                               "128m"))
-//      .append(this.addAddrLine(10,
-//                               "maxmem",
-//                               "1024m"))
-//      .append(this.addAddrLine(10,
-//                               "encoding",
-//                               "${project.build.sourceEncoding}"))
-//      .append("          <compilerArgs>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(12,
-//                               "compilerArgument",
-//                               "-Xlint:all"))
-//      .append("          </compilerArgs>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("        </configuration>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("        <executions>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("          <execution>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(12,
-//                               "id",
-//                               "process-annotations"))
-//      .append(this.addAddrLine(12,
-//                               "phase",
-//                               "generate-sources"))
-//      .append("            <goals>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(14,
-//                               "goal",
-//                               "compile"))
-//      .append("            </goals>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("            <configuration>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(14,
-//                               "proc",
-//                               "only"))
-//      .append("              <annotationProcessors>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(16,
-//                               "annotationProcessor",
-//                               "com.github.mvp4g.mvp4g2.processor.Mvp4g2Processor"))
-//      .append("              </annotationProcessors>")
-//      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(10,
+      //                               "showWarnings",
+      //                               "true"))
+      //      .append(this.addAddrLine(10,
+      //                               "showDeprecation",
+      //                               "true"))
+      //      .append(this.addAddrLine(10,
+      //                               "meminitial",
+      //                               "128m"))
+      //      .append(this.addAddrLine(10,
+      //                               "maxmem",
+      //                               "1024m"))
+      //      .append(this.addAddrLine(10,
+      //                               "encoding",
+      //                               "${project.build.sourceEncoding}"))
+      //      .append("          <compilerArgs>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(12,
+      //                               "compilerArgument",
+      //                               "-Xlint:all"))
+      //      .append("          </compilerArgs>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("        </configuration>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("        <executions>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("          <execution>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(12,
+      //                               "id",
+      //                               "process-annotations"))
+      //      .append(this.addAddrLine(12,
+      //                               "phase",
+      //                               "generate-sources"))
+      //      .append("            <goals>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(14,
+      //                               "goal",
+      //                               "compile"))
+      //      .append("            </goals>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("            <configuration>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(14,
+      //                               "proc",
+      //                               "only"))
+      //      .append("              <annotationProcessors>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(16,
+      //                               "annotationProcessor",
+      //                               "com.github.mvp4g.mvp4g2.processor.Mvp4g2Processor"))
+      //      .append("              </annotationProcessors>")
+      //      .append(GeneratorConstants.LINE_BREAK)
       .append("        </configuration>")
       .append(GeneratorConstants.LINE_BREAK)
-//      .append("          </execution>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("          <execution>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(12,
-//                               "id",
-//                               "default-compile"))
-//      .append(this.addAddrLine(12,
-//                               "phase",
-//                               "compile"))
-//      .append("            <goals>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(14,
-//                               "goal",
-//                               "compile"))
-//      .append("            </goals>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("            <configuration>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(14,
-//                               "proc",
-//                               "only"))
-//      .append("              <compilerArgs>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append(this.addAddrLine(16,
-//                               "arg",
-//                               "-proc:none"))
-//      .append("              </compilerArgs>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("            </configuration>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("          </execution>")
-//      .append(GeneratorConstants.LINE_BREAK)
-//      .append("        </executions>")
-//      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("          </execution>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("          <execution>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(12,
+      //                               "id",
+      //                               "default-compile"))
+      //      .append(this.addAddrLine(12,
+      //                               "phase",
+      //                               "compile"))
+      //      .append("            <goals>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(14,
+      //                               "goal",
+      //                               "compile"))
+      //      .append("            </goals>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("            <configuration>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(14,
+      //                               "proc",
+      //                               "only"))
+      //      .append("              <compilerArgs>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append(this.addAddrLine(16,
+      //                               "arg",
+      //                               "-proc:none"))
+      //      .append("              </compilerArgs>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("            </configuration>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("          </execution>")
+      //      .append(GeneratorConstants.LINE_BREAK)
+      //      .append("        </executions>")
+      //      .append(GeneratorConstants.LINE_BREAK)
       .append("      </plugin>")
       .append(GeneratorConstants.LINE_BREAK);
 
@@ -890,6 +898,7 @@ public class PomGenerator {
   public static class Builder {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms;
+
     String               projectFolder;
 
     public Builder mvp4g2GeneraterParms(Mvp4g2GeneraterParms mvp4g2GeneraterParms) {

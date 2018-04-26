@@ -232,7 +232,7 @@
           <startupUrls>
             <startupUrl>http://localhost:8080/GwtBootStarterMvp4g2.html</startupUrl>
           </startupUrls>
-          <!--&lt;!&ndash; Compiler configuration &ndash;&gt;-->
+          <!-- Compiler configuration -->
           <compilerArgs>
             <!--Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile)-->
             <arg>-compileReport</arg>
@@ -249,6 +249,9 @@
             <devmodeArg>-port</devmodeArg>
             <devmodeArg>${serverPort}</devmodeArg>
           </devmodeArgs>
+          <jvmArgs>
+            <arg>-Xmx2G</arg>
+          </jvmArgs>
           <devmodeWorkDir>${project.build.directory}/classes/static</devmodeWorkDir>
           <launcherDir>${project.build.directory}/classes/static</launcherDir>
           <warDir>${project.build.directory}/classes/static</warDir>
