@@ -17,16 +17,16 @@
 
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class PomGenerator {
 
@@ -373,9 +373,14 @@ public class PomGenerator {
       //      .append("          </systemProperties>")
       //      .append(GeneratorConstants.LINE_BREAK)
       .append("          <jvmArgs>")
+      .append(GeneratorConstants.LINE_BREAK)
       .append("            <arg>-Xms1G</arg>")
+      .append(GeneratorConstants.LINE_BREAK)
       .append("            <arg>-Xmx2G</arg>")
+      .append(GeneratorConstants.LINE_BREAK)
       .append("          </jvmArgs>")
+      .append(GeneratorConstants.LINE_BREAK)
+      .append("        </configuration>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("      </plugin>")
       .append(GeneratorConstants.LINE_BREAK);

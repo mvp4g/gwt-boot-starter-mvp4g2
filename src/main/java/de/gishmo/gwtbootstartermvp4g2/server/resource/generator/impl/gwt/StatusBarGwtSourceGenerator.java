@@ -17,16 +17,21 @@
 
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.gwt;
 
+import java.io.File;
+
+import javax.lang.model.element.Modifier;
+
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.FieldSpec;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.AbstractStatusSourceGenerator;
-
-import javax.lang.model.element.Modifier;
-import java.io.File;
 
 public class StatusBarGwtSourceGenerator
     extends AbstractStatusSourceGenerator {
@@ -84,7 +89,7 @@ public class StatusBarGwtSourceGenerator
 
   @Override
   protected String getSetLabelValueStatement() {
-    return "label.setValue(message)";
+    return "label.setText(message)";
   }
 
   public static class Builder {

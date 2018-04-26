@@ -17,15 +17,20 @@
 
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento;
 
-import com.squareup.javapoet.*;
+import java.io.File;
+
+import javax.lang.model.element.Modifier;
+
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.FieldSpec;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.AbstractStatusSourceGenerator;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import org.jboss.gwt.elemento.core.Elements;
-
-import javax.lang.model.element.Modifier;
-import java.io.File;
 
 public class StatusBarElementoSourceGenerator
     extends AbstractStatusSourceGenerator {
@@ -73,9 +78,9 @@ public class StatusBarElementoSourceGenerator
     MethodSpec.Builder method = MethodSpec.methodBuilder("createView")
                                           .addAnnotation(Override.class)
                                           .addModifiers(Modifier.PUBLIC)
-                                          .addStatement("label = $T.div().asElement()",
+                                          .addStatement("label = $T.label().asElement()",
                                                         Elements.class)
-                                          .addStatement("container = $T.header().add(label.asElement()).asElement()",
+                                          .addStatement("container = $T.header().add(label).asElement()",
                                                         Elements.class);
     typeSpec.addMethod(method.build());
   }

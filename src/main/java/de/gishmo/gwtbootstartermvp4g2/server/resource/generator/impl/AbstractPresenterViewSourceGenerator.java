@@ -17,24 +17,33 @@
 
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.lang.model.element.Modifier;
+
 import com.github.mvp4g.mvp4g2.core.history.IsNavigationConfirmation;
-import com.github.mvp4g.mvp4g2.core.history.NavigationEventCommand;
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.IsViewCreator;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.FieldSpec;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
-
-import javax.lang.model.element.Modifier;
-import java.io.File;
-import java.io.IOException;
 
 public abstract class AbstractPresenterViewSourceGenerator
   extends AbstractSourceGenerator {
@@ -44,7 +53,7 @@ public abstract class AbstractPresenterViewSourceGenerator
   private String presenterPackage;
 
   public void generate()
-      throws GeneratorException {
+    throws GeneratorException {
 
     this.presenterPackage = this.clientPackageJavaConform + ".ui." + presenterData.getName()
                                                                                   .toLowerCase();
@@ -70,12 +79,33 @@ public abstract class AbstractPresenterViewSourceGenerator
                                                                            Modifier.ABSTRACT)
                                                              .returns(getBaseElement())
                                                              .addJavadoc(GeneratorConstants.AS_WIDGET_TEXT)
+                                                             .build())
+                                        .addMethod(MethodSpec.methodBuilder("edit")
+                                                             .addModifiers(Modifier.PUBLIC,
+                                                                           Modifier.ABSTRACT)
+                                                             .addParameter(ParameterSpec.builder(ClassName.get(this.clientPackageJavaConform + ".model",
+                                                                                                               "MyModel"),
+                                                                                                 "model")
+                                                                                        .build())
                                                              .build());
     if (presenterData.isConfirmation()) {
       typeSpec.addMethod(MethodSpec.methodBuilder("isDirty")
                                    .addModifiers(Modifier.PUBLIC,
                                                  Modifier.ABSTRACT)
                                    .returns(TypeName.BOOLEAN)
+                                   .build());
+      typeSpec.addMethod(MethodSpec.methodBuilder("isValid")
+                                   .addModifiers(Modifier.PUBLIC,
+                                                 Modifier.ABSTRACT)
+                                   .returns(TypeName.BOOLEAN)
+                                   .build());
+      typeSpec.addMethod(MethodSpec.methodBuilder("flush")
+                                   .addModifiers(Modifier.PUBLIC,
+                                                 Modifier.ABSTRACT)
+                                   .addParameter(ParameterSpec.builder(ClassName.get(this.clientPackageJavaConform + ".model",
+                                                                                     "MyModel"),
+                                                                       "model")
+                                                              .build())
                                    .build());
     }
     typeSpec.addType(TypeSpec.interfaceBuilder("Presenter")
@@ -94,8 +124,6 @@ public abstract class AbstractPresenterViewSourceGenerator
     }
   }
 
-  protected abstract TypeName getBaseElement();
-
   private void generateViewClass()
     throws GeneratorException {
     TypeSpec.Builder typeSpec = TypeSpec.classBuilder(GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View")
@@ -112,6 +140,7 @@ public abstract class AbstractPresenterViewSourceGenerator
                                                                                                                                .toLowerCase(),
                                                                          "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View"));
     typeSpec.addField(getContainerFieldSpec());
+    typeSpec.addField(getLabelFieldSpec());
     // constrcutor
     typeSpec.addMethod(MethodSpec.constructorBuilder()
                                  .addStatement("super()")
@@ -124,6 +153,20 @@ public abstract class AbstractPresenterViewSourceGenerator
                                  .returns(getBaseElement())
                                  .addStatement("return container")
                                  .build());
+    // edit method
+    typeSpec.addMethod(MethodSpec.methodBuilder("edit")
+                                 .addAnnotation(Override.class)
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addParameter(ParameterSpec.builder(ClassName.get(this.clientPackageJavaConform + ".model",
+                                                                                   "MyModel"),
+                                                                     "model")
+                                                            .build())
+                                 .addComment("that's a good place to move your data out of the model into wth widgets")
+                                 .addComment("")
+                                 .addComment("Using GWT 2.x you can use the editor framewok and in this case")
+                                 .addComment("it is a good idea to edit and flush ths data inside the presenter.")
+                                 .addStatement(createEditStatement())
+                                 .build());
     // createView method
     this.createViewMethod(typeSpec);
 
@@ -133,6 +176,27 @@ public abstract class AbstractPresenterViewSourceGenerator
                                    .addAnnotation(Override.class)
                                    .returns(TypeName.BOOLEAN)
                                    .addStatement("return true")
+                                   .build());
+      typeSpec.addMethod(MethodSpec.methodBuilder("isValid")
+                                   .addModifiers(Modifier.PUBLIC)
+                                   .addAnnotation(Override.class)
+                                   .returns(TypeName.BOOLEAN)
+                                   .addComment("check if you widgets are valid (if the widgets you are using support validation)")
+                                   .addComment("This is a good place to check type-safety and required field")
+                                   .addComment("")
+                                   .addComment("In this example the data (cause there is none) will always be valid!")
+                                   .addStatement("return true")
+                                   .build());
+      typeSpec.addMethod(MethodSpec.methodBuilder("flush")
+                                   .addModifiers(Modifier.PUBLIC)
+                                   .addAnnotation(Override.class)
+                                   .addParameter(ParameterSpec.builder(ClassName.get(this.clientPackageJavaConform + ".model",
+                                                                                     "MyModel"),
+                                                                       "model")
+                                                              .build())
+                                   .addComment("move your data from the widgets to the model here ...")
+                                   .addComment("")
+                                   .addComment("It is a good idea to check the type before moving it into an object")
                                    .build());
     }
 
@@ -146,10 +210,6 @@ public abstract class AbstractPresenterViewSourceGenerator
       throw new GeneratorException("Unable to write generated file: >>" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View" + "<< -> " + "exception: " + e.getMessage());
     }
   }
-
-  protected abstract void createViewMethod(TypeSpec.Builder typeSpec);
-
-  protected abstract FieldSpec getContainerFieldSpec();
 
   private void generatePresenterClass()
     throws GeneratorException {
@@ -193,7 +253,12 @@ public abstract class AbstractPresenterViewSourceGenerator
                                                                                                                                .toLowerCase(),
                                                                          "I" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()) + "View")));
     }
-    typeSpec.addMethod(MethodSpec.constructorBuilder()
+    typeSpec.addField(FieldSpec.builder(ClassName.get(this.clientPackageJavaConform + ".model",
+                                                      "MyModel"),
+                                        "model",
+                                        Modifier.PRIVATE)
+                               .build())
+            .addMethod(MethodSpec.constructorBuilder()
                                  .addModifiers(Modifier.PUBLIC)
                                  .build())
             .addMethod(MethodSpec.methodBuilder("onBeforeEvent")
@@ -207,7 +272,22 @@ public abstract class AbstractPresenterViewSourceGenerator
     MethodSpec.Builder onGotoMethod = MethodSpec.methodBuilder("onGoto" + GeneratorUtils.setFirstCharacterToUpperCase(this.presenterData.getName()))
                                                 .addModifiers(Modifier.PUBLIC)
                                                 .addAnnotation(EventHandler.class)
-                                                .addStatement("eventBus.setContent(view.asWidget())");
+                                                .addComment("Here we simulate the creation of a model.")
+                                                .addComment("In the real world we would do a server call or")
+                                                .addComment("something else to get the data.")
+                                                .addStatement("model = new $T(\"This value is set using the edit method! The value is >>\" + $S + \"<<\")",
+                                                              ClassName.get(this.clientPackageJavaConform + ".model",
+                                                                            "MyModel"),
+                                                              presenterData.getName())
+                                                .addComment("ok, now place our view into the content area of the viewport!")
+                                                .addStatement("eventBus.setContent(view.asWidget())")
+                                                .addComment("yet we are visible!")
+                                                .addComment("")
+                                                .addComment("now, move the data out of the model into the widgets - that's what we do next")
+                                                .addStatement("view.edit(model)")
+                                                .addComment("update the statusbar at the buttom of the screen")
+                                                .addStatement("eventBus.updateStatus(\"active screen: >>$L<<\")",
+                                                              this.presenterData.getName());
     if (presenterData.isConfirmation()) {
       onGotoMethod.addStatement("eventBus.setNavigationConfirmation(this)");
     }
@@ -245,7 +325,18 @@ public abstract class AbstractPresenterViewSourceGenerator
     }
   }
 
-  protected abstract void createViewCreationMethod(TypeSpec.Builder typeSpec);
+  protected abstract TypeName getBaseElement();
+
+  protected abstract FieldSpec getContainerFieldSpec();
+
+  protected abstract FieldSpec getLabelFieldSpec();
+
+  protected abstract String createEditStatement();
+
+  protected abstract void createViewMethod(TypeSpec.Builder typeSpec);
 
   protected abstract void createConfirmMethod(TypeSpec.Builder typeSpec);
+
+  protected abstract void createViewCreationMethod(TypeSpec.Builder typeSpec);
+
 }

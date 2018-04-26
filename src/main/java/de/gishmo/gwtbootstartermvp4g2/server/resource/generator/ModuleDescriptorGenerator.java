@@ -100,6 +100,11 @@ public class ModuleDescriptorGenerator {
       sb.append("  <inherits name='com.sencha.gxt.ui.GXT'/>")
         .append(GeneratorConstants.LINE_BREAK)
         .append("  <inherits name='com.sencha.gxt.theme.neptune.Theme'/>")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <!-- GXT Stylesheet -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("  <stylesheet src=\"reset.css\" />")
         .append(GeneratorConstants.LINE_BREAK);
     }
     sb.append(GeneratorConstants.LINE_BREAK)

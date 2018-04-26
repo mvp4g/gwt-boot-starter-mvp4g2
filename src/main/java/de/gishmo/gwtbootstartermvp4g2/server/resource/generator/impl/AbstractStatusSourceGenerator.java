@@ -17,19 +17,29 @@
 
 package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.lang.model.element.Modifier;
+
 import com.github.mvp4g.mvp4g2.core.ui.AbstractPresenter;
 import com.github.mvp4g.mvp4g2.core.ui.IsLazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.EventHandler;
 import com.github.mvp4g.mvp4g2.core.ui.annotation.Presenter;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.FieldSpec;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
-
-import javax.lang.model.element.Modifier;
-import java.io.File;
-import java.io.IOException;
 
 public abstract class AbstractStatusSourceGenerator
     extends AbstractSourceGenerator {
@@ -128,7 +138,6 @@ public abstract class AbstractStatusSourceGenerator
     typeSpec.addMethod(MethodSpec.methodBuilder("edit")
                                  .addAnnotation(Override.class)
                                  .addModifiers(Modifier.PUBLIC)
-                                 .returns(Void.class)
                                  .addParameter(ParameterSpec.builder(String.class,
                                                                      "message")
                                                             .build())
@@ -177,7 +186,6 @@ public abstract class AbstractStatusSourceGenerator
                                         .addMethod(MethodSpec.methodBuilder("edit")
                                                              .addModifiers(Modifier.PUBLIC,
                                                                            Modifier.ABSTRACT)
-                                                             .returns(Void.class)
                                                              .addParameter(ParameterSpec.builder(String.class,
                                                                                                  "message")
                                                                                         .build())

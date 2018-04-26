@@ -82,10 +82,11 @@ public class ModelSourceGenerator
                                         .addMethod(MethodSpec.methodBuilder("get")
                                                              .addModifiers(Modifier.PUBLIC,
                                                                            Modifier.STATIC)
+                                                             .returns(String.class)
                                                              .addStatement("char[] uuid = new char[36]")
                                                              .addStatement("int r")
-                                                             .addStatement("uuid[8] = uuid[13] = uuid[18] = uuid[23] = \"-\"")
-                                                             .addStatement(" uuid[14] = \"4\"")
+                                                             .addStatement("uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'")
+                                                             .addStatement(" uuid[14] = '4'")
                                                              .beginControlFlow("for (int i = 0; i < 36; i++)")
                                                              .beginControlFlow("if (uuid[i] == 0)")
                                                              .addStatement("r = (int) (Math.random() * 16)")
