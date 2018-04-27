@@ -30,9 +30,9 @@ import java.util.zip.ZipOutputStream;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.ModuleDescriptorGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.PomGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.SourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ModuleDescriptorGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.PomGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.SourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.model.ProjectZip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

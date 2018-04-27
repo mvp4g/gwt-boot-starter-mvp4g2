@@ -125,6 +125,15 @@ public class ContentPresenter
                                                     true,
                                                     true,
                                                     true));
+    this.mvp4g2GeneraterParms.getPresenters()
+                             .add(new PresenterData("screen04",
+                                                    "R2BHD",
+                                                    false,
+                                                    false,
+                                                    ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER,
+                                                    true,
+                                                    true,
+                                                    true));
     view.edit(this.mvp4g2GeneraterParms);
     eventBus.setCenter(view.asWidget());
   }

@@ -285,6 +285,7 @@ public class ContentView
     this.gwtVersion.setAllowBlank(false);
 
     this.widgetLibraryStore = new ListStore<>(widgetLibrary -> widgetLibrary.name());
+    this.widgetLibraryStore.add(WidgetLibrary.DOMINO_UI);
     this.widgetLibraryStore.add(WidgetLibrary.ELEMENTO);
     this.widgetLibraryStore.add(WidgetLibrary.GWT);
     this.widgetLibraryStore.add(WidgetLibrary.GXT);

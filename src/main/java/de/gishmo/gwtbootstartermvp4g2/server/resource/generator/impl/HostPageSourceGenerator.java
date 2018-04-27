@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
+import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
@@ -91,8 +92,13 @@ public class HostPageSourceGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">")
       .append(GeneratorConstants.LINE_BREAK)
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("    <!-- Any title is fine (please update)               -->")
+      .append(GeneratorConstants.LINE_BREAK);
+    if (WidgetLibrary.DOMINO_UI == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append("    <meta content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" name=\"viewport\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append(GeneratorConstants.LINE_BREAK);
+    }
+    sb.append("    <!-- Any title is fine (please update)               -->")
       .append(GeneratorConstants.LINE_BREAK)
       .append("    <title>")
       .append(title)
@@ -115,8 +121,30 @@ public class HostPageSourceGenerator {
       .append("    <script type=\"text/javascript\" language=\"javascript\" src=\"")
       .append(srcScript)
       .append("\"></script>")
-      .append(GeneratorConstants.LINE_BREAK)
-      .append("  </head>")
+      .append(GeneratorConstants.LINE_BREAK);
+    if (WidgetLibrary.DOMINO_UI == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append("    <!-- CSS used by Domino UI                     -->")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/font/material-icons.css\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/plugins/bootstrap/css/bootstrap.css\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/plugins/node-waves/waves.css\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/plugins/animate-css/animate.css\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/plugins/waitme/waitMe.css\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/plugins/bootstrap-select/css/bootstrap-select.css\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/css/materialize.css\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/css/style.css\">")
+        .append(GeneratorConstants.LINE_BREAK)
+        .append("    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/css/themes/all-themes.css\">")
+        .append(GeneratorConstants.LINE_BREAK);
+    }
+    sb.append("  </head>")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
       .append("  <!-- The body can have arbitrary html, or      -->")

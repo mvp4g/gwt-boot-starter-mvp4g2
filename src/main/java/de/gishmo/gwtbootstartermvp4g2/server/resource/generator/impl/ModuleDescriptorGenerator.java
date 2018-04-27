@@ -15,7 +15,7 @@
  *
  */
 
-package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
+package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,8 @@ import java.nio.file.Paths;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 
 public class ModuleDescriptorGenerator {
 
@@ -92,6 +94,10 @@ public class ModuleDescriptorGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append("  <inherits name='com.github.mvp4g.mvp4g2.Mvp4g2'/>")
       .append(GeneratorConstants.LINE_BREAK);
+    if (WidgetLibrary.DOMINO_UI == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append("  <inherits name='org.dominokit.domino.ui.DominoUI'/>")
+        .append(GeneratorConstants.LINE_BREAK);
+    }
     if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
       sb.append("  <inherits name='org.jboss.gwt.elemento.Core'/>")
         .append(GeneratorConstants.LINE_BREAK);

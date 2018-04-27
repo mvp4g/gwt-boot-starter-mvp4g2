@@ -22,7 +22,7 @@ import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.ViewCreationMethod;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.ModuleDescriptorGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ModuleDescriptorGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

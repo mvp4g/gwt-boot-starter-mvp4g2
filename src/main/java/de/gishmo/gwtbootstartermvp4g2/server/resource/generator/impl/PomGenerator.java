@@ -15,7 +15,7 @@
  *
  */
 
-package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
+package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,8 @@ import java.nio.file.Paths;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorConstants;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +36,7 @@ public class PomGenerator {
 
   private Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
-  private String               projectFolder;
+  private String projectFolder;
 
   private PomGenerator(Builder builder) {
     super();
@@ -48,7 +50,7 @@ public class PomGenerator {
   }
 
   public void generate()
-      throws GeneratorException {
+    throws GeneratorException {
 
     logger.debug(">>" + mvp4g2GeneraterParms.getArtefactId() + "<< start generating pom");
 
@@ -61,8 +63,8 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK)
       .append("<project xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
-                  "         xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" +
-                  "         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">")
+              "         xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" +
+              "         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">")
       .append(GeneratorConstants.LINE_BREAK)
       .append(GeneratorConstants.LINE_BREAK);
 
@@ -285,11 +287,11 @@ public class PomGenerator {
       .append(this.addAddrLine(10,
                                "moduleName",
                                this.mvp4g2GeneraterParms.getGroupId() +
-                                   "." +
-                                   GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())
-                                                 .toLowerCase() +
-                                   "." +
-                                   GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId())))
+                               "." +
+                               GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())
+                                             .toLowerCase() +
+                               "." +
+                               GeneratorUtils.setFirstCharacterToUpperCase(this.mvp4g2GeneraterParms.getArtefactId())))
       .append(this.addAddrLine(10,
                                "moduleShortName",
                                GeneratorUtils.removeBadChracters(this.mvp4g2GeneraterParms.getArtefactId())))
@@ -386,32 +388,6 @@ public class PomGenerator {
       .append(GeneratorConstants.LINE_BREAK);
 
     return sb.toString();
-  }
-
-  private String addAddrLine(int indent,
-                             String tagName,
-                             String value) {
-    StringBuilder sb = new StringBuilder();
-
-    sb.append(this.addIndent(indent))
-      .append("<")
-      .append(tagName)
-      .append(">")
-      .append(value)
-      .append("</")
-      .append(tagName)
-      .append(">")
-      .append(GeneratorConstants.LINE_BREAK);
-
-    return sb.toString();
-  }
-
-  private String addIndent(int indent) {
-    StringBuilder s = new StringBuilder();
-    for (int i = 0; i < indent; i++) {
-      s.append(" ");
-    }
-    return s.toString();
   }
 
   private String generateWarPlugin() {
@@ -654,7 +630,8 @@ public class PomGenerator {
                                  "gwt",
                                  "${gwt.version}",
                                  "pom",
-                                 "import"))
+                                 "import",
+                                 null))
       .append("    </dependencies>")
       .append(GeneratorConstants.LINE_BREAK)
       .append("  </dependencyManagement>")
@@ -674,13 +651,15 @@ public class PomGenerator {
                                  "gwt-user",
                                  null,
                                  null,
-                                 "provided"))
+                                 "provided",
+                                 null))
       .append(this.addDependency(4,
                                  "com.google.gwt",
                                  "gwt-dev",
                                  null,
                                  null,
-                                 "provided"))
+                                 "provided",
+                                 null))
       .append(this.addDependency(4,
                                  "com.github.mvp4g",
                                  "mvp4g2",
@@ -689,6 +668,17 @@ public class PomGenerator {
                                  "com.github.mvp4g",
                                  "mvp4g2-processor",
                                  "${mvp4g2.version}"));
+    if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append(this.addDependency(4,
+                                   "org.dominokit",
+                                   "domino-ui",
+                                   "${domino.version}"));
+      sb.append(this.addDependency(4,
+                                   "org.dominokit",
+                                   "domino-ui",
+                                   "${domino.version}",
+                                   "sources"));
+    }
     if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
       sb.append(this.addDependency(4,
                                    "org.jboss.gwt.elemento",
@@ -763,6 +753,14 @@ public class PomGenerator {
                                "mvp4g2.version",
                                "1.0.0"))
       .append(GeneratorConstants.LINE_BREAK);
+    if (WidgetLibrary.DOMINO_UI == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      sb.append(this.addCommentLine(4,
+                                    "Domino UI version"))
+        .append(this.addAddrLine(4,
+                                 "domino.version",
+                                 "1.0-SNAPSHOT"))
+        .append(GeneratorConstants.LINE_BREAK);
+    }
     if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
       sb.append(this.addCommentLine(4,
                                     "Elemento version"))
@@ -843,7 +841,22 @@ public class PomGenerator {
                               artifactId,
                               version,
                               null,
+                              null,
                               null);
+  }
+
+  private String addDependency(int indent,
+                               String groupId,
+                               String artifactId,
+                               String version,
+                               String classifier) {
+    return this.addDependency(indent,
+                              groupId,
+                              artifactId,
+                              version,
+                              null,
+                              null,
+                              classifier);
   }
 
   private String addDependency(int indent,
@@ -854,6 +867,7 @@ public class PomGenerator {
                               artifactId,
                               null,
                               null,
+                              null,
                               null);
   }
 
@@ -862,7 +876,8 @@ public class PomGenerator {
                                String artifactId,
                                String version,
                                String type,
-                               String scope) {
+                               String scope,
+                               String classifier) {
     StringBuilder sb = new StringBuilder();
 
     sb.append(addIndent(indent))
@@ -893,8 +908,39 @@ public class PomGenerator {
                                  "scope",
                                  scope));
     }
+    if (classifier != null) {
+      sb.append(this.addAddrLine(indent + 2,
+                                 "classifier",
+                                 classifier));
+    }
     sb.append(addIndent(indent))
       .append("</dependency>")
+      .append(GeneratorConstants.LINE_BREAK);
+
+    return sb.toString();
+  }
+
+  private String addIndent(int indent) {
+    StringBuilder s = new StringBuilder();
+    for (int i = 0; i < indent; i++) {
+      s.append(" ");
+    }
+    return s.toString();
+  }
+
+  private String addAddrLine(int indent,
+                             String tagName,
+                             String value) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(this.addIndent(indent))
+      .append("<")
+      .append(tagName)
+      .append(">")
+      .append(value)
+      .append("</")
+      .append(tagName)
+      .append(">")
       .append(GeneratorConstants.LINE_BREAK);
 
     return sb.toString();
@@ -904,7 +950,7 @@ public class PomGenerator {
 
     Mvp4g2GeneraterParms mvp4g2GeneraterParms;
 
-    String               projectFolder;
+    String projectFolder;
 
     public Builder mvp4g2GeneraterParms(Mvp4g2GeneraterParms mvp4g2GeneraterParms) {
       this.mvp4g2GeneraterParms = mvp4g2GeneraterParms;

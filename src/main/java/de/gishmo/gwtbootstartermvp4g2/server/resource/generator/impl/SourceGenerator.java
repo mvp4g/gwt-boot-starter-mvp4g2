@@ -15,21 +15,21 @@
  *
  */
 
-package de.gishmo.gwtbootstartermvp4g2.server.resource.generator;
+package de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl;
 
 import java.io.File;
 
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.GeneratorException;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.Mvp4g2GeneraterParms;
 import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.PresenterData;
-import de.gishmo.gwt.gwtbootstartermvp4g2.shared.model.WidgetLibrary;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ApplicationLoaderSourceGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ApplicationSourceGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.EntryPointSourceGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HistoryConverterGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.HostPageSourceGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.ModelSourceGenerator;
-import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.WebXmlSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.GeneratorUtils;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.domino.CssPageDominoSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.domino.EventBusDominoSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.domino.HeaderDominoSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.domino.NavigationDominoSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.domino.PresenterViewDominoSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.domino.ShellDominoSourceGenerator;
+import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.domino.StatusBarDominoSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento.CssPageElementoSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento.EventBusElementoSourceGenerator;
 import de.gishmo.gwtbootstartermvp4g2.server.resource.generator.impl.elemento.HeaderElementoSourceGenerator;
@@ -134,164 +134,221 @@ public class SourceGenerator {
                                .build()
                                .generate();
     }
-    if (WidgetLibrary.GWT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
-      // Css file
-      CssPageGwtSourceGenerator.builder()
-                               .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                               .directoryWebapp(this.directoryWebapp)
-                               .build()
-                               .generate();
-      // EventBus
-      EventBusGwtSourceGenerator.builder()
-                                .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                                .clientPackageJavaConform(this.clientPackageJavaConform)
-                                .directoryJava(this.directoryJava)
-                                .build()
-                                .generate();
-      // generate shell
-      ShellGwtSourceGenerator.builder()
-                             .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                             .clientPackageJavaConform(this.clientPackageJavaConform)
-                             .directoryJava(this.directoryJava)
-                             .build()
-                             .generate();
-      // generate header
-      HeaderGwtSourceGenerator.builder()
-                              .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                              .clientPackageJavaConform(this.clientPackageJavaConform)
-                              .directoryJava(this.directoryJava)
-                              .build()
-                              .generate();
-      // generate Statusbar
-      StatusBarGwtSourceGenerator.builder()
-                                 .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                                 .clientPackageJavaConform(this.clientPackageJavaConform)
-                                 .directoryJava(this.directoryJava)
-                                 .build()
-                                 .generate();
-      // generate navigation
-      NavigationGwtSourceGenerator.builder()
-                                  .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                                  .clientPackageJavaConform(this.clientPackageJavaConform)
-                                  .directoryJava(this.directoryJava)
-                                  .build()
-                                  .generate();
-
-    } else if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
-      // Css file
-      CssPageElementoSourceGenerator.builder()
+    switch (this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+      case DOMINO_UI:
+        // Css file
+        CssPageDominoSourceGenerator.builder()
                                     .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
                                     .directoryWebapp(this.directoryWebapp)
                                     .build()
                                     .generate();
-      // EventBus
-      EventBusElementoSourceGenerator.builder()
+        // EventBus
+        EventBusDominoSourceGenerator.builder()
                                      .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
                                      .clientPackageJavaConform(this.clientPackageJavaConform)
                                      .directoryJava(this.directoryJava)
                                      .build()
                                      .generate();
-      // generate shell
-      ShellElementoSourceGenerator.builder()
+        // generate shell
+        ShellDominoSourceGenerator.builder()
                                   .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
                                   .clientPackageJavaConform(this.clientPackageJavaConform)
                                   .directoryJava(this.directoryJava)
                                   .build()
                                   .generate();
-      // generate header
-      HeaderElementoSourceGenerator.builder()
+        // generate header
+        HeaderDominoSourceGenerator.builder()
                                    .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
                                    .clientPackageJavaConform(this.clientPackageJavaConform)
                                    .directoryJava(this.directoryJava)
                                    .build()
                                    .generate();
-      // generate Statusbar
-      StatusBarElementoSourceGenerator.builder()
+        // generate Statusbar
+        StatusBarDominoSourceGenerator.builder()
                                       .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
                                       .clientPackageJavaConform(this.clientPackageJavaConform)
                                       .directoryJava(this.directoryJava)
                                       .build()
                                       .generate();
-      // generate navigation
-      NavigationElementoSourceGenerator.builder()
+        // generate navigation
+        NavigationDominoSourceGenerator.builder()
                                        .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
                                        .clientPackageJavaConform(this.clientPackageJavaConform)
                                        .directoryJava(this.directoryJava)
                                        .build()
                                        .generate();
-
-    } else if (WidgetLibrary.GXT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
-      // Css file
-      CssPageGxtSourceGenerator.builder()
-                               .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                               .directoryResourcesStatic(this.directoryWebapp)
-                               .build()
-                               .generate();
-      // EventBus
-      EventBusGxtSourceGenerator.builder()
-                                .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                                .clientPackageJavaConform(this.clientPackageJavaConform)
-                                .directoryJava(this.directoryJava)
-                                .build()
-                                .generate();
-      // generate shell
-      ShellGxtSourceGenerator.builder()
-                             .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                             .clientPackageJavaConform(this.clientPackageJavaConform)
-                             .directoryJava(this.directoryJava)
-                             .build()
-                             .generate();
-      // generate header
-      HeaderGxtSourceGenerator.builder()
-                              .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                              .clientPackageJavaConform(this.clientPackageJavaConform)
-                              .directoryJava(this.directoryJava)
-                              .build()
-                              .generate();
-      // generate Statusbar
-      StatusBarGxtSourceGenerator.builder()
+        break;
+      case ELEMENTO:
+        // Css file
+        CssPageElementoSourceGenerator.builder()
+                                      .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                      .directoryWebapp(this.directoryWebapp)
+                                      .build()
+                                      .generate();
+        // EventBus
+        EventBusElementoSourceGenerator.builder()
+                                       .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                       .clientPackageJavaConform(this.clientPackageJavaConform)
+                                       .directoryJava(this.directoryJava)
+                                       .build()
+                                       .generate();
+        // generate shell
+        ShellElementoSourceGenerator.builder()
+                                    .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                    .clientPackageJavaConform(this.clientPackageJavaConform)
+                                    .directoryJava(this.directoryJava)
+                                    .build()
+                                    .generate();
+        // generate header
+        HeaderElementoSourceGenerator.builder()
+                                     .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                     .clientPackageJavaConform(this.clientPackageJavaConform)
+                                     .directoryJava(this.directoryJava)
+                                     .build()
+                                     .generate();
+        // generate Statusbar
+        StatusBarElementoSourceGenerator.builder()
+                                        .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                        .clientPackageJavaConform(this.clientPackageJavaConform)
+                                        .directoryJava(this.directoryJava)
+                                        .build()
+                                        .generate();
+        // generate navigation
+        NavigationElementoSourceGenerator.builder()
+                                         .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                         .clientPackageJavaConform(this.clientPackageJavaConform)
+                                         .directoryJava(this.directoryJava)
+                                         .build()
+                                         .generate();
+        break;
+      case GWT:
+        // Css file
+        CssPageGwtSourceGenerator.builder()
                                  .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                                 .clientPackageJavaConform(this.clientPackageJavaConform)
-                                 .directoryJava(this.directoryJava)
+                                 .directoryWebapp(this.directoryWebapp)
                                  .build()
                                  .generate();
-      // generate navigation
-      NavigationGxtSourceGenerator.builder()
+        // EventBus
+        EventBusGwtSourceGenerator.builder()
                                   .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
                                   .clientPackageJavaConform(this.clientPackageJavaConform)
                                   .directoryJava(this.directoryJava)
                                   .build()
                                   .generate();
+        // generate shell
+        ShellGwtSourceGenerator.builder()
+                               .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                               .clientPackageJavaConform(this.clientPackageJavaConform)
+                               .directoryJava(this.directoryJava)
+                               .build()
+                               .generate();
+        // generate header
+        HeaderGwtSourceGenerator.builder()
+                                .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                .clientPackageJavaConform(this.clientPackageJavaConform)
+                                .directoryJava(this.directoryJava)
+                                .build()
+                                .generate();
+        // generate Statusbar
+        StatusBarGwtSourceGenerator.builder()
+                                   .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                   .clientPackageJavaConform(this.clientPackageJavaConform)
+                                   .directoryJava(this.directoryJava)
+                                   .build()
+                                   .generate();
+        // generate navigation
+        NavigationGwtSourceGenerator.builder()
+                                    .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                    .clientPackageJavaConform(this.clientPackageJavaConform)
+                                    .directoryJava(this.directoryJava)
+                                    .build()
+                                    .generate();
+        break;
+      case GXT:
+        // Css file
+        CssPageGxtSourceGenerator.builder()
+                                 .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                 .directoryResourcesStatic(this.directoryWebapp)
+                                 .build()
+                                 .generate();
+        // EventBus
+        EventBusGxtSourceGenerator.builder()
+                                  .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                  .clientPackageJavaConform(this.clientPackageJavaConform)
+                                  .directoryJava(this.directoryJava)
+                                  .build()
+                                  .generate();
+        // generate shell
+        ShellGxtSourceGenerator.builder()
+                               .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                               .clientPackageJavaConform(this.clientPackageJavaConform)
+                               .directoryJava(this.directoryJava)
+                               .build()
+                               .generate();
+        // generate header
+        HeaderGxtSourceGenerator.builder()
+                                .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                .clientPackageJavaConform(this.clientPackageJavaConform)
+                                .directoryJava(this.directoryJava)
+                                .build()
+                                .generate();
+        // generate Statusbar
+        StatusBarGxtSourceGenerator.builder()
+                                   .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                   .clientPackageJavaConform(this.clientPackageJavaConform)
+                                   .directoryJava(this.directoryJava)
+                                   .build()
+                                   .generate();
+        // generate navigation
+        NavigationGxtSourceGenerator.builder()
+                                    .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                    .clientPackageJavaConform(this.clientPackageJavaConform)
+                                    .directoryJava(this.directoryJava)
+                                    .build()
+                                    .generate();
+        break;
     }
     // generate presenter & views for every screen
     for (PresenterData presenterData : this.mvp4g2GeneraterParms.getPresenters()) {
-      if (WidgetLibrary.GWT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
-        PresenterViewGwtSourceGenerator.builder()
-                                       .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                                       .clientPackageJavaConform(this.clientPackageJavaConform)
-                                       .directoryJava(this.directoryJava)
-                                       .presenterData(presenterData)
-                                       .build()
-                                       .generate();
-      } else if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
-        PresenterViewElementoSourceGenerator.builder()
+      switch (this.mvp4g2GeneraterParms.getWidgetLibrary()) {
+        case DOMINO_UI:
+          PresenterViewDominoSourceGenerator.builder()
                                             .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
                                             .clientPackageJavaConform(this.clientPackageJavaConform)
                                             .directoryJava(this.directoryJava)
                                             .presenterData(presenterData)
                                             .build()
                                             .generate();
-      } else if (WidgetLibrary.GXT == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
-        PresenterViewGxtSourceGenerator.builder()
-                                       .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
-                                       .clientPackageJavaConform(this.clientPackageJavaConform)
-                                       .directoryJava(this.directoryJava)
-                                       .presenterData(presenterData)
-                                       .build()
-                                       .generate();
+          break;
+        case ELEMENTO:
+          PresenterViewElementoSourceGenerator.builder()
+                                              .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                              .clientPackageJavaConform(this.clientPackageJavaConform)
+                                              .directoryJava(this.directoryJava)
+                                              .presenterData(presenterData)
+                                              .build()
+                                              .generate();
+          break;
+        case GWT:
+          PresenterViewGwtSourceGenerator.builder()
+                                         .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                         .clientPackageJavaConform(this.clientPackageJavaConform)
+                                         .directoryJava(this.directoryJava)
+                                         .presenterData(presenterData)
+                                         .build()
+                                         .generate();
+          break;
+        case GXT:
+          PresenterViewGxtSourceGenerator.builder()
+                                         .mvp4g2GeneraterParms(this.mvp4g2GeneraterParms)
+                                         .clientPackageJavaConform(this.clientPackageJavaConform)
+                                         .directoryJava(this.directoryJava)
+                                         .presenterData(presenterData)
+                                         .build()
+                                         .generate();
+          break;
       }
     }
-    // TODO generate model
   }
 
   private void createBasicStructure() {
