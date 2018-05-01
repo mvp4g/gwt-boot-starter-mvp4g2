@@ -761,7 +761,7 @@ public class PomGenerator {
                                   "mvp4g2 version"))
       .append(this.addAddrLine(4,
                                "mvp4g2.version",
-                               "1.0.0"))
+                               "1.0.1"))
       .append(GeneratorConstants.LINE_BREAK);
     if (WidgetLibrary.ELEMENTO == this.mvp4g2GeneraterParms.getWidgetLibrary()) {
       sb.append(this.addCommentLine(4,
