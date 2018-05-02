@@ -125,6 +125,25 @@ public class ContentPresenter
                                                     true,
                                                     true,
                                                     true));
+    this.mvp4g2GeneraterParms.getPresenters()
+                             .add(new PresenterData("screen04",
+                                                    "IG88",
+                                                    false,
+                                                    false,
+                                                    ViewCreationMethod.VIEW_CREATION_METHOD_PRESENTER,
+                                                    true,
+                                                    true,
+                                                    true));
+    this.mvp4g2GeneraterParms.getPresenters()
+                             .add(new PresenterData("screen05",
+                                                    "R5G8",
+                                                    false,
+                                                    false,
+                                                    ViewCreationMethod.VIEW_CREATION_METHOD_FRAMEWORK,
+                                                    false,
+                                                    true,
+                                                    true));
+
     view.edit(this.mvp4g2GeneraterParms);
     eventBus.setCenter(view.asWidget());
   }

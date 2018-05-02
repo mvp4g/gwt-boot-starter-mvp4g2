@@ -21,30 +21,32 @@ import com.github.mvp4g.mvp4g2.core.ui.LazyReverseView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.themebuilder.base.client.config.ThemeDetails;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
-import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.SimpleContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.Viewport;
+import com.sencha.gxt.widget.core.client.container.*;
+import de.gishmo.gwt.gwtbootstartermvp4g2.client.Version;
 import de.gishmo.gwt.gwtbootstartermvp4g2.client.ui.Constants;
 
 public class ShellView
-  extends LazyReverseView<IShellView.Presenter>
-  implements IShellView {
+    extends LazyReverseView<IShellView.Presenter>
+    implements IShellView {
 
   private static ThemeDetails themeDetails = GWT.create(ThemeDetails.class);
 
   private Viewport                viewport;
+
   private VerticalLayoutContainer shell;
+
   private BorderLayoutContainer   container;
+
   private ContentPanel            northContainer;
+
   private ContentPanel            southContainer;
+
   private SimpleContainer         centerContainer;
 
   private AutoProgressMessageBox progressBar;
@@ -158,6 +160,9 @@ public class ShellView
                     "Generator Issues",
                     "https://github.com/mvp4g/gwt-boot-starter-mvp4g2/issues");
 
+    this.createLabel(innerContainer,
+                     "Version: " + Version.VERSION);
+
     return clc;
   }
 
@@ -165,6 +170,35 @@ public class ShellView
     ContentPanel cp = new ContentPanel();
     cp.setHeaderVisible(false);
     return cp;
+  }
+
+  private void createLabel(HorizontalLayoutContainer container,
+                           String text) {
+
+    Label label = new Label(text);
+    label.getElement()
+         .getStyle()
+         .setFontSize(14,
+                      Style.Unit.PX);
+    label.getElement()
+         .getStyle()
+         .setColor("white");
+    label.getElement()
+         .getStyle()
+         .setWhiteSpace(Style.WhiteSpace.NOWRAP);
+    label.getElement()
+         .getStyle()
+         .setProperty("fontFamily",
+                      themeDetails.panel()
+                                  .font()
+                                  .family());
+    container.add(label,
+                  new HorizontalLayoutContainer.HorizontalLayoutData(-1,
+                                                                     1,
+                                                                     new Margins(-6,
+                                                                                 12,
+                                                                                 0,
+                                                                                 12)));
   }
 
   private void createLink(HorizontalLayoutContainer container,
